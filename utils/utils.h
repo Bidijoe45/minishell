@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   aatanic.h                                          :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2020/11/23 14:06:39 by apavel           ###   ########.fr       */
+/*   Created: 2020/11/25 11:39:54 by alvrodri          #+#    #+#             */
+/*   Updated: 2020/11/25 11:42:40 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AATANIC_H
-# define AATANIC_H
-# define NAME "aatanic"
-# include "./get_next_line/get_next_line.h"
-# include "./libft/libft.h"
-# include <unistd.h>
+#ifndef UTILS_H
+# define UTILS_H
+
+# include "../fresh.h"
+
+char *ft_get_var(t_fresh fresh, char *name);
+
 #endif
