@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/11/30 11:45:14 by apavel           ###   ########.fr       */
+/*   Updated: 2020/11/30 11:52:06 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ void    ft_env()
     
 }
 
+void    ft_clear()
+{
+    ft_printf("\033[2J\033[H");
+}
+
 void    ft_not_found(char *cmd)
 {
     ft_print_color(RESET, "");
@@ -66,6 +71,8 @@ void    ft_parse_command(t_fresh *fresh)
     command = ft_strtrim(&fresh->line[i], " ");
     if (!ft_strncmp(command, "exit", 4))
         ft_exit();
+    if (!ft_strncmp(command, "clear", 5))
+        ft_clear();
     else if (!ft_strncmp(command, "cd", 2))
         ft_cd();
     else if (!ft_strncmp(command, "pwd", 3))
