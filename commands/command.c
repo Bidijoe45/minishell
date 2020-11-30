@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/11/25 12:10:33 by alvrodri         ###   ########.fr       */
+/*   Updated: 2020/11/30 11:45:14 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,11 @@ void    ft_cd()
 
 void    ft_pwd()
 {
+    char *cwd;
 
+    cwd = getcwd(NULL, 0);
+    ft_printf("%s\n", cwd);
+    free(cwd);
 }
 
 void    ft_export()
