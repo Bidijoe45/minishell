@@ -6,51 +6,12 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/11/30 11:52:06 by apavel           ###   ########.fr       */
+/*   Updated: 2020/11/30 12:06:47 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fresh.h"
-
-void    ft_exit()
-{
-    ft_print_color(BOLD_GREEN, "See you soon!\n\n");
-    exit(0);
-}
-
-void    ft_cd()
-{
-
-}
-
-void    ft_pwd()
-{
-    char *cwd;
-
-    cwd = getcwd(NULL, 0);
-    ft_printf("%s\n", cwd);
-    free(cwd);
-}
-
-void    ft_export()
-{
-
-}
-
-void    ft_unset()
-{
-
-}
-
-void    ft_env()
-{
-    
-}
-
-void    ft_clear()
-{
-    ft_printf("\033[2J\033[H");
-}
+#include "command.h"
 
 void    ft_not_found(char *cmd)
 {
