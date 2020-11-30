@@ -22,7 +22,7 @@ void	ft_print_header(t_fresh *fresh)
 	ft_print_color(RESET, "");
 }
 
-int		main(int argc, char **argv, char **envp)
+int		main(int argc, char **argv, char **envp, char **apple)
 {
 	t_fresh fresh;
 	int		i;

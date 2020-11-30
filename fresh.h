@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2020/11/25 11:45:29 by alvrodri         ###   ########.fr       */
+/*   Updated: 2020/11/30 11:15:43 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 # include "./get_next_line/get_next_line.h"
 # include "./libft/libft.h"
+# include "./ft_printf/ft_printf_utils.h"
 # include "./print/colors.h"
 # include <unistd.h>
 

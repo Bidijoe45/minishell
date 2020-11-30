@@ -4,6 +4,7 @@
 		"aatanic.h": "c",
 		"fresh.h": "c",
 		"utils.h": "c",
-		"unistd.h": "c"
+		"unistd.h": "c",
+		"get_next_line.h": "c"
 	}
 }
