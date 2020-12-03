@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+         #
+#    By: apavel <apavel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/21 19:15:16 by apavel            #+#    #+#              #
-#    Updated: 2020/11/30 11:33:14 by alvrodri         ###   ########.fr        #
+#    Updated: 2020/12/01 13:30:27 by apavel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,8 @@ RM      = rm -f
 CFLAGS  = -Wall -Werror -Wextra
 .c.o:
 	${CC} ${FLAGS} -c $< -o ${<:.c=.o}
-${NAME}: ${OBJS}
-	ar rc  ${NAME} ${OBJS}
+${NAME}: ${OBJS} ${BONUS_OBJS}
+	ar rc ${NAME} ${OBJS} ${BONUS_OBJS}
 	ranlib ${NAME}
 all: ${NAME}
 clean:

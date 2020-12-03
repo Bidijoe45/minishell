@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fresh.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2020/11/30 11:15:43 by alvrodri         ###   ########.fr       */
+/*   Updated: 2020/12/01 11:12:37 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct  s_fresh
 	char        **env;
 	char        *user;
 	char		*line;
+	t_list		*lst_variables;
 }               t_fresh;
 
 

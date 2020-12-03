@@ -1,6 +1,6 @@
 SRCS =	fresh.c \
 		./print/print.c \
-		./commands/command.c ./commands/cd.c ./commands/clear.c ./commands/env.c ./commands/exit.c ./commands/export.c ./commands/pwd.c ./commands/unset.c\
+		./commands/command.c ./commands/cd.c ./commands/clear.c ./commands/env.c ./commands/exit.c ./commands/export.c ./commands/pwd.c ./commands/unset.c ./commands/variable.c\
 		./utils/env.c
 GNL	= ./get_next_line/get_next_line.c
 NAME = minishell
@@ -14,9 +14,11 @@ ${NAME}:	${OBJS}
 all:		${NAME}
 clean:
 			rm ${OBJS}
-			make clean -C minishell
+			make clean -C ./libft
+			make clean -C ./ft_printf
 fclean:		clean
 			rm ${NAME}
-			make fclean -C minishell
+			make fclean -C ./libft
+			make fclean -C ./ft_printf
 re:			fclean all
 .PHONY:		all clean fclean re
