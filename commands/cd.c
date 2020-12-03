@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2020/11/30 12:51:27 by alvrodri         ###   ########.fr       */
+/*   Updated: 2020/11/30 13:06:10 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,5 @@ void    ft_cd(char *cmd, t_fresh *fresh)
     argv = ft_split(cmd, ' ');
     ret = chdir(argv[1]);
     if (ret == -1)
-        ft_printf("%sError: %s%s\n", RED, RESET, strerror(errno));
+        ft_printf("\033%sError: \033%s%s\n", RED, RESET, strerror(errno));
 }
