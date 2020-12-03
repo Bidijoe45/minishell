@@ -28,6 +28,7 @@ int		main(int argc, char **argv, char **envp, char **apple)
 	int		i;
 
 	fresh.env = envp;
+	fresh.env_mod = 0;
 	fresh.user = ft_get_var(fresh, "USER");
 	ft_print_header(&fresh);
 	while ((i = get_next_line(0, &fresh.line)) > 0)
