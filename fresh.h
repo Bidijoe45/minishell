@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2020/12/01 11:12:37 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/03 11:38:14 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@
 # include "./libft/libft.h"
 # include "./ft_printf/ft_printf_utils.h"
 # include "./print/colors.h"
+# include <sys/errno.h>
+# include <stdio.h>
 # include <unistd.h>
+# include <string.h>
 
 typedef struct  s_fresh
 {

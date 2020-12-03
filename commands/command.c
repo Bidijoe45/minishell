@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/12/03 11:23:35 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/03 11:38:15 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void    ft_not_found(char *cmd)
     ft_print_color(RESET, "");
     ft_print_color(RED, "Command not found: ");
     ft_print_color(RESET, cmd);
-    ft_print_color(RESET, "\n\n");
+    ft_print_color(RESET, "\n");
 }
 
 void    ft_parse_command(t_fresh *fresh)
@@ -37,7 +37,7 @@ void    ft_parse_command(t_fresh *fresh)
     else if (!ft_strncmp(command, "clear", 5))
         ft_clear();
     else if (!ft_strncmp(command, "cd", 2))
-        ft_cd();
+        ft_cd(command, fresh);
     else if (!ft_strncmp(command, "pwd", 3))
         ft_pwd();
     else if (!ft_strncmp(command, "export", 6))
