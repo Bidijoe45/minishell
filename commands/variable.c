@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 13:21:03 by apavel            #+#    #+#             */
-/*   Updated: 2020/12/03 11:23:39 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/03 12:27:06 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,6 @@ void	ft_set_variable(t_fresh *fresh, char *command)
 		fresh->lst_variables = ft_lstnew(var);
 	else
 		ft_lstadd_back(&fresh->lst_variables, ft_lstnew(var));
-}
-
-void	get_vars(void *var)
-{
-	ft_printf("%s\n", ((t_variable *)var)->key);
 }
 
 char	*ft_get_variable(t_fresh *fresh, char *key)

@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/12/03 11:38:15 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/03 12:45:31 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void    ft_parse_command(t_fresh *fresh)
     else if (!ft_strncmp(command, "pwd", 3))
         ft_pwd();
     else if (!ft_strncmp(command, "export", 6))
-        ft_export();
+        ft_export(fresh);
     else if (!ft_strncmp(command, "unset", 5))
         ft_unset();
     else if (!ft_strncmp(command, "env", 3))
