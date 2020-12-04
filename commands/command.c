@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/12/03 12:45:31 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/04 10:31:19 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void    ft_parse_command(t_fresh *fresh)
     else if (!ft_strncmp(command, "unset", 5))
         ft_unset();
     else if (!ft_strncmp(command, "env", 3))
-        ft_env();
+        ft_env(fresh);
     else if (command[0] == '\0')
         return ;
     else

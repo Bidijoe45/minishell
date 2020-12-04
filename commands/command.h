@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:46 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/12/03 13:00:50 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/04 10:30:52 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_cd(char *cmd, t_fresh *fresh);
 void	ft_pwd();
 void	ft_export(t_fresh *fresh);
 void	ft_unset();
-void	ft_env();
+void	ft_env(t_fresh *fresh);
 void	ft_clear();
 int		ft_is_variable(char *command);
 void	ft_set_variable(t_fresh *fresh, char *command);
