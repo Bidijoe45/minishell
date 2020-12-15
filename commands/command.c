@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/12/03 12:45:31 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/15 12:11:10 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,21 @@ void    ft_not_found(char *cmd)
     ft_print_color(RESET, "\n");
 }
 
+int		ft_is_variable(char *command)
+{	
+	if (ft_strchr(command, '='))
+		return (1);
+	return (0);
+}
+
+void    ft_new_local_var(t_fresh *fresh, char *cmd)
+{
+    char **splt_cmd;
+    
+    splt_cmd = ft_split(cmd, '=');
+	ft_set_variable(fresh->local_vars, ft_new_variable(splt_cmd[0], splt_cmd[1]));
+}
+
 void    ft_parse_command(t_fresh *fresh)
 {
 	char    *command;
@@ -28,11 +43,10 @@ void    ft_parse_command(t_fresh *fresh)
 
     i = 0;
     while (ft_isspace(fresh->line[i]))
-        i++;    
+        i++;
     command = ft_strtrim(&fresh->line[i], " ");
-    if (ft_is_variable(command) == 1)
-		ft_set_variable(fresh, command);
-    else if (!ft_strncmp(command, "exit", 4))
+    
+    if (!ft_strncmp(command, "exit", 4))
         ft_exit();
     else if (!ft_strncmp(command, "clear", 5))
         ft_clear();
@@ -44,8 +58,8 @@ void    ft_parse_command(t_fresh *fresh)
         ft_export(fresh);
     else if (!ft_strncmp(command, "unset", 5))
         ft_unset();
-    else if (!ft_strncmp(command, "env", 3))
-        ft_env();
+    else if (ft_is_variable(command) == 1)
+        ft_new_local_var(fresh, command);
     else if (command[0] == '\0')
         return ;
     else

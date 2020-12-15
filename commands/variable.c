@@ -6,50 +6,59 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 13:21:03 by apavel            #+#    #+#             */
-/*   Updated: 2020/12/03 12:27:06 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/15 12:46:40 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../fresh.h"
 #include "command.h"
 
-int		ft_is_variable(char *command)
+t_variable	*ft_new_variable(char *key, char *value)
 {
-	if (ft_strchr(command, '='))
-		return (1);
-	return (0);	
-}
-
-void	ft_set_variable(t_fresh *fresh, char *command)
-{
-	char **vars;
 	t_variable *var;
 
-	vars = ft_split(command, '=');
 	var = malloc(sizeof(t_variable));
-	var->key = vars[0];
-	var->value = vars[1];
-	if (!fresh->lst_variables)
-		fresh->lst_variables = ft_lstnew(var);
-	else
-		ft_lstadd_back(&fresh->lst_variables, ft_lstnew(var));
+	var->key = key;
+	var->value = value;
+	return (var);
 }
 
-char	*ft_get_variable(t_fresh *fresh, char *key)
+t_variable	*ft_get_variable(t_list *variables, char *key)
 {
-	t_list		*lst;
-	t_variable	*element;
+	t_list	*elem;
+	t_variable	*var;
 	
-	lst = fresh->lst_variables;
-	if (lst)
+	if (!variables)
+		return (NULL);
+	elem = variables;
+	while (elem)
 	{
-		while (lst)
+		var = elem->content;
+		if (!ft_strncmp(var->key, key, ft_strlen(key)))
+			return (var);
+		elem = elem->next;
+	}
+	return (NULL);
+}
+
+void	ft_set_variable(t_list *variables, t_variable *var)
+{
+	t_variable	*ret_var;
+	t_list		*elem;
+
+	if (!variables)
+		return ;
+	if ((ret_var = ft_get_variable(variables, var->key)))
+		ret_var->value = var->value;
+	elem = variables;
+	while (elem)
+	{
+		elem = elem->next;
+		if (elem == NULL)
 		{
-			element = (t_variable *)lst->content;
-			if (!ft_strncmp(element->key, key, ft_strlen(key)))
-				return (element->value);
-			lst = lst->next;
+			elem = ft_lstnew(var);
+			return ;
 		}
 	}
-	return NULL;
 }
