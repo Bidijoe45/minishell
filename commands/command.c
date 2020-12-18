@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/12/15 12:11:10 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/17 12:37:33 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void    ft_not_found(char *cmd)
     ft_print_color(RESET, "");
     ft_print_color(RED, "Command not found: ");
     ft_print_color(RESET, cmd);
-    ft_print_color(RESET, "\n");
 }
 
 int		ft_is_variable(char *command)
@@ -45,7 +44,6 @@ void    ft_parse_command(t_fresh *fresh)
     while (ft_isspace(fresh->line[i]))
         i++;
     command = ft_strtrim(&fresh->line[i], " ");
-    
     if (!ft_strncmp(command, "exit", 4))
         ft_exit();
     else if (!ft_strncmp(command, "clear", 5))
@@ -58,10 +56,14 @@ void    ft_parse_command(t_fresh *fresh)
         ft_export(fresh);
     else if (!ft_strncmp(command, "unset", 5))
         ft_unset();
+    else if (!ft_strncmp(command, "echo", 4))
+        ft_echo(command, fresh);
     else if (ft_is_variable(command) == 1)
         ft_new_local_var(fresh, command);
-    else if (command[0] == '\0')
-        return ;
     else
-        ft_not_found(command);
+        if (command[0] != '\0')
+            ft_not_found(command);
+    ft_print_color(BOLD_GREEN, fresh->user);
+	ft_print_color(GREEN, " > ");
+	ft_print_color(RESET, "");
 }

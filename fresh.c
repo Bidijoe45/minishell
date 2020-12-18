@@ -42,9 +42,6 @@ void	ft_load_env_vars(t_fresh *fresh, char **envp)
 		else
 			ft_set_variable(fresh->env, var);
 		i++;
-		/*printf("SSSSSSSSSSSS\n");
-		printf("%s\n",  ((t_variable *)fresh->env->content)->value);
-		printf("SSSSSSSSSSSS\n");*/
 	}
 }
 
@@ -94,7 +91,6 @@ int		main(int argc, char **argv, char **envp, char **apple)
 	ft_initialize(fresh);
 	ft_load_env_vars(fresh, envp);
 	fresh->user = ft_strdup("asd");
-	ft_printf("%s\n", ft_get_variable(fresh->env, "TMPDIR"));
 	ft_print_header(fresh);
 	read_line(fresh);
 	free(fresh);

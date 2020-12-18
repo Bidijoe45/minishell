@@ -5,6 +5,7 @@
 		"fresh.h": "c",
 		"utils.h": "c",
 		"unistd.h": "c",
-		"get_next_line.h": "c"
+		"get_next_line.h": "c",
+		"command.h": "c"
 	}
 }
