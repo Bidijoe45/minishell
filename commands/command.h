@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:46 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/12/15 12:24:33 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/18 11:12:57 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void		ft_export(t_fresh *fresh);
 void		ft_unset();
 void		ft_env(t_fresh *fresh);
 void		ft_clear();
-t_variable	*ft_new_variable(char *key, char *value);
-void		ft_set_variable(t_list *variables, t_variable *var);
-t_variable	*ft_get_variable(t_list *variables, char *key);
+t_variable	*variable_new(char *key, char *value);
+t_variable	*variable_get(t_list *variables, char *key);
+void		variable_set(t_list *variables, char *key, char *value);
 
 #endif

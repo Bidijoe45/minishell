@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2020/12/11 12:27:19 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/18 11:13:22 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,7 @@ typedef struct  s_fresh
 	t_list		*local_vars;
 }               t_fresh;
 
+t_list	*list_new_element(void *content);
+void	list_add_back(t_list *list, t_list *new_elem);
 
 #endif
