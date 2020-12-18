@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/12/18 12:13:59 by alvrodri         ###   ########.fr       */
+/*   Updated: 2020/12/18 12:17:14 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,46 @@ int		ft_is_variable(char *command)
 	return (0);
 }
 
-void    ft_new_local_var(t_fresh *fresh, char *cmd)
+void    new_local_var(t_fresh *fresh, char *cmd)
 {
-    char **splt_cmd;
-    
-    splt_cmd = ft_split(cmd, '=');
-	ft_set_variable(fresh->local_vars, ft_new_variable(splt_cmd[0], splt_cmd[1]));
+    char        **split_cmd;
+    t_variable  *var;
+
+    split_cmd = ft_split(cmd, '=');
+    var = variable_new(split_cmd[0], split_cmd[1]);
+    if (fresh->local_vars)
+        variable_set(fresh->local_vars, split_cmd[0], split_cmd[1]);
+    else
+        fresh->local_vars = list_new_element(variable_new(split_cmd[0], split_cmd[1]));
 }
+
+//=========TEST ONLY============
+static void	list_print(t_list *list)
+{
+	t_list *elem;
+
+	if (!list)
+	{
+		ft_printf("lista vacia\n");
+		return ;
+	}
+
+	ft_printf("--LIST START--\n");
+	elem = list;
+	while (elem)
+	{	
+		if (elem->content)
+		{
+			ft_printf("key: %s\n", ((t_variable *)elem->content)->key);
+			ft_printf("value: %s\n", ((t_variable *)elem->content)->value);
+		}
+		else
+			ft_printf("no content\n");
+		elem = elem->next;
+	}
+	ft_printf("--LIST END--\n");
+}
+
 
 void    ft_parse_command(t_fresh *fresh)
 {
@@ -46,6 +79,10 @@ void    ft_parse_command(t_fresh *fresh)
     command = ft_strtrim(&fresh->line[i], " ");
     if (!ft_strncmp(command, "exit", 4))
         ft_exit();
+    else if (!ft_strncmp(command, "env", 3))
+        ft_env(fresh);
+    else if (!ft_strncmp(command, "lvars", 4))
+        list_print(fresh->local_vars);
     else if (!ft_strncmp(command, "clear", 5))
         ft_clear();
     else if (!ft_strncmp(command, "cd", 2))
@@ -61,7 +98,9 @@ void    ft_parse_command(t_fresh *fresh)
     else if (!ft_strncmp(command, "echo", 4))
         ft_echo(command, fresh);
     else if (ft_is_variable(command) == 1)
-        ft_new_local_var(fresh, command);
+        new_local_var(fresh, command);
+    else if (command[0] == '\0')
+        return ;
     else
         if (command[0] != '\0')
             ft_not_found(command);

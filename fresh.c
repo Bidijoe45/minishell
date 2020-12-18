@@ -27,20 +27,16 @@ void	ft_load_env_vars(t_fresh *fresh, char **envp)
 	char 	**split_var;
 	int		i;
 	t_variable	*var;
-
-	var = malloc(sizeof(t_variable));
+	
 	i = 0;
 	while (envp[i])
 	{
 		split_var = ft_split(envp[i], '=');
-		
-		var->key = split_var[0];
-		var->value = split_var[1];
-
-		if (!fresh->env)
-			fresh->env = ft_lstnew(var);
+		var = variable_new(split_var[0], split_var[1]);
+		if (fresh->env)
+			list_add_back(fresh->env, list_new_element(var));
 		else
-			ft_set_variable(fresh->env, var);
+			fresh->env = list_new_element(var);
 		i++;
 	}
 }
@@ -83,6 +79,33 @@ void	ft_initialize(t_fresh *fresh)
 	fresh->user = NULL;
 }
 
+//=========TEST ONLY============
+static void	list_print(t_list *list)
+{
+	t_list *elem;
+
+	if (!list)
+	{
+		ft_printf("lista vacia\n");
+		return ;
+	}
+
+	ft_printf("--LIST START--\n");
+	elem = list;
+	while (elem)
+	{	
+		if (elem->content)
+		{
+			ft_printf("key: %s\n", ((t_variable *)elem->content)->key);
+			ft_printf("value: %s\n", ((t_variable *)elem->content)->value);
+		}
+		else
+			ft_printf("no content\n");
+		elem = elem->next;
+	}
+	ft_printf("--LIST END--\n");
+}
+
 int		main(int argc, char **argv, char **envp, char **apple)
 {
 	t_fresh *fresh;
@@ -90,7 +113,7 @@ int		main(int argc, char **argv, char **envp, char **apple)
 	fresh = malloc(sizeof(t_fresh));
 	ft_initialize(fresh);
 	ft_load_env_vars(fresh, envp);
-	fresh->user = ft_strdup("asd");
+	fresh->user = variable_get(fresh->env, "USER")->value;
 	ft_print_header(fresh);
 	read_line(fresh);
 	free(fresh);
