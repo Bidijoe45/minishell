@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/12/04 10:31:19 by alvrodri         ###   ########.fr       */
+/*   Updated: 2020/12/18 12:13:59 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,21 @@ void    ft_not_found(char *cmd)
     ft_print_color(RESET, "");
     ft_print_color(RED, "Command not found: ");
     ft_print_color(RESET, cmd);
-    ft_print_color(RESET, "\n");
+}
+
+int		ft_is_variable(char *command)
+{	
+	if (ft_strchr(command, '='))
+		return (1);
+	return (0);
+}
+
+void    ft_new_local_var(t_fresh *fresh, char *cmd)
+{
+    char **splt_cmd;
+    
+    splt_cmd = ft_split(cmd, '=');
+	ft_set_variable(fresh->local_vars, ft_new_variable(splt_cmd[0], splt_cmd[1]));
 }
 
 void    ft_parse_command(t_fresh *fresh)
@@ -28,11 +42,9 @@ void    ft_parse_command(t_fresh *fresh)
 
     i = 0;
     while (ft_isspace(fresh->line[i]))
-        i++;    
+        i++;
     command = ft_strtrim(&fresh->line[i], " ");
-    if (ft_is_variable(command) == 1)
-		ft_set_variable(fresh, command);
-    else if (!ft_strncmp(command, "exit", 4))
+    if (!ft_strncmp(command, "exit", 4))
         ft_exit();
     else if (!ft_strncmp(command, "clear", 5))
         ft_clear();
@@ -46,8 +58,14 @@ void    ft_parse_command(t_fresh *fresh)
         ft_unset();
     else if (!ft_strncmp(command, "env", 3))
         ft_env(fresh);
-    else if (command[0] == '\0')
-        return ;
+    else if (!ft_strncmp(command, "echo", 4))
+        ft_echo(command, fresh);
+    else if (ft_is_variable(command) == 1)
+        ft_new_local_var(fresh, command);
     else
-        ft_not_found(command);
+        if (command[0] != '\0')
+            ft_not_found(command);
+    ft_print_color(BOLD_GREEN, fresh->user);
+	ft_print_color(GREEN, " > ");
+	ft_print_color(RESET, "");
 }

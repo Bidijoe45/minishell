@@ -6,13 +6,14 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2020/12/03 13:08:51 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/11 12:23:53 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fresh.h"
+#include "command.h"
 
-void    ft_export(t_fresh *fresh)
+void		ft_export(t_fresh *fresh)
 {
-
+	
 }

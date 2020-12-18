@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2020/12/03 11:38:14 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/11 12:27:19 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@
 
 typedef struct  s_fresh
 {
-	char        **env;
 	char        *user;
 	char		*line;
-	t_list		*lst_variables;
+	t_list		*env;
+	t_list		*local_vars;
 }               t_fresh;
 
 
