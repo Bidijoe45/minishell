@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/12/18 12:17:14 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/20 10:40:04 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,12 @@ void    ft_parse_command(t_fresh *fresh)
     else if (ft_is_variable(command) == 1)
         new_local_var(fresh, command);
     else if (command[0] == '\0')
+    {
+        ft_print_color(BOLD_GREEN, fresh->user);
+	    ft_print_color(GREEN, " > ");
+	    ft_print_color(RESET, "");
         return ;
+    }
     else
         if (command[0] != '\0')
             ft_not_found(command);
