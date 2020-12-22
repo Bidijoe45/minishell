@@ -6,11 +6,12 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 12:13:11 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/12/18 11:32:12 by alvrodri         ###   ########.fr       */
+/*   Updated: 2020/12/22 11:07:25 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fresh.h"
+#include "command.h"
 
 void	ft_echo(char *cmd, t_fresh *fresh)
 {
@@ -21,6 +22,8 @@ void	ft_echo(char *cmd, t_fresh *fresh)
 
 	i = 0;
 	trail = 1;
+	if (cmd[4] != '\n' && cmd[4] != ' ')
+		return ft_not_found(cmd);
 	str = ft_substr(cmd, 4, ft_strlen(cmd) - 5);
 	while (ft_isspace(str[i]))
 		i++;

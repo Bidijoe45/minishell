@@ -43,6 +43,7 @@ void	ft_load_env_vars(t_fresh *fresh, char **envp)
 }
 
 //FIXME: la linea se guarda con un salto de linea, hay que quitarlo!
+// No porque el echo puede tener \n al final de la linea, hay que parsearlo en los comandos
 void	read_line(t_fresh *fresh)
 {
 	char	c[2];
