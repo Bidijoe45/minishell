@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 13:21:03 by apavel            #+#    #+#             */
-/*   Updated: 2020/12/18 11:22:15 by apavel           ###   ########.fr       */
+/*   Updated: 2020/12/21 12:12:22 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,21 @@ void	variable_set(t_list *variables, char *key, char *value)
 	}
 	else
 		variables = list_new_element(variable_new(key, value));
+}
+
+void	variable_mod(t_list *variables, char *key, char *value)
+{
+	t_list *elem;
+	t_variable *var;
+
+	if (!variables)
+		return ;
+	elem = variables;
+	while (elem)
+	{
+		var = elem->content;
+		if (!strncmp(var->key, key, ft_strlen(var->key)))
+			var->value = value;
+		elem = elem->next;
+	}
 }

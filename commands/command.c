@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/12/20 10:40:04 by alvrodri         ###   ########.fr       */
+/*   Updated: 2020/12/21 12:08:36 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,21 @@ int		ft_is_variable(char *command)
 	return (0);
 }
 
+//TODO: si una variable local es cambiada tambien tiene que cambiar en export
 void    new_local_var(t_fresh *fresh, char *cmd)
 {
     char        **split_cmd;
     t_variable  *var;
 
     split_cmd = ft_split(cmd, '=');
-    var = variable_new(split_cmd[0], split_cmd[1]);
     if (fresh->local_vars)
+    {
         variable_set(fresh->local_vars, split_cmd[0], split_cmd[1]);
+        variable_mod(fresh->env, split_cmd[0], split_cmd[1]);
+    }
     else
         fresh->local_vars = list_new_element(variable_new(split_cmd[0], split_cmd[1]));
+    free(split_cmd);
 }
 
 //=========TEST ONLY============

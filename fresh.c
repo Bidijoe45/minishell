@@ -38,9 +38,11 @@ void	ft_load_env_vars(t_fresh *fresh, char **envp)
 		else
 			fresh->env = list_new_element(var);
 		i++;
+		free(split_var);
 	}
 }
 
+//FIXME: la linea se guarda con un salto de linea, hay que quitarlo!
 void	read_line(t_fresh *fresh)
 {
 	char	c[2];
