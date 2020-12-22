@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/12/22 11:08:37 by alvrodri         ###   ########.fr       */
+/*   Updated: 2020/12/22 12:25:20 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void    new_local_var(t_fresh *fresh, char *cmd)
     t_variable  *var;
 
     split_cmd = ft_split(cmd, '=');
+    if (split_cmd[1] == NULL)
+        return ft_not_found(cmd);
     if (fresh->local_vars)
     {
         variable_set(fresh->local_vars, split_cmd[0], split_cmd[1]);
