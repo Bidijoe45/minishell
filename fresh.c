@@ -109,11 +109,22 @@ static void	list_print(t_list *list)
 	ft_printf("--LIST END--\n");
 }
 
+void	ft_play_music(t_fresh *fresh)
+{
+	fresh->music_pid = fork();
+	if (!fresh->music_pid)
+	{
+		system("afplay ./resources/music.mp3");
+		exit(0);
+	}
+}
+
 int		main(int argc, char **argv, char **envp, char **apple)
 {
 	t_fresh *fresh;
 
 	fresh = malloc(sizeof(t_fresh));
+	ft_play_music(fresh);
 	ft_initialize(fresh);
 	ft_load_env_vars(fresh, envp);
 	fresh->user = variable_get(fresh->env, "USER")->value;
