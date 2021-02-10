@@ -14,12 +14,6 @@
 #include "commands/command.h"
 #include "utils/utils.h"
 
-typedef struct	s_command
-{
-	char *command;
-	char *argument;
-}				t_command;
-
 void	ft_print_header(t_fresh *fresh)
 {
 	ft_print_color(BOLD_GREEN, ART);
@@ -84,7 +78,7 @@ int		ft_valid_quotes(char *line)
 	return (dq == 1 || sq == 1) ? 0 : 1;
 }
 
-void ft_split_commands(char *line)
+void ft_split_commands(t_fresh *fresh, char *line)
 {
 	int i = 0;
 	int start = 0;
@@ -94,6 +88,7 @@ void ft_split_commands(char *line)
 	int dq = 0;
 	int sq = 0;
 	int end = 0;
+	t_ctype type = simple;
 
 	argument = NULL;
 	while (!end)
@@ -119,16 +114,40 @@ void ft_split_commands(char *line)
 					sq = !sq;
 				if (line[i] == ';' && (sq == 0 && dq == 0))
 					break ;
+				else if (line[i] == '|' && (sq == 0 && dq == 0))
+				{
+					type = f_pipe;
+					break ;
+				}
+				else if (line[i] == '>' && line[i+1] == '>' && (sq == 0 && dq == 0))
+				{
+					type = d_redirect;
+					break ;
+				}
+				else if (line[i] == '>' && (sq == 0 && dq == 0))
+				{
+					type = s_redirect;
+					break ;
+				}
+				else if (line[i] == '<' && (sq == 0 && dq == 0))
+				{
+					type = r_redirect;
+					break ;
+				}
 				i++;
 			}
 			argument = ft_substr(line, start, i - start);
 		}
 		if (!argument)
 			argument = ft_strdup("");
+		//guardar el comando en la lista de comandos
+		command_set(fresh->commands, command_new(command, argument, type));
 		i++;
 		if (line[i] == '\0' || (line[i] == '\n' && line[i + 1] == '\0'))
 			break ;
 	}
+
+	command_print_list(fresh->commands);
 }
 
 void	ft_parse(t_fresh *fresh)
@@ -140,7 +159,7 @@ void	ft_parse(t_fresh *fresh)
 	valid_q = ft_valid_quotes(fresh->line);
 	if (valid_q == 1)
 	{
-		ft_split_commands(fresh->line);
+		ft_split_commands(fresh, fresh->line);
 	}
 	else
 	{

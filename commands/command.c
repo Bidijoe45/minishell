@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/01/25 12:59:34 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/01/29 12:49:58 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,46 @@ char	**ft_list_to_chararr(t_list *list)
 		i++;
 	}
 	return (arr);
+}
+
+t_command	*command_new(char *cmd, char *arg, t_ctype type)
+{
+	t_command *command;
+
+	command = malloc(sizeof(t_command));
+	command->cmd = cmd;
+	command->arg = arg;
+	command->type = type;
+	return (command);
+}
+
+void	*command_set(t_list *list, t_command *command)
+{
+	if (!list)
+		list = list_new_element(command);
+	else
+		list_add_back(list, list_new_element(command));
+}
+
+//=========TEST ONLY============
+void	command_print_list(t_list *list)
+{
+	if (!list)
+		printf("lista de comandos vacia\n");
+	
+	t_list *elem;
+
+	elem = list;
+	while (elem)
+	{
+		t_command *cmd = (t_command *)elem->content;
+		printf("--command--\n");
+		printf("cmd: %s\n",	cmd->cmd);
+		printf("arg: %s\n",	cmd->arg);
+		printf("type: %u\n", cmd->type);
+		printf("\n");
+		elem = elem->next;
+	}
 }
 
 void    ft_bash(t_fresh *fresh, char *command)
