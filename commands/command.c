@@ -119,12 +119,12 @@ t_command	*command_new(char *cmd, char *arg, t_ctype type)
 	return (command);
 }
 
-void	*command_set(t_list *list, t_command *command)
+void	*command_set(t_list **list, t_command *command)
 {
-	if (!list)
-		list = list_new_element(command);
+	if (!*list)
+		*list = list_new_element(command);
 	else
-		list_add_back(list, list_new_element(command));
+		list_add_back(*list, list_new_element(command));
 }
 
 //=========TEST ONLY============
@@ -164,48 +164,7 @@ void    ft_bash(t_fresh *fresh, char *command)
 		waitpid(pid, &status, 0);
 }
 
-void    ft_parse_command(t_fresh *fresh)
+void    ft_parse_command(char *command, char *argument)
 {
-	char    *command;
-	int     i;
-
-	i = 0;
-	while (ft_isspace(fresh->line[i]))
-		i++;
-	command = ft_strtrim(&fresh->line[i], " ");
-	if (!ft_strncmp(command, "exit", 4))
-		ft_exit();
-	else if (!ft_strncmp(command, "env", 3))
-		ft_env(fresh);
-	else if (!ft_strncmp(command, "lvars", 4))
-		list_print(fresh->local_vars);
-	else if (!ft_strncmp(command, "clear", 5))
-		ft_clear();
-	else if (!ft_strncmp(command, "cd", 2))
-		ft_cd(command, fresh);
-	else if (!ft_strncmp(command, "pwd", 3))
-		ft_pwd();
-	else if (!ft_strncmp(command, "export", 6))
-		ft_export(fresh);
-	else if (!ft_strncmp(command, "unset", 5))
-		ft_unset();
-	else if (!ft_strncmp(command, "env", 3))
-		ft_env(fresh);
-	else if (!ft_strncmp(command, "echo", 4))
-		ft_echo(command, fresh);
-	else if (ft_is_variable(command) == 1)
-		new_local_var(fresh, command);
-	else if (command[0] == '\0')
-	{
-		ft_print_color(BOLD_GREEN, fresh->user);
-		ft_print_color(GREEN, " > ");
-		ft_print_color(RESET, "");
-		return ;
-	}
-	else
-		if (command[0] != '\0')
-			ft_bash(fresh, command);
-	ft_print_color(BOLD_GREEN, fresh->user);
-	ft_print_color(GREEN, " > ");
-	ft_print_color(RESET, "");
+	printf("||%s||\n", command);
 }

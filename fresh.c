@@ -140,17 +140,57 @@ void ft_split_commands(t_fresh *fresh, char *line)
 		}
 		if (!argument)
 			argument = ft_strdup("");
-		//guardar el comando en la lista de comandos
-		command_set(fresh->commands, command_new(command, argument, type));
+		if (*command != '\n')
+			command_set(&fresh->commands, command_new(command, argument, type));
 		i++;
 		if (line[i] == '\0' || (line[i] == '\n' && line[i + 1] == '\0'))
 			break ;
 	}
-
-	command_print_list(fresh->commands);
+	exec_commands(fresh);
 }
 
-void	ft_parse(t_fresh *fresh)
+void	exec_commands(t_fresh *fresh)
+{
+	t_list *list_elem = fresh->commands;
+	
+
+	while (list_elem)
+	{
+		t_command *command = (t_command *)list_elem;
+
+		//comprobar si hay un reverse redirect
+		if  (command->type == simple)
+			ft_parse_command(command->cmd, command->arg);
+		else if (command->type == s_redirect)
+		{
+
+		}
+		else if (command->type == s_redirect)
+		{
+
+		}
+		else if (command->type == d_redirect)
+		{
+
+		}
+		else if (command->type == f_pipe)
+		{
+
+		}
+		else if (command->type == r_redirect)
+		{
+
+		}
+		else
+		{
+			printf("no hay tipo wtf\n");
+		}
+		
+		list_elem = list_elem->next;
+	}
+}
+
+void	ft_mini_parse(t_fresh *fresh)
 {
 	t_list *commands;
 	int commands_n;
@@ -187,7 +227,7 @@ void	read_line(t_fresh *fresh)
 		}
 		if(fresh->line[pos] == '\n')
 		{
-			ft_parse(fresh);
+			ft_mini_parse(fresh);
 			//ft_parse_command(fresh);
 			free(fresh->line);
 			fresh->line = NULL;
@@ -204,6 +244,7 @@ void	ft_initialize(t_fresh *fresh)
 	fresh->line = NULL;
 	fresh->local_vars = NULL;
 	fresh->user = NULL;
+	fresh->commands = NULL;
 }
 
 //=========TEST ONLY============

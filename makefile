@@ -9,7 +9,7 @@ CFLAGS = #-Wall -Wextra -Werror
 SANITIZE = -g -fsanitize=address
 
 ${NAME}:	${OBJS}
-			make -C ../ft_printf/
+			make -C ./ft_printf/
 			gcc ${GNL} ${OBJS} -Lft_printf -lftprintf -o ${NAME} ${SANITIZE}
 all:		${NAME}
 clean:

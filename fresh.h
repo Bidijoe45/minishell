@@ -18,7 +18,7 @@
 
 # include "./get_next_line/get_next_line.h"
 # include "./libft/libft.h"
-# include "./ft_printf/ft_printf_utils.h"
+# include "./ft_printf/ft_printf.h"
 # include "./print/colors.h"
 # include <sys/errno.h>
 # include <stdio.h>
@@ -53,9 +53,9 @@ typedef struct  s_fresh
 
 t_list	*list_new_element(void *content);
 void	list_add_back(t_list *list, t_list *new_elem);
-
+void	exec_commands(t_fresh *fresh);
 t_command	*command_new(char *cmd, char *arg, t_ctype type);
-void	*command_set(t_list *list, t_command *command);
+void	*command_set(t_list **list, t_command *command);
 void command_print_list(t_list *list);
 
 #endif

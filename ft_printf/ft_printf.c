@@ -3,78 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apavel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/05 11:24:39 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/03/04 16:30:56 by alvrodri         ###   ########.fr       */
+/*   Created: 2020/02/12 13:49:25 by apavel            #+#    #+#             */
+/*   Updated: 2020/03/10 14:38:13 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_utils.h"
+#include "ft_printf.h"
 
-void	ft_print_specific(char type, va_list list, t_flags *flags)
+void	ft_start_flags(t_flags *flags, va_list args)
 {
-	if (flags->precision != -1 && flags->zero == 1)
-		flags->zero = -1;
-	if (flags->minus == 1 && flags->zero == 1)
-		flags->zero = -1;
-	if (type == 's')
-		ft_print_str(list, flags);
-	else if (type == 'c')
-		ft_print_char((char)va_arg(list, int), flags);
-	else if (type == '%')
-		ft_print_char('%', flags);
-	else if (type == 'd' || type == 'i')
-		ft_print_int(va_arg(list, int), flags);
-	else if (type == 'p')
-		ft_print_pointer(va_arg(list, unsigned long), flags);
-	else if (type == 'u')
-		ft_print_uint(va_arg(list, unsigned int), flags);
-	else if (type == 'x')
-		ft_print_x_low(va_arg(list, unsigned int), flags);
-	else if (type == 'X')
-		ft_print_x_up(va_arg(list, unsigned int), flags);
+	flags->printed = 0;
+	flags->f_minus = 0;
+	flags->f_zero = 0;
+	flags->f_width = 0;
+	flags->n_width = 0;
+	flags->f_precision = 0;
+	flags->n_precision = 0;
+	flags->type = 0;
+	va_copy(flags->args, args);
 }
 
-void	ft_init_flags(t_flags *flags)
+void	ft_restart_flags(t_flags *flags)
 {
-	flags->width = 0;
-	flags->precision = -1;
-	flags->minus = -1;
-	flags->zero = -1;
+	flags->printed = 0;
+	flags->f_minus = 0;
+	flags->f_zero = 0;
+	flags->f_width = 0;
+	flags->n_width = 0;
+	flags->f_precision = 0;
+	flags->n_precision = 0;
+	flags->type = 0;
 }
 
-void	ft_init(t_flags *flags, int *i)
+int		ft_printf(const char *format, ...)
 {
-	flags->written = 0;
-	*i = 0;
-}
+	va_list		args;
+	int			i;
+	t_flags		flags;
+	int			ret;
 
-int		ft_printf(const char *str, ...)
-{
-	va_list args;
-	t_flags flags;
-	int		i;
-
-	va_start(args, str);
-	ft_init(&flags, &i);
-	ft_init_flags(&flags);
-	while (str[i])
-		if (str[i] == '%' && str[i + 1])
-		{
-			i += ft_enable_flags(str + i + 1, &flags, args);
-			if (i == -1)
-				return (flags.written);
-			ft_init_flags(&flags);
-		}
-		else if (str[i] != '%')
-		{
-			write(1, &str[i], 1);
-			(flags.written)++;
-			i++;
-		}
-		else
-			i++;
-	va_end(args);
-	return (flags.written);
+	va_start(args, format);
+	i = 0;
+	ret = 0;
+	ret = ft_parse(&flags, args, format);
+	return (ret);
 }
