@@ -21,7 +21,7 @@ typedef struct	s_variable
 	char	*value;
 }			t_variable;
 
-void		ft_parse_command(char *command, char *argument);
+void		ft_parse_command(t_fresh *fresh, t_command *command);
 void		ft_exit();
 void		ft_cd(char *cmd, t_fresh *fresh);
 void		ft_pwd();

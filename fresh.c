@@ -152,42 +152,15 @@ void ft_split_commands(t_fresh *fresh, char *line)
 void	exec_commands(t_fresh *fresh)
 {
 	t_list *list_elem = fresh->commands;
-	
 
 	while (list_elem)
 	{
-		t_command *command = (t_command *)list_elem;
+		t_command *command = ((t_command *)list_elem->content);
 
-		//comprobar si hay un reverse redirect
-		if  (command->type == simple)
-			ft_parse_command(command->cmd, command->arg);
-		else if (command->type == s_redirect)
-		{
-
-		}
-		else if (command->type == s_redirect)
-		{
-
-		}
-		else if (command->type == d_redirect)
-		{
-
-		}
-		else if (command->type == f_pipe)
-		{
-
-		}
-		else if (command->type == r_redirect)
-		{
-
-		}
-		else
-		{
-			printf("no hay tipo wtf\n");
-		}
-		
+		ft_parse_command(fresh, command);
 		list_elem = list_elem->next;
 	}
+	fresh->commands = NULL;
 }
 
 void	ft_mini_parse(t_fresh *fresh)
@@ -198,7 +171,7 @@ void	ft_mini_parse(t_fresh *fresh)
 	
 	valid_q = ft_valid_quotes(fresh->line);
 	if (valid_q == 1)
-	{
+	{	
 		ft_split_commands(fresh, fresh->line);
 	}
 	else

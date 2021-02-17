@@ -125,6 +125,7 @@ void	*command_set(t_list **list, t_command *command)
 		*list = list_new_element(command);
 	else
 		list_add_back(*list, list_new_element(command));
+	return NULL;
 }
 
 //=========TEST ONLY============
@@ -148,23 +149,92 @@ void	command_print_list(t_list *list)
 	}
 }
 
-void    ft_bash(t_fresh *fresh, char *command)
+void	free_bidimensional(char **mem)
 {
-	char    *tmp;
-	int     pid;
-	int		status;
+	int i;
 
-	tmp = ft_strtrim(command, "\n");
-	free(command);
-	command = tmp;
-	pid = fork();
-	if (pid == 0)
-		execve("/bin/sh", ft_split(ft_strjoin("/bin/sh -c ", command), ' '), ft_list_to_chararr(fresh->env));
-	else
-		waitpid(pid, &status, 0);
+	i = 0;
+	while (mem[i])
+	{
+		free(mem[i]);
+		i++;
+	}
+	free(mem);
 }
 
-void    ft_parse_command(char *command, char *argument)
+char	**ft_create_argv(t_command *command)
 {
-	printf("||%s||\n", command);
+	char	**argv;
+	char	**arg;
+	int		argc;
+	int		i;
+
+	argc = 0;
+	i = 1;
+	arg = ft_split(command->arg, ' ');
+	while (arg[argc])
+		argc++;
+	argv = malloc(sizeof(char *) * (argc + 1));
+	argv[0] = ft_strtrim(command->cmd, "\n");
+	while (i < argc)
+	{
+		argv[i] = ft_strdup(arg[i]);
+		i++;
+	}
+	free_bidimensional(arg);
+	arg = NULL;
+	return (argv);
+}
+
+int		ft_exec_bin(t_fresh *fresh, t_command *command)
+{
+	int		pid;
+	int		status;
+	char	**argv;
+
+	argv = ft_create_argv(command);
+	pid = fork();
+	if (pid == 0)
+	{
+		execve(ft_strtrim(command->cmd, "\n"), argv, ft_list_to_chararr(fresh->env));
+		exit(0);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		free_bidimensional(argv);
+		argv = NULL;
+	}
+	return (1);
+}
+
+int		ft_is_builtin(t_command *command)
+{
+	if (!ft_strncmp(command->cmd, "echo", 4))
+		return (1);
+	if (!ft_strncmp(command->cmd, "cd", 2))
+		return (1);
+	if (!ft_strncmp(command->cmd, "pwd", 3))
+		return (1);
+	if (!ft_strncmp(command->cmd, "export", 6))
+		return (1);
+	if (!ft_strncmp(command->cmd, "env", 3))
+		return (1);
+	if (!ft_strncmp(command->cmd, "unset", 5))
+		return (1);
+	if (!ft_strncmp(command->cmd, "exit", 4))
+		return (1);
+	return (0);
+}
+
+
+void    ft_parse_command(t_fresh *fresh, t_command *command)
+{
+	if (command->type == simple)
+	{
+		if (ft_is_builtin(command))
+			;
+		else
+			ft_exec_bin(fresh, command);
+	}
 }
