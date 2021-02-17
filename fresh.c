@@ -149,10 +149,19 @@ void ft_split_commands(t_fresh *fresh, char *line)
 	exec_commands(fresh);
 }
 
+void	ft_print_input(t_fresh *fresh)
+{
+	ft_print_color(BOLD_GREEN, fresh->user);
+	ft_print_color(GREEN, " > ");
+	ft_print_color(RESET, "");
+}
+
 void	exec_commands(t_fresh *fresh)
 {
 	t_list *list_elem = fresh->commands;
 
+	if (list_elem == NULL)
+		ft_print_input(fresh);
 	while (list_elem)
 	{
 		t_command *command = ((t_command *)list_elem->content);
@@ -262,7 +271,7 @@ int		main(int argc, char **argv, char **envp, char **apple)
 	t_fresh *fresh;
 
 	fresh = malloc(sizeof(t_fresh));
-	ft_play_music(fresh);
+//	ft_play_music(fresh);
 	ft_initialize(fresh);
 	ft_load_env_vars(fresh, envp);
 	fresh->user = variable_get(fresh->env, "USER")->value;

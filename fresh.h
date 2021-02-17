@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fresh.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/01/29 12:50:05 by apavel           ###   ########.fr       */
+/*   Updated: 2021/02/17 16:29:54 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct  s_fresh
 }               t_fresh;
 
 t_list	*list_new_element(void *content);
+void	ft_print_input(t_fresh *fresh);
 void	list_add_back(t_list *list, t_list *new_elem);
 void	exec_commands(t_fresh *fresh);
 t_command	*command_new(char *cmd, char *arg, t_ctype type);

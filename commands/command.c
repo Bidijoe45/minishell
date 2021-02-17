@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/01/29 12:49:58 by apavel           ###   ########.fr       */
+/*   Updated: 2021/02/17 16:44:40 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,19 +168,23 @@ char	**ft_create_argv(t_command *command)
 	char	**arg;
 	int		argc;
 	int		i;
+	int		j;
 
 	argc = 0;
 	i = 1;
+	j = 0;
 	arg = ft_split(command->arg, ' ');
 	while (arg[argc])
 		argc++;
-	argv = malloc(sizeof(char *) * (argc + 1));
+	argv = malloc(sizeof(char *) * (argc + 2));
 	argv[0] = ft_strtrim(command->cmd, "\n");
-	while (i < argc)
+	while (i <= argc)
 	{
-		argv[i] = ft_strdup(arg[i]);
+		argv[i] = i == argc ? ft_strtrim(arg[j], "\n") : ft_strdup(arg[j]);
 		i++;
+		j++;
 	}
+	argv[i] = NULL;
 	free_bidimensional(arg);
 	arg = NULL;
 	return (argv);
@@ -197,7 +201,7 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 	if (pid == 0)
 	{
 		execve(ft_strtrim(command->cmd, "\n"), argv, ft_list_to_chararr(fresh->env));
-		exit(0);
+		exit(errno);
 	}
 	else
 	{
@@ -205,7 +209,7 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 		free_bidimensional(argv);
 		argv = NULL;
 	}
-	return (1);
+	return (status);
 }
 
 int		ft_is_builtin(t_command *command)
@@ -223,18 +227,24 @@ int		ft_is_builtin(t_command *command)
 	if (!ft_strncmp(command->cmd, "unset", 5))
 		return (1);
 	if (!ft_strncmp(command->cmd, "exit", 4))
-		return (1);
+		exit(0);
 	return (0);
 }
 
 
 void    ft_parse_command(t_fresh *fresh, t_command *command)
 {
+	int	status;
+	
 	if (command->type == simple)
 	{
 		if (ft_is_builtin(command))
 			;
 		else
-			ft_exec_bin(fresh, command);
+		{
+			if ((status = ft_exec_bin(fresh, command)) != 0)
+				ft_printf("\033%s%s\033%s%s%d\n", RED, "Error: ", RESET, "failed with error code ", status);
+		}
 	}
+	ft_print_input(fresh);
 }
