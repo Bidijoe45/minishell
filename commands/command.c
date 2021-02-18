@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/02/17 16:44:40 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/02/18 10:56:13 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,12 +157,13 @@ void	free_bidimensional(char **mem)
 	while (mem[i])
 	{
 		free(mem[i]);
+		mem[i] = NULL;
 		i++;
 	}
 	free(mem);
 }
 
-char	**ft_create_argv(t_command *command)
+char	**ft_create_argv(t_command *command, char *path)
 {
 	char	**argv;
 	char	**arg;
@@ -177,7 +178,7 @@ char	**ft_create_argv(t_command *command)
 	while (arg[argc])
 		argc++;
 	argv = malloc(sizeof(char *) * (argc + 2));
-	argv[0] = ft_strtrim(command->cmd, "\n");
+	argv[0] = path;
 	while (i <= argc)
 	{
 		argv[i] = i == argc ? ft_strtrim(arg[j], "\n") : ft_strdup(arg[j]);
@@ -190,25 +191,77 @@ char	**ft_create_argv(t_command *command)
 	return (argv);
 }
 
+char	*create_path(char *path, char *cmd)
+{
+	char	*tmp;
+
+	tmp = path;
+	path = ft_strjoin(path, "/");
+	free(tmp);
+	tmp = path;
+	path = ft_strjoin(path, cmd);
+	free(tmp);
+	tmp = path;
+	path = ft_strtrim(path, "\n");
+	return (path);
+}
+
+char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
+{
+	struct	stat	f_stat;
+	int				i;
+	int				status;
+	char			*path;
+	char			**paths;
+
+	i = 0;
+	path = ft_strtrim(command->cmd, "\n");
+	if (!lstat(path, &f_stat) && !S_ISDIR(f_stat.st_mode))
+		return (path);
+	paths = ft_split(variable_get(fresh->env, "PATH")->value, ':');
+	while (paths[i])
+	{
+		path = create_path(paths[i], command->cmd);
+		status = lstat(path, &f_stat);
+		if (!status)
+		{
+			free(paths);
+			return (path);
+		}
+		i++;
+	}
+	free(paths);
+	return (NULL);
+}
+
 int		ft_exec_bin(t_fresh *fresh, t_command *command)
 {
 	int		pid;
 	int		status;
 	char	**argv;
+	char	*path;
 
-	argv = ft_create_argv(command);
 	pid = fork();
 	if (pid == 0)
 	{
-		execve(ft_strtrim(command->cmd, "\n"), argv, ft_list_to_chararr(fresh->env));
+		path = ft_check_if_valid(fresh, command);
+		argv = ft_create_argv(command, path);
+		if (path)
+			execve(path, argv, ft_list_to_chararr(fresh->env));
+		else
+		{
+			free_bidimensional(argv);
+			argv = NULL;
+			free(path);
+			path = NULL;
+			exit(127);
+		}
+		free_bidimensional(argv);
+		argv = NULL;
 		exit(errno);
 	}
 	else
-	{
 		waitpid(pid, &status, 0);
-		free_bidimensional(argv);
-		argv = NULL;
-	}
 	return (status);
 }
 
