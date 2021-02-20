@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/02/18 10:16:18 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/02/18 11:07:08 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@
 # include "./print/colors.h"
 # include <sys/errno.h>
 # include <stdio.h>
- #include <sys/stat.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 # include <unistd.h>
 # include <string.h>
+#include <signal.h>
 
 typedef enum	e_ctype
 {

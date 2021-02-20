@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/02/18 10:56:13 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/02/18 11:46:54 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,6 +234,11 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 	return (NULL);
 }
 
+ void sigint_handler()
+{
+	printf("killing process %d\n",getpid());
+}
+
 int		ft_exec_bin(t_fresh *fresh, t_command *command)
 {
 	int		pid;
@@ -261,7 +266,7 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 		exit(errno);
 	}
 	else
-		waitpid(pid, &status, 0);
+		wait(&status);
 	return (status);
 }
 
