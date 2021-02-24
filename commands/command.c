@@ -235,11 +235,6 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 	return (NULL);
 }
 
- void sigint_handler()
-{
-	printf("killing process %d\n",getpid());
-}
-
 int		ft_exec_bin(t_fresh *fresh, t_command *command)
 {
 	int		pid;
@@ -302,10 +297,9 @@ void    ft_parse_command(t_fresh *fresh, t_command *command)
 		else
 		{
 			if ((status = ft_exec_bin(fresh, command)) != 0)
-				ft_print_error(fresh, "Command not fount");
+				ft_print_error(fresh, "Command not found");
 		}
 	}
-	ft_print_input(fresh);
 }
 
 void	exec_commands(t_fresh *fresh)
