@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/02/18 11:46:54 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/02/24 13:06:26 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,7 +300,7 @@ void    ft_parse_command(t_fresh *fresh, t_command *command)
 			;
 		else
 		{
-			if ((status = ft_exec_bin(fresh, command)) != 0)
+			if ((status = ft_exec_bin(fresh, command)) == 32512)
 				ft_printf("\033%s%s\033%s%s%d\n", RED, "Error: ", RESET, "failed with error code ", status);
 		}
 	}
