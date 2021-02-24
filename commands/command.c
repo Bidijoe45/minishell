@@ -12,6 +12,7 @@
 
 #include "../fresh.h"
 #include "command.h"
+#include "../print/print.h"
 
 void    ft_not_found(char *cmd)
 {
@@ -301,8 +302,24 @@ void    ft_parse_command(t_fresh *fresh, t_command *command)
 		else
 		{
 			if ((status = ft_exec_bin(fresh, command)) != 0)
-				ft_printf("\033%s%s\033%s%s%d\n", RED, "Error: ", RESET, "failed with error code ", status);
+				ft_print_error(fresh, "Command not fount");
 		}
 	}
 	ft_print_input(fresh);
+}
+
+void	exec_commands(t_fresh *fresh)
+{
+	t_list *list_elem = fresh->commands;
+
+	if (list_elem == NULL)
+		ft_print_input(fresh);
+	while (list_elem)
+	{
+		t_command *command = ((t_command *)list_elem->content);
+
+		ft_parse_command(fresh, command);
+		list_elem = list_elem->next;
+	}
+	fresh->commands = NULL;
 }
