@@ -98,7 +98,7 @@ char	**ft_list_to_chararr(t_list *list)
 
 	size = ft_listsize(list);
 	i = 0;
-	arr = malloc(sizeof(char *) * size);
+	arr = malloc(sizeof(char *) * (size + 1));
 	tmp = list;
 	while (tmp)
 	{
@@ -106,6 +106,7 @@ char	**ft_list_to_chararr(t_list *list)
 		tmp = tmp->next;
 		i++;
 	}
+	arr[i] = NULL;
 	return (arr);
 }
 
@@ -216,9 +217,7 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 	char			**paths;
 
 	i = 0;
-	path = ft_strtrim(command->cmd, "\n");
-	if (!lstat(path, &f_stat) && !S_ISDIR(f_stat.st_mode))
-		return (path);
+	path = NULL;
 	paths = ft_split(variable_get(fresh->env, "PATH")->value, ':');
 	while (paths[i])
 	{
@@ -231,6 +230,11 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 		}
 		i++;
 	}
+	if (path)
+		free(path);
+	path = ft_strtrim(command->cmd, "\n");
+	if (!lstat(path, &f_stat) && !S_ISDIR(f_stat.st_mode))
+		return (path);
 	//FIXME: memory leak
 	free(paths);
 	return (NULL);
@@ -242,16 +246,18 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 	int		status;
 	char	**argv;
 	char	*path;
+	char	**chararr;
 
 	pid = fork();
 	if (pid == 0)
 	{
 		path = ft_check_if_valid(fresh, command);
 		argv = ft_create_argv(command, path);
+		chararr = ft_list_to_chararr(fresh->env);
 		if (path)
-			execve(path, argv, ft_list_to_chararr(fresh->env));
+			execve(path, argv, chararr);
 		else
-		{
+		{ 
 			free_bidimensional(argv);
 			argv = NULL;
 			free(path);
