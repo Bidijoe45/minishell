@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../fresh.h"
+#include "../print/print.h"
 #include "command.h"
 
 void    ft_cd(char *cmd, t_fresh *fresh)
@@ -36,6 +37,6 @@ void    ft_cd(char *cmd, t_fresh *fresh)
     ret = chdir((argv[1] = ft_strtrim(tmp, "\n")));
 	free(tmp);
     if (ret == -1)
-        ft_printf("\033%sError: \033%s%s\n", RED, RESET, strerror(errno));
+        ft_print_error(fresh, "Not found");
     free(argv);
 }

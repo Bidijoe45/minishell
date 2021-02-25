@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   colors.h                                           :+:      :+:    :+:   */
+/*   print.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COLORS_H
-# define COLORS_H
+#ifndef PRINT_H
+# define PRINT_H
+
+#include "../fresh.h"
 
 #define RED "[0;31m"
 #define BOLD_RED "[1;31m"
@@ -27,5 +29,9 @@
 #define RESET "[0m"
 
 void    ft_print_color(char *colour, char *str);
+void	ft_print_header(t_fresh *fresh);
+void	ft_print_error(t_fresh *fresh, char *error_str);
+void	ft_print_input(t_fresh *fresh);
+void    ft_not_found(char *cmd);
 
 #endif

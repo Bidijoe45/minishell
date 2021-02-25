@@ -12,6 +12,7 @@
 
 #include "../fresh.h"
 #include "command.h"
+#include "../print/print.h"
 
 void    ft_not_found(char *cmd)
 {
@@ -230,13 +231,9 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 		}
 		i++;
 	}
+	//FIXME: memory leak
 	free(paths);
 	return (NULL);
-}
-
- void sigint_handler()
-{
-	printf("killing process %d\n",getpid());
 }
 
 int		ft_exec_bin(t_fresh *fresh, t_command *command)
@@ -277,7 +274,7 @@ int		ft_is_builtin(t_command *command)
 	if (!ft_strncmp(command->cmd, "cd", 2))
 		return (1);
 	if (!ft_strncmp(command->cmd, "pwd", 3))
-		return (1);
+		ft_pwd();
 	if (!ft_strncmp(command->cmd, "export", 6))
 		return (1);
 	if (!ft_strncmp(command->cmd, "env", 3))
@@ -285,10 +282,9 @@ int		ft_is_builtin(t_command *command)
 	if (!ft_strncmp(command->cmd, "unset", 5))
 		return (1);
 	if (!ft_strncmp(command->cmd, "exit", 4))
-		exit(0);
+		ft_exit();
 	return (0);
 }
-
 
 void    ft_parse_command(t_fresh *fresh, t_command *command)
 {
@@ -301,8 +297,24 @@ void    ft_parse_command(t_fresh *fresh, t_command *command)
 		else
 		{
 			if ((status = ft_exec_bin(fresh, command)) == 32512)
-				ft_printf("\033%s%s\033%s%s%d\n", RED, "Error: ", RESET, "failed with error code ", status);
+				ft_print_error(fresh, "Command not found");
+			else
+				ft_print_input(fresh);
 		}
 	}
-	ft_print_input(fresh);
+}
+
+void	exec_commands(t_fresh *fresh)
+{
+	t_list *list_elem = fresh->commands;
+
+	if (list_elem == NULL)
+		ft_print_input(fresh);
+	while (list_elem)
+	{
+		t_command *command = ((t_command *)list_elem->content);
+		ft_parse_command(fresh, command);
+		list_elem = list_elem->next;
+	}
+	fresh->commands = NULL;
 }

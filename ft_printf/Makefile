@@ -29,7 +29,6 @@ all: ${NAME}
 
 clean:
 	rm -f ${OBJS}
-	make clean -C ./libft/
 
 fclean: clean
 	rm -f ${NAME}
