@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/02/24 13:06:26 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/02/26 12:58:03 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,6 +262,7 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 			argv = NULL;
 			free(path);
 			path = NULL;
+			free_bidimensional(chararr);
 			exit(127);
 		}
 		free_bidimensional(argv);
@@ -323,7 +324,12 @@ void	exec_commands(t_fresh *fresh)
 	{
 		t_command *command = ((t_command *)list_elem->content);
 		ft_parse_command(fresh, command);
+		free(command->arg);
+		free(command->cmd);
+		free(command);
+		free(list_elem);
 		list_elem = list_elem->next;
 	}
 	fresh->commands = NULL;
+	free(fresh->commands);
 }
