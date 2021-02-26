@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 13:21:03 by apavel            #+#    #+#             */
-/*   Updated: 2021/01/25 12:55:51 by apavel           ###   ########.fr       */
+/*   Updated: 2021/02/26 10:16:26 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ t_variable *variable_new(char *key, char *value)
 	t_variable *var;
 
 	var = malloc(sizeof(t_variable));
-	var->key = strdup(key);
-	var->value = strdup(value);
+	var->key = key;
+	var->value = value;
 
 	return (var);
 }
