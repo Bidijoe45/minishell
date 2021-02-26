@@ -277,19 +277,21 @@ int		ft_is_builtin(t_command *command)
 {
 	if (!ft_strncmp(command->cmd, "echo", 4))
 		return (1);
-	if (!ft_strncmp(command->cmd, "cd", 2))
+	else if (!ft_strncmp(command->cmd, "cd", 2))
 		return (1);
-	if (!ft_strncmp(command->cmd, "pwd", 3))
+	else if (!ft_strncmp(command->cmd, "pwd", 3))
 		ft_pwd();
-	if (!ft_strncmp(command->cmd, "export", 6))
+	else if (!ft_strncmp(command->cmd, "export", 6))
 		return (1);
-	if (!ft_strncmp(command->cmd, "env", 3))
+	else if (!ft_strncmp(command->cmd, "env", 3))
 		return (1);
-	if (!ft_strncmp(command->cmd, "unset", 5))
+	else if (!ft_strncmp(command->cmd, "unset", 5))
 		return (1);
-	if (!ft_strncmp(command->cmd, "exit", 4))
+	else if (!ft_strncmp(command->cmd, "exit", 4))
 		ft_exit();
-	return (0);
+	else
+		return (0);
+	return (1);
 }
 
 void    ft_parse_command(t_fresh *fresh, t_command *command)
@@ -299,15 +301,16 @@ void    ft_parse_command(t_fresh *fresh, t_command *command)
 	if (command->type == simple)
 	{
 		if (ft_is_builtin(command))
-			;
+		{
+			ft_print_input(fresh);
+		}
 		else
 		{
 			if ((status = ft_exec_bin(fresh, command)) == 32512)
 				ft_print_error(fresh, "Command not found");
-			else
-				ft_print_input(fresh);
 		}
 	}
+
 }
 
 void	exec_commands(t_fresh *fresh)

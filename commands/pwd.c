@@ -19,4 +19,5 @@ void    ft_pwd()
     cwd = getcwd(NULL, 0);
     ft_printf("%s\n", cwd);
     free(cwd);
+
 }
