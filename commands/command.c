@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/02/26 12:58:03 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/01 11:20:22 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,7 +240,7 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 	return (NULL);
 }
 
-int		ft_exec_bin(t_fresh *fresh, t_command *command)
+int		ft_exec_bin(t_fresh *fresh, t_command *command, int fd[2])
 {
 	int		pid;
 	int		status;
@@ -248,12 +248,19 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 	char	*path;
 	char	**chararr;
 
+	if (fd)
+		pipe(fd);
 	pid = fork();
 	if (pid == 0)
 	{
 		path = ft_check_if_valid(fresh, command);
 		argv = ft_create_argv(command, path);
 		chararr = ft_list_to_chararr(fresh->env);
+		if (fd)
+		{
+			close(fd[0]);
+			dup2(fd[1], 1);
+		}
 		if (path)
 			execve(path, argv, chararr);
 		else
@@ -297,6 +304,7 @@ int		ft_is_builtin(t_command *command)
 
 void    ft_parse_command(t_fresh *fresh, t_command *command)
 {
+	int	fd[2];
 	int	status;
 	
 	if (command->type == simple)
@@ -307,11 +315,14 @@ void    ft_parse_command(t_fresh *fresh, t_command *command)
 		}
 		else
 		{
-			if ((status = ft_exec_bin(fresh, command)) == 32512)
+			if ((status = ft_exec_bin(fresh, command, NULL)) == 32512)
 				ft_print_error(fresh, "Command not found");
 		}
 	}
-
+	else if (command->type == f_pipe)
+	{
+		status = ft_exec_bin(fresh, command, fd);
+	}
 }
 
 void	exec_commands(t_fresh *fresh)
@@ -323,6 +334,7 @@ void	exec_commands(t_fresh *fresh)
 	while (list_elem)
 	{
 		t_command *command = ((t_command *)list_elem->content);
+		command->last = list_elem->next == NULL ? 1 : 0;
 		ft_parse_command(fresh, command);
 		free(command->arg);
 		free(command->cmd);

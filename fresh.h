@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/02/18 11:07:08 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/01 11:19:06 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct	s_command
 {
 	char		*cmd;
 	char		*arg;
+	int			last;
 	t_ctype		type;
 }				t_command;
 
