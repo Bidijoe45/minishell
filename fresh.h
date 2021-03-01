@@ -41,7 +41,9 @@ typedef struct	s_command
 {
 	char		*cmd;
 	char		*arg;
-	int			last;
+	int			had_pipe;
+	int			fd[2];
+	int			index;
 	t_ctype		type;
 }				t_command;
 

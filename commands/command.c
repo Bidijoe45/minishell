@@ -240,7 +240,7 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 	return (NULL);
 }
 
-int		ft_exec_bin(t_fresh *fresh, t_command *command, int fd[2])
+int		ft_exec_bin(t_fresh *fresh, t_command *command)
 {
 	int		pid;
 	int		status;
@@ -248,19 +248,12 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command, int fd[2])
 	char	*path;
 	char	**chararr;
 
-	if (fd)
-		pipe(fd);
 	pid = fork();
 	if (pid == 0)
 	{
 		path = ft_check_if_valid(fresh, command);
 		argv = ft_create_argv(command, path);
 		chararr = ft_list_to_chararr(fresh->env);
-		if (fd)
-		{
-			close(fd[0]);
-			dup2(fd[1], 1);
-		}
 		if (path)
 			execve(path, argv, chararr);
 		else
@@ -304,8 +297,8 @@ int		ft_is_builtin(t_command *command)
 
 void    ft_parse_command(t_fresh *fresh, t_command *command)
 {
-	int	fd[2];
 	int	status;
+	int	pid;
 	
 	if (command->type == simple)
 	{
@@ -315,32 +308,73 @@ void    ft_parse_command(t_fresh *fresh, t_command *command)
 		}
 		else
 		{
-			if ((status = ft_exec_bin(fresh, command, NULL)) == 32512)
+			if ((status = ft_exec_bin(fresh, command)) == 32512)
 				ft_print_error(fresh, "Command not found");
 		}
 	}
 	else if (command->type == f_pipe)
 	{
-		status = ft_exec_bin(fresh, command, fd);
+		if (!command->had_pipe)
+		{
+			pipe(command->fd);
+			pid = fork();
+			if (pid == 0)
+			{
+				close(command->fd[0]);
+				dup2(command->fd[1], 1);
+				close(command->fd[1]);
+				ft_exec_bin(fresh, command);
+			}
+			else
+			{
+				close(command->fd[1]);
+				close(command->fd[0]);
+				wait(NULL);
+			}
+		}
+		else if (command->had_pipe)
+		{
+			pipe(command->fd);
+			pid = fork();
+			if (pid == 0)
+			{
+				close(command->fd[1]);
+				dup2(command->fd[0], 0);
+				close(command->fd[0]);
+				ft_exec_bin(fresh, command);
+			}
+			else
+			{
+				close(command->fd[1]);
+				close(command->fd[0]);
+				wait(NULL);
+			}
+		}
 	}
 }
 
 void	exec_commands(t_fresh *fresh)
 {
+	int		i;
 	t_list *list_elem = fresh->commands;
 
+	i = 0;
 	if (list_elem == NULL)
 		ft_print_input(fresh);
 	while (list_elem)
 	{
 		t_command *command = ((t_command *)list_elem->content);
-		command->last = list_elem->next == NULL ? 1 : 0;
+		command->index = i;
+		command->had_pipe = 0;
+		if (command->type == f_pipe && list_elem->next)
+			((t_command *)list_elem->next->content)->had_pipe = 1;
 		ft_parse_command(fresh, command);
 		free(command->arg);
 		free(command->cmd);
 		free(command);
 		free(list_elem);
 		list_elem = list_elem->next;
+		i++;
 	}
 	fresh->commands = NULL;
 	free(fresh->commands);
