@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/03/01 11:19:06 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/04 11:27:34 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct  s_fresh
 	char        *user;
 	char		*line;
 	int			music_pid;
+	int			last_fd;
 	t_list		*env;
 	t_list		*local_vars;
 	t_list		*commands;

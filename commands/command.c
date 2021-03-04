@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/01 16:00:56 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/04 12:03:10 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,7 +296,7 @@ int		ft_is_builtin(t_command *command)
 	return (1);
 }
 
-void    ft_parse_command(t_fresh *fresh, t_command *command)
+void    ft_parse_command(t_fresh *fresh, t_command *command, t_command *next)
 {
 	int	status;
 	int	pid;
@@ -305,7 +305,7 @@ void    ft_parse_command(t_fresh *fresh, t_command *command)
 	{
 		if (ft_is_builtin(command))
 		{
-			ft_print_input(fresh);
+			;
 		}
 		else
 		{
@@ -315,44 +315,24 @@ void    ft_parse_command(t_fresh *fresh, t_command *command)
 	}
 	else if (command->type == f_pipe)
 	{
-		// first
-		if (!command->had_pipe)
+		pipe(command->fd);
+		pid = fork();
+
+		if (pid == 0)
 		{
-			printf("|%s|\n", command->cmd);
-			pipe(command->fd);
-			pid = fork();
-			if (pid == 0)
-			{
-				close(command->fd[0]);
+			if (fresh->last_fd != 0)
+				dup2(fresh->last_fd, 0);
+			if (next != NULL)
 				dup2(command->fd[1], 1);
-				close(command->fd[1]);
-				ft_exec_bin(fresh, command);
-			}
-			else
-			{
-				close(command->fd[1]);
-				close(command->fd[0]);
-				wait(NULL);
-			}
+			close(command->fd[0]);
+			ft_exec_bin(fresh, command);
+			exit(errno);
 		}
-		// ultimo
-		else if (command->had_pipe)
+		else
 		{
-			pipe(command->fd);
-			pid = fork();
-			if (pid == 0)
-			{
-				close(command->fd[1]);
-				dup2(command->fd[0], 0);
-				close(command->fd[0]);
-				ft_exec_bin(fresh, command);
-			}
-			else
-			{
-				close(command->fd[1]);
-				close(command->fd[0]);
-				wait(NULL);
-			}
+			wait(NULL);
+			close(command->fd[1]);
+			fresh->last_fd = command->fd[0];
 		}
 	}
 }
@@ -363,15 +343,12 @@ void	exec_commands(t_fresh *fresh)
 	t_list *list_elem = fresh->commands;
 
 	i = 0;
-	if (list_elem == NULL)
-		ft_print_input(fresh);
+	fresh->last_fd = 0;
 	while (list_elem)
 	{
 		t_command *command = ((t_command *)list_elem->content);
 		command->index = i;
-		if (command->type == f_pipe && list_elem->next)
-			((t_command *)list_elem->next->content)->had_pipe = 1;
-		ft_parse_command(fresh, command);
+		ft_parse_command(fresh, command, (t_command *)list_elem->next);
 		free(command->arg);
 		free(command->cmd);
 		free(command);
@@ -381,4 +358,5 @@ void	exec_commands(t_fresh *fresh)
 	}
 	fresh->commands = NULL;
 	free(fresh->commands);
+	ft_print_input(fresh);
 }
