@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/01 11:20:22 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/01 16:00:56 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ t_command	*command_new(char *cmd, char *arg, t_ctype type)
 	command->cmd = cmd;
 	command->arg = arg;
 	command->type = type;
+	command->had_pipe = 0;
 	return (command);
 }
 
@@ -314,8 +315,10 @@ void    ft_parse_command(t_fresh *fresh, t_command *command)
 	}
 	else if (command->type == f_pipe)
 	{
+		// first
 		if (!command->had_pipe)
 		{
+			printf("|%s|\n", command->cmd);
 			pipe(command->fd);
 			pid = fork();
 			if (pid == 0)
@@ -332,6 +335,7 @@ void    ft_parse_command(t_fresh *fresh, t_command *command)
 				wait(NULL);
 			}
 		}
+		// ultimo
 		else if (command->had_pipe)
 		{
 			pipe(command->fd);
@@ -365,7 +369,6 @@ void	exec_commands(t_fresh *fresh)
 	{
 		t_command *command = ((t_command *)list_elem->content);
 		command->index = i;
-		command->had_pipe = 0;
 		if (command->type == f_pipe && list_elem->next)
 			((t_command *)list_elem->next->content)->had_pipe = 1;
 		ft_parse_command(fresh, command);
