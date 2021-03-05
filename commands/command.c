@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/05 11:59:03 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/05 12:38:35 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,10 @@ t_command	*command_new(char *cmd, char *arg, t_ctype type, char *redirect)
 	command->cmd = cmd;
 	command->arg = arg;
 	command->type = type;
-	command->redirect = redirect;
+	if (command->type != f_pipe && command->type != simple)
+		command->redirect = redirect;
+	else
+		command->redirect = NULL;
 	return (command);
 }
 
