@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/04 12:03:10 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/05 11:59:03 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	**ft_list_to_chararr(t_list *list)
 	return (arr);
 }
 
-t_command	*command_new(char *cmd, char *arg, t_ctype type)
+t_command	*command_new(char *cmd, char *arg, t_ctype type, char *redirect)
 {
 	t_command *command;
 
@@ -118,7 +118,7 @@ t_command	*command_new(char *cmd, char *arg, t_ctype type)
 	command->cmd = cmd;
 	command->arg = arg;
 	command->type = type;
-	command->had_pipe = 0;
+	command->redirect = redirect;
 	return (command);
 }
 
@@ -280,7 +280,7 @@ int		ft_is_builtin(t_command *command)
 	if (!ft_strncmp(command->cmd, "echo", 4))
 		return (1);
 	else if (!ft_strncmp(command->cmd, "cd", 2))
-		return (1);
+		chdir("/");
 	else if (!ft_strncmp(command->cmd, "pwd", 3))
 		ft_pwd();
 	else if (!ft_strncmp(command->cmd, "export", 6))
@@ -335,6 +335,23 @@ void    ft_parse_command(t_fresh *fresh, t_command *command, t_command *next)
 			fresh->last_fd = command->fd[0];
 		}
 	}
+	else if (command->type == s_redirect || command->type == d_redirect) /* >? */
+	{
+		pid = fork();
+
+		if (pid == 0)
+		{
+			command->file = open(command->redirect, O_RDWR | (command->type == s_redirect ? 0 : O_APPEND) | O_CREAT, 700);
+			if (command->file)
+				dup2(command->file, 1);
+			if ((status = ft_exec_bin(fresh, command)) == 32512)
+				ft_print_error(fresh, "Command not found");
+			close(command->file);
+			exit(errno);
+		}
+		else
+			wait(NULL);
+	}
 }
 
 void	exec_commands(t_fresh *fresh)
@@ -351,6 +368,8 @@ void	exec_commands(t_fresh *fresh)
 		ft_parse_command(fresh, command, (t_command *)list_elem->next);
 		free(command->arg);
 		free(command->cmd);
+		if (command->redirect)
+			free(command->redirect);
 		free(command);
 		free(list_elem);
 		list_elem = list_elem->next;

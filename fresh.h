@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/03/04 11:27:34 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/05 11:21:13 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ typedef struct	s_command
 {
 	char		*cmd;
 	char		*arg;
-	int			had_pipe;
+	char		*redirect;
+	int			file;
 	int			fd[2];
 	int			index;
 	t_ctype		type;
@@ -61,7 +62,7 @@ typedef struct  s_fresh
 t_list		*list_new_element(void *content);
 void		list_add_back(t_list *list, t_list *new_elem);
 void		exec_commands(t_fresh *fresh);
-t_command	*command_new(char *cmd, char *arg, t_ctype type);
+t_command	*command_new(char *cmd, char *arg, t_ctype type, char *redirect);
 void		*command_set(t_list **list, t_command *command);
 void		command_print_list(t_list *list);
 

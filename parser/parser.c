@@ -27,16 +27,50 @@ int		ft_valid_quotes(char *line)
 	return (dq == 1 || sq == 1) ? 0 : 1;
 }
 
+/*void	replace_env(t_fresh *fresh)
+{
+	t_list		*list;
+	t_command	*command;
+	int		i;
+	int		dq;
+	int		sq;
+
+	list = fresh->commands;
+	while (list)
+	{
+		i = 0;
+		dq = 0;
+		sq = 0;
+		command = (t_command *)list;
+		while (command->cmd[i])
+		{
+			if (command->cmd[i] == '\"')
+				dq = !dq;
+			if (command->cmd[i] == '\'')
+				sq = !sq;
+			if (command->cmd[i] == '$')
+			{
+				if (!sq)
+					printf("REEMPLAZAR\n");
+			}
+			i++;
+		}
+		list = list->next;	
+	}
+}*/
+
 void ft_split_commands(t_fresh *fresh, char *line)
 {
 	int i = 0;
 	int start = 0;
+	char	*tmp;
 	char *command;
 	char *argument;
 	char arg_f = 0;
 	int dq = 0;
 	int sq = 0;
 	int end = 0;
+	char	*redirect;
 	t_ctype type = simple;
 
 	argument = NULL;
@@ -71,16 +105,33 @@ void ft_split_commands(t_fresh *fresh, char *line)
 				else if (line[i] == '>' && line[i+1] == '>' && (sq == 0 && dq == 0))
 				{
 					type = d_redirect;
+					redirect = ft_strdup(ft_strnstr(line, ">>", ft_strlen(line)) + 2);
+					tmp = redirect;
+					redirect = ft_strtrim(redirect, "\n");
+					free(tmp);
+					tmp = redirect;
+					redirect = ft_strtrim(redirect, " ");
+					free(tmp);
+					end = 1;
 					break ;
 				}
 				else if (line[i] == '>' && (sq == 0 && dq == 0))
 				{
 					type = s_redirect;
+					redirect = ft_strdup(ft_strchr(line, '>') + 1);
+					tmp = redirect;
+					redirect = ft_strtrim(redirect, "\n");
+					free(tmp);
+					tmp = redirect;
+					redirect = ft_strtrim(redirect, " ");
+					free(tmp);
+					end = 1;
 					break ;
 				}
 				else if (line[i] == '<' && (sq == 0 && dq == 0))
 				{
 					type = r_redirect;
+					end = 1;
 					break ;
 				}
 				i++;
@@ -90,11 +141,14 @@ void ft_split_commands(t_fresh *fresh, char *line)
 		if (!argument)
 			argument = ft_strdup("");
 		if (*command != '\n')
-			command_set(&fresh->commands, command_new(command, argument, type));
+			command_set(&fresh->commands, command_new(command, argument, type, redirect));
 		i++;
 		if (line[i] == '\0' || (line[i] == '\n' && line[i + 1] == '\0'))
 			break ;
 	}
+	/*
+	* replace_env(fresh);
+	*/
 	exec_commands(fresh);
 }
 
