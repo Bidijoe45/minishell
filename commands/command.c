@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/05 12:40:36 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/09 12:20:01 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,6 +347,23 @@ void    ft_parse_command(t_fresh *fresh, t_command *command, t_command *next)
 			command->file = open(command->redirect, O_RDWR | (command->type == s_redirect ? 0 : O_APPEND) | O_CREAT, 0700);
 			if (command->file)
 				dup2(command->file, 1);
+			if ((status = ft_exec_bin(fresh, command)) == 32512)
+				ft_print_error(fresh, "Command not found");
+			close(command->file);
+			exit(errno);
+		}
+		else
+			wait(NULL);
+	}
+	else if (command->type == r_redirect)
+	{
+		pid = fork();
+
+		if (pid == 0)
+		{
+			command->file = open(command->redirect, O_RDWR | (command->type == s_redirect ? 0 : O_APPEND) | O_CREAT, 0700);
+			if (command->file)
+				dup2(command->file, 0);
 			if ((status = ft_exec_bin(fresh, command)) == 32512)
 				ft_print_error(fresh, "Command not found");
 			close(command->file);

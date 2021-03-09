@@ -131,6 +131,13 @@ void ft_split_commands(t_fresh *fresh, char *line)
 				else if (line[i] == '<' && (sq == 0 && dq == 0))
 				{
 					type = r_redirect;
+					redirect = ft_strdup(ft_strchr(line, '<') + 1);
+					tmp = redirect;
+					redirect = ft_strtrim(redirect, "\n");
+					free(tmp);
+					tmp = redirect;
+					redirect = ft_strtrim(redirect, " ");
+					free(tmp);
 					end = 1;
 					break ;
 				}
