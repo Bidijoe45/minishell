@@ -1,0 +1,24 @@
+total 192
+-rwxr-xr-x   1 apavel  2019      7 Mar  8 10:44 aaaa
+-rw-r--r--   1 apavel  2019   5220 Feb 26 12:26 cMemDbg.o
+drwxr-xr-x  23 apavel  2019    782 Mar  8 10:57 commands
+-rw-r--r--   1 apavel  2019   2377 Feb 25 12:17 fresh.c
+-rw-r--r--   1 apavel  2019   2690 Mar  8 10:44 fresh.h
+-rw-r--r--   1 apavel  2019   1876 Mar  8 10:57 fresh.o
+drwxr-xr-x  33 apavel  2019   1122 Mar  8 10:57 ft_printf
+drwxr-xr-x   5 apavel  2019    170 Feb 16 10:34 get_next_line
+-rwxr-xr-x   1 apavel  2019    179 Mar  8 10:44 jajaja
+drwxr-xr-x  95 apavel  2019   3230 Mar  8 10:57 libft
+-rw-r--r--   1 apavel  2019    736 Mar  8 10:44 makefile
+-rwxr-xr-x   1 apavel  2019  38492 Mar  8 10:57 minishell
+drwxr-xr-x   3 apavel  2019    102 Mar  8 10:44 minishell.dSYM
+-rw-r--r--   1 apavel  2019    169 Feb 25 11:31 music.c
+-rw-r--r--   1 apavel  2019     98 Feb 25 11:31 music.h
+-rw-r--r--   1 apavel  2019    884 Mar  8 10:57 music.o
+drwxr-xr-x   5 apavel  2019    170 Mar  8 10:57 parser
+-rw-r--r--   1 apavel  2019   1942 Feb 20 15:12 pipes.c
+drwxr-xr-x   5 apavel  2019    170 Mar  8 10:57 print
+drwxr-xr-x   3 apavel  2019    102 Feb 16 10:34 resources
+-rw-r--r--   1 apavel  2019     79 Feb 25 11:31 test.h
+-rw-r--r--   1 apavel  2019    514 Feb 25 11:31 test_functions.c
+-rwx------   1 apavel  2019      0 Mar  8 11:04 testoutput

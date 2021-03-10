@@ -27,11 +27,11 @@ ${NAME}: ${OBJS} ${BONUS_OBJS} ${NEW_OBJS}
 	ranlib ${NAME}
 all: ${NAME}
 clean:
-	${RM} ${OBJS} ${BONUS_OBJS}
+	${RM} ${OBJS} ${BONUS_OBJS} NEW_OBJS
 fclean: clean
 	${RM} ${NAME}
 bonus: ${OBJS} ${BONUS_OBJS}
-	ar rc ${NAME} ${OBJS} ${BONUS_OBJS}
+	ar rc ${NAME} ${OBJS} ${NEW_OBJS}  ${BONUS_OBJS}
 	ranlib ${NAME}
 re: fclean bonus
 

@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "libft.h"
 
 int     count_keys(char *str, char *key)
 {
@@ -13,7 +11,7 @@ int     count_keys(char *str, char *key)
     i = 0;
     while(end == 0)
     {
-        str = strstr(str, key);
+        str = ft_strnstr(str, key, ft_strlen(str));
         if (str)
         {
             key_count++;
@@ -38,7 +36,7 @@ char     **get_key_pos(char *str, char *key)
     i = 0;
     while(i < key_count)
     {
-        str = strstr(str, key);
+        str = ft_strnstr(str, key, ft_strlen(str));
         key_pos[i] = str;
         str++;
         i++;
@@ -46,57 +44,48 @@ char     **get_key_pos(char *str, char *key)
     return (key_pos);
 }
 
-void    replace_keys()
+void    replace_keys(t_replace *replace, char *str, char *key, char *word)
 {
-    int word_len;
-    int i;
-    int j;
-    int k;
-    int l;
+    int key_len;
 
-    
+    key_len = ft_strlen(key);
+    while (replace->i < replace->ret_str_len)
+    {
+        if (&str[replace->j] == replace->key_pos[replace->l])
+        {
+           replace->k = 0;
+           while (replace->k < replace->word_len)
+           {
+               replace->ret_str[replace->i] = word[replace->k];
+               replace->i++;
+               replace->k++;
+           }
+           replace->j += key_len;
+           replace->l++;
+        }
+        else
+           replace->ret_str[replace->i++] = str[replace->j++];
+    }
+    replace->ret_str[replace->ret_str_len] = '\0';
 }
 
 char    *ft_replace(char *str, char *key, char *word)
 {
-    int key_count;
-    char *ret_str;
-    int ret_str_len;
-    char **key_pos;
+    t_replace   *replace;
 
-    int word_len;
-    int i;
-    int j;
-    int k;
-    int l;
-
-    key_count = count_keys(str, key);
-    ret_str_len = (strlen(str) - (strlen(key) * key_count)) + (strlen(word) * key_count) + 1;
-    ret_str = malloc(ret_str_len);
-    if (key_count > 0)
-        key_pos = get_key_pos(str, key);
-    i = 0;
-    j = 0;
-    l = 0;
-    word_len = strlen(word);
-    while (i < ret_str_len)
-    {
-        if (&str[j] == key_pos[l])
-        {
-           k = 0;
-           while (k < word_len)
-           {
-               ret_str[i] = word[k];
-               i++;
-               k++;
-           }
-           j += strlen(key);
-           l++;
-        }
-        else
-           ret_str[i++] = str[j++];
-    }
-    ret_str[ret_str_len] = '\0';
-    free(key_pos);
-    return (ret_str);
+    replace = malloc(sizeof(t_replace));
+    replace->i = 0;
+    replace->j = 0;
+    replace->k = 0;
+    replace->l = 0;
+    replace->key_count = count_keys(str, key);
+    replace->ret_str_len = (ft_strlen(str) - (ft_strlen(key) * replace->key_count)) + (ft_strlen(word) * replace->key_count) + 1;
+    replace->ret_str = malloc(replace->ret_str_len);
+    if (replace->key_count > 0)
+        replace->key_pos = get_key_pos(str, key);
+    replace->word_len = ft_strlen(word);
+    replace_keys(replace, str, key, word);
+    free(replace->key_pos);
+    free(replace);
+    return (replace->ret_str);
 }

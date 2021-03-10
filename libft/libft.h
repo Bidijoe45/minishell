@@ -22,6 +22,19 @@ typedef struct	s_list
 	struct s_list	*next;
 }				t_list;
 
+typedef struct	s_replace
+{
+	int 		key_count;
+	char		*ret_str;
+	int 		ret_str_len;
+	char		**key_pos;
+	int 		word_len;
+	int 		i;
+	int 		j;
+	int 		k;
+	int 		l;
+}				t_replace;
+
 size_t			ft_strlen(const char *str);
 size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);

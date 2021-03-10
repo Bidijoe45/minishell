@@ -27,37 +27,7 @@ int		ft_valid_quotes(char *line)
 	return (dq == 1 || sq == 1) ? 0 : 1;
 }
 
-/*void	replace_env(t_fresh *fresh)
-{
-	t_list		*list;
-	t_command	*command;
-	int		i;
-	int		dq;
-	int		sq;
 
-	list = fresh->commands;
-	while (list)
-	{
-		i = 0;
-		dq = 0;
-		sq = 0;
-		command = (t_command *)list;
-		while (command->cmd[i])
-		{
-			if (command->cmd[i] == '\"')
-				dq = !dq;
-			if (command->cmd[i] == '\'')
-				sq = !sq;
-			if (command->cmd[i] == '$')
-			{
-				if (!sq)
-					printf("REEMPLAZAR\n");
-			}
-			i++;
-		}
-		list = list->next;	
-	}
-}*/
 
 void ft_split_commands(t_fresh *fresh, char *line)
 {
@@ -80,22 +50,28 @@ void ft_split_commands(t_fresh *fresh, char *line)
 			i++;
 		start = i;
 		while (line[i] != '\0' && line[i] != ' ' && line[i] != ';')
+		{
+			if (line[i] == ';' && line[i - 1] == '\\')
+				i++;
 			i++;
+		}
 		command = ft_substr(line, start, i - start);
 		if (command[0] == '\0')
 			break ;
-		if (line[i] != ';')
+		if (line[i] != ';' || (line[i] == ';' && line[i - 1] == '\\'))
 		{
 			while (line[i] == ' ')
 				i++;
 			start = i;
 			while (line[i] != '\0')
 			{
+				if (line[i] == '\\')
+					i+=2;
 				if (line[i] == '"' && sq == 0)
 					dq = !dq;
 				if (line[i] == '\'' && dq == 0)
 					sq = !sq;
-				if (line[i] == ';' && (sq == 0 && dq == 0))
+				if (((line[i] == ';' )) && (sq == 0 && dq == 0) )
 					break ;
 				else if (line[i] == '|' && (sq == 0 && dq == 0))
 				{
