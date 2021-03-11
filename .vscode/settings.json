@@ -1,13 +1,5 @@
 {
-	"files.associations": {
-		"*.s": "nasm",
-		"aatanic.h": "c",
-		"fresh.h": "c",
-		"utils.h": "c",
-		"unistd.h": "c",
-		"get_next_line.h": "c",
-		"command.h": "c",
-		"stdlib.h": "c",
-		"string.h": "c"
-	}
+    "files.associations": {
+        "fresh.h": "c"
+    }
 }

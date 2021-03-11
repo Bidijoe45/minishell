@@ -14,7 +14,7 @@
 #include "../print/print.h"
 #include "command.h"
 
-void    ft_cd(char *cmd, t_fresh *fresh)
+int    ft_cd(char *cmd, t_fresh *fresh)
 {
     char    **argv;
     char    *tmp;
@@ -23,9 +23,9 @@ void    ft_cd(char *cmd, t_fresh *fresh)
     argv = ft_split(cmd, ' ');
     if (argv[1] == NULL)
     {
-        chdir(variable_get(fresh->env, "HOME")->value);
+        ret = chdir(variable_get(fresh->env, "HOME")->value);
         free(argv);
-        return ;
+        return (ret);
     }
 	if (argv[1][0] == '~')
 	{
@@ -39,4 +39,5 @@ void    ft_cd(char *cmd, t_fresh *fresh)
     if (ret == -1)
         ft_print_error(fresh, "Not found");
     free(argv);
+    return (ret);
 }

@@ -1,5 +1,6 @@
 #include "../fresh.h"
 #include "../print/print.h"
+#include "../commands/command.h"
 
 int		ft_valid_quotes(char *line)
 {
@@ -27,7 +28,48 @@ int		ft_valid_quotes(char *line)
 	return (dq == 1 || sq == 1) ? 0 : 1;
 }
 
+char	*replace_variables(t_fresh *fresh, char **line)
+{
+	char *tmp_line = *line;
+	int i = 0;
+	char *pos;
+	int dq;
+	int sq;
+	int end;
+	char *tmp_str;
+	char	*tmp;
 
+	dq = 0;
+	sq = 0;
+	end = 0;
+
+	while (tmp_line[i] != '\0')
+	{
+		if (tmp_line[i] == '\\')
+			i += 2;
+		if (tmp_line[i] == '"' && sq == 0)
+			dq = !dq;
+		if (tmp_line[i] == '\'' && dq == 0)
+			sq = !sq;
+		if (tmp_line[i] == '$')
+		{
+			end = i;
+			while (tmp_line[end] && tmp_line[end] != ' ' && tmp_line[end] != '\n')
+				end++;
+			tmp_str = ft_substr(tmp_line, i, end - i);
+			/*if (!variable_get(fresh->env, tmp_str))
+				return (*line);*/
+			printf("|%s|\n", tmp_str);
+			tmp = *line;
+			*line = ft_replace(*line, tmp_str, "caca");
+			printf("|%s|\n", *line);
+			free(tmp);
+			free(tmp_str);
+		}
+		i++;
+	}
+	return (*line);
+}
 
 void ft_split_commands(t_fresh *fresh, char *line)
 {
@@ -55,6 +97,14 @@ void ft_split_commands(t_fresh *fresh, char *line)
 				i++;
 			i++;
 		}
+	
+		if(ft_strchr(line, '$'))
+		{
+			//printf("%s\n", line);
+			replace_variables(fresh, &line);
+			//printf("%s\n", line);
+		}
+		
 		command = ft_substr(line, start, i - start);
 		if (command[0] == '\0')
 			break ;
@@ -71,6 +121,7 @@ void ft_split_commands(t_fresh *fresh, char *line)
 					dq = !dq;
 				if (line[i] == '\'' && dq == 0)
 					sq = !sq;
+				
 				if (((line[i] == ';' )) && (sq == 0 && dq == 0) )
 					break ;
 				else if (line[i] == '|' && (sq == 0 && dq == 0))

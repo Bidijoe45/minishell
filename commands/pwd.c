@@ -12,12 +12,12 @@
 
 #include "../fresh.h"
 
-void    ft_pwd()
+int    ft_pwd()
 {
     char *cwd;
 
     cwd = getcwd(NULL, 0);
-    ft_printf("%s\n", cwd);
+    printf("%s\n", cwd);
     free(cwd);
-
+    return (0);
 }

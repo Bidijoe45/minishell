@@ -54,6 +54,7 @@ typedef struct  s_fresh
 	char		*line;
 	int			music_pid;
 	int			last_fd;
+	int			cmd_return;
 	t_list		*env;
 	t_list		*local_vars;
 	t_list		*commands;

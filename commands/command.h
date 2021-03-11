@@ -21,15 +21,14 @@ typedef struct	s_variable
 }			t_variable;
 
 void		ft_parse_command(t_fresh *fresh, t_command *command, t_command *next);
-void		ft_exit();
-void		ft_cd(char *cmd, t_fresh *fresh);
-void		ft_pwd();
+void		ft_exit(char *exit_code);
+int			ft_cd(char *cmd, t_fresh *fresh);
+int			ft_pwd();
 void		ft_export(t_fresh *fresh);
 void		ft_unset();
 void		ft_env(t_fresh *fresh);
 void		ft_clear();
 int			ft_is_variable(char *command);
-void		ft_cd(char *cmd, t_fresh *fresh);
 void		ft_export(t_fresh *fresh);
 void		ft_unset();
 void		ft_env(t_fresh *fresh);

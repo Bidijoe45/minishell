@@ -293,7 +293,7 @@ int		ft_is_builtin(t_command *command)
 	else if (!ft_strncmp(command->cmd, "unset", 5))
 		return (1);
 	else if (!ft_strncmp(command->cmd, "exit", 4))
-		ft_exit();
+		ft_exit(command->arg);
 	else
 		return (0);
 	return (1);
