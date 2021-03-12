@@ -79,8 +79,8 @@ static void	list_print(t_list *list)
 
 int		main(int argc, char **argv, char **envp, char **apple)
 {
-	t_fresh *fresh;
 
+	t_fresh *fresh;
 	signal(SIGINT, ft_signal);
 	fresh = malloc(sizeof(t_fresh));
 //	ft_play_music(fresh);
@@ -90,4 +90,5 @@ int		main(int argc, char **argv, char **envp, char **apple)
 	ft_print_header(fresh);
 	read_line(fresh);
 	free(fresh);
+
 }

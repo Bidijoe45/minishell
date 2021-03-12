@@ -28,9 +28,8 @@ int		ft_valid_quotes(char *line)
 	return (dq == 1 || sq == 1) ? 0 : 1;
 }
 
-char	*replace_variables(t_fresh *fresh, char **line)
+void replace_variables(t_fresh *fresh)
 {
-	char *tmp_line = *line;
 	int i = 0;
 	char *pos;
 	int dq;
@@ -38,40 +37,39 @@ char	*replace_variables(t_fresh *fresh, char **line)
 	int end;
 	char *tmp_str;
 	char	*tmp;
+	t_variable *var;
 
 	dq = 0;
 	sq = 0;
 	end = 0;
 
-	while (tmp_line[i] != '\0')
+	while (fresh->line[i] != '\0')
 	{
-		if (tmp_line[i] == '\\')
+		if (fresh->line[i] == '\\')
 			i += 2;
-		if (tmp_line[i] == '"' && sq == 0)
+		if (fresh->line[i] == '"' && sq == 0)
 			dq = !dq;
-		if (tmp_line[i] == '\'' && dq == 0)
+		if (fresh->line[i] == '\'' && dq == 0)
 			sq = !sq;
-		if (tmp_line[i] == '$')
+		if (fresh->line[i] == '$')
 		{
 			end = i;
-			while (tmp_line[end] && tmp_line[end] != ' ' && tmp_line[end] != '\n')
+			while (fresh->line[end] && fresh->line[end] != ' ' && fresh->line[end] != '\n')
 				end++;
-			tmp_str = ft_substr(tmp_line, i, end - i);
-			/*if (!variable_get(fresh->env, tmp_str))
-				return (*line);*/
-			printf("|%s|\n", tmp_str);
-			tmp = *line;
-			*line = ft_replace(*line, tmp_str, "caca");
-			printf("|%s|\n", *line);
+			tmp_str = ft_substr(fresh->line, i, end - i);
+			var = variable_get(fresh->env, tmp_str + 1);
+			if (!var)
+				return ;
+			tmp = fresh->line;
+			fresh->line = ft_replace(fresh->line, tmp_str, var->value);
 			free(tmp);
 			free(tmp_str);
 		}
 		i++;
 	}
-	return (*line);
 }
 
-void ft_split_commands(t_fresh *fresh, char *line)
+void ft_split_commands(t_fresh *fresh)
 {
 	int i = 0;
 	int start = 0;
@@ -88,51 +86,49 @@ void ft_split_commands(t_fresh *fresh, char *line)
 	argument = NULL;
 	while (!end)
 	{
-		while (line[i] == ' ')
+		while (fresh->line[i] == ' ')
 			i++;
 		start = i;
-		while (line[i] != '\0' && line[i] != ' ' && line[i] != ';')
+		while (fresh->line[i] != '\0' && fresh->line[i] != ' ' && fresh->line[i] != ';')
 		{
-			if (line[i] == ';' && line[i - 1] == '\\')
+			if (fresh->line[i] == ';' && fresh->line[i - 1] == '\\')
 				i++;
 			i++;
 		}
 	
-		if(ft_strchr(line, '$'))
+		if(ft_strchr(fresh->line, '$'))
 		{
-			//printf("%s\n", line);
-			replace_variables(fresh, &line);
-			//printf("%s\n", line);
+			replace_variables(fresh);
 		}
 		
-		command = ft_substr(line, start, i - start);
+		command = ft_substr(fresh->line, start, i - start);
 		if (command[0] == '\0')
 			break ;
-		if (line[i] != ';' || (line[i] == ';' && line[i - 1] == '\\'))
+		if (fresh->line[i] != ';' || (fresh->line[i] == ';' && fresh->line[i - 1] == '\\'))
 		{
-			while (line[i] == ' ')
+			while (fresh->line[i] == ' ')
 				i++;
 			start = i;
-			while (line[i] != '\0')
+			while (fresh->line[i] != '\0')
 			{
-				if (line[i] == '\\')
+				if (fresh->line[i] == '\\')
 					i+=2;
-				if (line[i] == '"' && sq == 0)
+				if (fresh->line[i] == '"' && sq == 0)
 					dq = !dq;
-				if (line[i] == '\'' && dq == 0)
+				if (fresh->line[i] == '\'' && dq == 0)
 					sq = !sq;
 				
-				if (((line[i] == ';' )) && (sq == 0 && dq == 0) )
+				if (((fresh->line[i] == ';' )) && (sq == 0 && dq == 0) )
 					break ;
-				else if (line[i] == '|' && (sq == 0 && dq == 0))
+				else if (fresh->line[i] == '|' && (sq == 0 && dq == 0))
 				{
 					type = f_pipe;
 					break ;
 				}
-				else if (line[i] == '>' && line[i+1] == '>' && (sq == 0 && dq == 0))
+				else if (fresh->line[i] == '>' && fresh->line[i+1] == '>' && (sq == 0 && dq == 0))
 				{
 					type = d_redirect;
-					redirect = ft_strdup(ft_strnstr(line, ">>", ft_strlen(line)) + 2);
+					redirect = ft_strdup(ft_strnstr(fresh->line, ">>", ft_strlen(fresh->line)) + 2);
 					tmp = redirect;
 					redirect = ft_strtrim(redirect, "\n");
 					free(tmp);
@@ -142,10 +138,10 @@ void ft_split_commands(t_fresh *fresh, char *line)
 					end = 1;
 					break ;
 				}
-				else if (line[i] == '>' && (sq == 0 && dq == 0))
+				else if (fresh->line[i] == '>' && (sq == 0 && dq == 0))
 				{
 					type = s_redirect;
-					redirect = ft_strdup(ft_strchr(line, '>') + 1);
+					redirect = ft_strdup(ft_strchr(fresh->line, '>') + 1);
 					tmp = redirect;
 					redirect = ft_strtrim(redirect, "\n");
 					free(tmp);
@@ -155,10 +151,10 @@ void ft_split_commands(t_fresh *fresh, char *line)
 					end = 1;
 					break ;
 				}
-				else if (line[i] == '<' && (sq == 0 && dq == 0))
+				else if (fresh->line[i] == '<' && (sq == 0 && dq == 0))
 				{
 					type = r_redirect;
-					redirect = ft_strdup(ft_strchr(line, '<') + 1);
+					redirect = ft_strdup(ft_strchr(fresh->line, '<') + 1);
 					tmp = redirect;
 					redirect = ft_strtrim(redirect, "\n");
 					free(tmp);
@@ -170,19 +166,17 @@ void ft_split_commands(t_fresh *fresh, char *line)
 				}
 				i++;
 			}
-			argument = ft_substr(line, start, i - start);
+			argument = ft_substr(fresh->line, start, i - start);
 		}
 		if (!argument)
 			argument = ft_strdup("");
 		if (*command != '\n')
 			command_set(&fresh->commands, command_new(command, argument, type, redirect));
 		i++;
-		if (line[i] == '\0' || (line[i] == '\n' && line[i + 1] == '\0'))
+		if (fresh->line[i] == '\0' || (fresh->line[i] == '\n' && fresh->line[i + 1] == '\0'))
 			break ;
 	}
-	/*
-	* replace_env(fresh);
-	*/
+
 	exec_commands(fresh);
 }
 
@@ -194,7 +188,7 @@ void	ft_valid_multiline(t_fresh *fresh)
 	valid_q = ft_valid_quotes(fresh->line);
 	if (valid_q == 1)
 	{	
-		ft_split_commands(fresh, fresh->line);
+		ft_split_commands(fresh);
 	}
 	else
 	{

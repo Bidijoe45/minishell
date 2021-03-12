@@ -12,7 +12,7 @@ SANITIZE = -g -fsanitize=address
 
 ${NAME}:	${OBJS}
 			make -C ./ft_printf/
-			gcc ${GNL} ${SANITIZE} ${OBJS} -Lft_printf -lftprintf -o ${NAME}
+			gcc  ${GNL} ${OBJS} -Lft_printf -lftprintf -o ${NAME}
 all:		${NAME}
 clean:
 			rm -f ${OBJS}
