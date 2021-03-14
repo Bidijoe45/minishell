@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "fresh.h": "c"
+        "fresh.h": "c",
+        "command.h": "c"
     }
 }

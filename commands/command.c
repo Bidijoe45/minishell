@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/11 15:01:49 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:06:11 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,7 +278,7 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 	return (status);
 }
 
-int		ft_is_builtin(t_command *command)
+int		ft_is_builtin(t_fresh *fresh, t_command *command)
 {
 	if (!ft_strncmp(command->cmd, "echo", 4))
 		return (1);
@@ -289,7 +289,7 @@ int		ft_is_builtin(t_command *command)
 	else if (!ft_strncmp(command->cmd, "export", 6))
 		return (1);
 	else if (!ft_strncmp(command->cmd, "env", 3))
-		return (1);
+		return (ft_env(fresh, command));
 	else if (!ft_strncmp(command->cmd, "unset", 5))
 		return (1);
 	else if (!ft_strncmp(command->cmd, "exit", 4))
@@ -306,7 +306,7 @@ void    ft_parse_command(t_fresh *fresh, t_command *command, t_command *next)
 	
 	if (command->type == simple)
 	{
-		if (ft_is_builtin(command))
+		if (ft_is_builtin(fresh, command))
 		{
 			;
 		}
