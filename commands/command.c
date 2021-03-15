@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/15 10:58:44 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/15 11:13:53 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,7 +292,7 @@ int		ft_is_builtin(t_fresh *fresh, t_command *command)
 	else if (!ft_strncmp(command->cmd, "env", 3))
 		return (ft_env(fresh, command));
 	else if (!ft_strncmp(command->cmd, "unset", 5))
-		return (1);
+		return (ft_unset(fresh, command));
 	else if (!ft_strncmp(command->cmd, "exit", 4))
 		ft_exit(command->arg);
 	else

@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:46 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/14 13:01:19 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/15 11:14:26 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int			ft_pwd();
 void		ft_export(t_fresh *fresh, char *cmd);
 void		ft_unset();
 int			ft_env(t_fresh *fresh, t_command *command);
-void		ft_clear();
 int			ft_is_variable(char *command);
 void		ft_echo(char *cmd, t_fresh *fresh);
 void   		ft_not_found(char *cmd);
