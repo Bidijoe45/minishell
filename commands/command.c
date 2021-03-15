@@ -288,7 +288,7 @@ int		ft_is_builtin(t_fresh *fresh, t_command *command)
 	else if (!ft_strncmp(command->cmd, "pwd", 3))
 		ft_pwd();
 	else if (!ft_strncmp(command->cmd, "export", 6))
-		return (1);
+		ft_export(fresh, command->arg);
 	else if (!ft_strncmp(command->cmd, "env", 3))
 		return (ft_env(fresh, command));
 	else if (!ft_strncmp(command->cmd, "unset", 5))
