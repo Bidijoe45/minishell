@@ -40,11 +40,14 @@ void	ft_load_env_vars(t_fresh *fresh, char **envp)
 	while (envp[i])
 	{
 		split_var = ft_split(envp[i], '=');
-		var = variable_new(split_var[0], split_var[1]);
-		if (fresh->env)
-			list_add_back(fresh->env, list_new_element(var));
-		else
-			fresh->env = list_new_element(var);
+		if (ft_strncmp(split_var[0], "OLDPWD", 6))
+		{
+			var = variable_new(split_var[0], split_var[1]);
+			if (fresh->env)
+				list_add_back(fresh->env, list_new_element(var));
+			else
+				fresh->env = list_new_element(var);
+		}
 		i++;
 		free(split_var);
 	}
