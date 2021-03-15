@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/14 13:01:42 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/15 10:58:44 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ char	**ft_list_to_chararr(t_list *list)
 	tmp = list;
 	while (tmp)
 	{
-		arr[i] = ft_strjoin(ft_strjoin(((t_variable *)tmp->content)->key, "="), ((t_variable *)tmp->content)->value);
+		if (((t_variable *)tmp->content)->value != NULL)
+			arr[i] = ft_strjoin(ft_strjoin(((t_variable *)tmp->content)->key, "="), ((t_variable *)tmp->content)->value);
 		tmp = tmp->next;
 		i++;
 	}
