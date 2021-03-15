@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 13:21:03 by apavel            #+#    #+#             */
-/*   Updated: 2021/02/26 10:16:26 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/15 09:16:03 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,10 @@ void	variable_mod(t_list *variables, char *key, char *value)
 	{
 		var = elem->content;
 		if (!strncmp(var->key, key, ft_strlen(var->key)))
+		{
+			free(var->value);
 			var->value = value;
+		}
 		elem = elem->next;
 	}
 }

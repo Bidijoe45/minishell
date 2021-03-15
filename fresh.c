@@ -77,6 +77,43 @@ static void	list_print(t_list *list)
 	ft_printf("--LIST END--\n");
 }
 
+void	swap(t_list *a, t_list *b)
+{
+	void	*tmp;
+
+	tmp = a->content;
+	a->content = b->content;
+	b->content = tmp;
+}
+
+void	sort_list(t_list *list)
+{
+	t_list	*elem;
+	t_list	*next_elem;
+	int		swapped;
+	int		 i;
+
+	if (list == NULL)
+		return ;
+	swapped = 1;
+	next_elem = NULL;
+	while (swapped)
+	{
+		swapped = 0;
+		elem = list;
+		while (elem->next != next_elem)
+		{
+			if (((t_variable *)elem->content)->key[0] > ((t_variable *)elem->next->content)->key[0])
+			{
+				swap(elem, elem->next);
+				swapped = 1;
+			}
+			elem = elem->next;
+		}
+		next_elem = elem;
+	}
+}
+
 int		main(int argc, char **argv, char **envp, char **apple)
 {
 
@@ -90,5 +127,4 @@ int		main(int argc, char **argv, char **envp, char **apple)
 	ft_print_header(fresh);
 	read_line(fresh);
 	free(fresh);
-
 }

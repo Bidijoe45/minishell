@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:46 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/12 15:37:09 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/14 13:01:19 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef struct	s_variable
 
 void		ft_parse_command(t_fresh *fresh, t_command *command, t_command *next);
 void		ft_exit(char *exit_code);
-int			ft_cd(char *cmd, t_fresh *fresh);
+int			ft_cd(t_fresh *fresh, t_command *command);
 int			ft_pwd();
 void		ft_export(t_fresh *fresh);
 void		ft_unset();

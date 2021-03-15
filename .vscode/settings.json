@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "fresh.h": "c",
-        "command.h": "c"
+        "command.h": "c",
+        "parser.h": "c",
+        "print.h": "c",
+        "music.h": "c",
+        "libft.h": "c"
     }
 }

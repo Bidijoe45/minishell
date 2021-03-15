@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2020/12/20 10:51:46 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/15 09:20:02 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,39 @@
 #include "../print/print.h"
 #include "command.h"
 
-int    ft_cd(char *cmd, t_fresh *fresh)
+static	void	free_bidimensional(char **mem)
 {
-    char    **argv;
-    char    *tmp;
-    int     ret;
+	int i;
 
-    argv = ft_split(cmd, ' ');
-    if (argv[1] == NULL)
-    {
-        ret = chdir(variable_get(fresh->env, "HOME")->value);
-        free(argv);
-        return (ret);
-    }
-	if (argv[1][0] == '~')
+	i = 0;
+	while (mem[i] != NULL)
 	{
-		tmp = argv[1];
-		argv[1] = ft_strjoin(variable_get(fresh->env, "HOME")->value, &argv[1][1]);
-		free(tmp);
+		free(mem[i]);
+		i++;
 	}
-	tmp = argv[1];
-    ret = chdir((argv[1] = ft_strtrim(tmp, "\n")));
+	free(mem);
+}
+
+int	ft_cd(t_fresh *fresh, t_command *command)
+{
+	char	**argv;
+	char	*tmp;
+	int		ret;
+
+	argv = ft_split(command->arg, ' ');
+	if (argv[0] == NULL || argv[0][0] == '\n')
+	{
+		ret = chdir(variable_get(fresh->env, "HOME")->value);
+		variable_mod(fresh->env, "PWD", variable_get(fresh->env, "HOME")->value);
+		free_bidimensional(argv);
+		return (ret);
+	}
+	tmp = ft_strtrim(argv[0], "\n");
+	ret = chdir(tmp);
+	variable_mod(fresh->env, "PWD", ft_strdup(tmp));
+	if (ret == -1)
+		ft_print_error(fresh, "Not found");
+	free_bidimensional(argv);
 	free(tmp);
-    if (ret == -1)
-        ft_print_error(fresh, "Not found");
-    free(argv);
-    return (ret);
+	return (ret);
 }

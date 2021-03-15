@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/12 16:06:11 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/14 13:01:42 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,7 +283,7 @@ int		ft_is_builtin(t_fresh *fresh, t_command *command)
 	if (!ft_strncmp(command->cmd, "echo", 4))
 		return (1);
 	else if (!ft_strncmp(command->cmd, "cd", 2))
-		chdir("/");
+		return (ft_cd(fresh, command));
 	else if (!ft_strncmp(command->cmd, "pwd", 3))
 		ft_pwd();
 	else if (!ft_strncmp(command->cmd, "export", 6))
