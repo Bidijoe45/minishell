@@ -3,15 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2020/12/21 12:18:08 by apavel           ###   ########.fr       */
+/*   Updated: 2021/03/16 10:27:23 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fresh.h"
 #include "command.h"
+
+void	print_list(t_list *list)
+ {
+ 	t_list	*i;
+ 	t_variable *var;
+
+ 	i = list;
+ 	while (i)
+ 	{
+ 		var = (t_variable *)i->content;
+ 		printf("declare -x %s=%s\n", var->key, var->value);
+ 		i = i->next;
+ 	}
+ }
+
+void	swap(t_list *a, t_list *b)
+{
+	void	*tmp;
+
+	tmp = a->content;
+	a->content = b->content;
+	b->content = tmp;
+}
+
+void	sort_list(t_list *list)
+{
+	t_list	*elem;
+	t_list	*next_elem;
+	int		swapped;
+	int		 i;
+
+	if (list == NULL)
+		return ;
+	swapped = 1;
+	next_elem = NULL;
+	while (swapped)
+	{
+		swapped = 0;
+		elem = list;
+		while (elem->next != next_elem)
+		{
+			if (((t_variable *)elem->content)->key[0] > ((t_variable *)elem->next->content)->key[0])
+			{
+				swap(elem, elem->next);
+				swapped = 1;
+			}
+			elem = elem->next;
+		}
+		next_elem = elem;
+	}
+}
 
 int			count_vars(char *arg)
 {
@@ -52,12 +103,10 @@ void		ft_export(t_fresh *fresh, char *arg)
 
 	if (ft_strlen(arg) == 0)
 	{
-		//TODO: imprimir export
+		sort_list(fresh->env);
+		print_list(fresh->env);
+		return ;
 	}
-
-	printf("ret: %d\n", count_vars(arg));
-	return ;
-
 	i = 0;
 	dq = 0;
 	sq = 0;
