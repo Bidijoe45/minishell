@@ -13,32 +13,70 @@
 #include "../fresh.h"
 #include "command.h"
 
-void		ft_export_inline(t_fresh *fresh, char *cmd)
+int			count_vars(char *arg)
 {
-	char **split_cmd;
+	int		i;
+	int		count;
+	int		dq;
+	int		sq;
+	char	*tmp;
 
-	split_cmd = ft_split(cmd, '=');
-	variable_set(fresh->env, split_cmd[0], split_cmd[1]);
-	variable_set(fresh->local_vars, split_cmd[0], split_cmd[1]);
-	free(split_cmd);
+	i = 0;
+	dq = 0;
+	sq = 0;
+	count = 0;
+	tmp = ft_strtrim(arg, " \n");
+	if (ft_strlen(tmp) == 0)
+		return (count);
+	while (tmp[i] != '\0')
+	{
+		if (tmp[i] == '"' && sq == 0)
+			dq = !dq;
+		if (tmp[i] == '\'' && dq == 0)
+			sq = !sq;
+		if (tmp[i] == ' ' && dq == 0 && sq==0 && tmp[i - 1] != ' ')
+			count++;
+		i++;
+	}
+
+	return (count + 1);
 }
 
-void		ft_export(t_fresh *fresh)
+void		ft_export(t_fresh *fresh, char *arg)
 {
-	char **split_cmd;
-	t_variable *var;
-	
-	split_cmd = ft_split(fresh->line, ' ');
-	if (ft_strchr(split_cmd[1], '='))
+	int		i;
+	int		pos;
+	char	**splt_arg;
+	int		dq;
+	int		sq;
+
+	if (ft_strlen(arg) == 0)
 	{
-		ft_export_inline(fresh, split_cmd[1]);
+		//TODO: imprimir export
 	}
-	else
+
+	printf("ret: %d\n", count_vars(arg));
+	return ;
+
+	i = 0;
+	dq = 0;
+	sq = 0;
+	pos = 0;
+	while (arg[i] != '\0')
 	{
-		var = variable_get(fresh->local_vars, split_cmd[1]);
-		variable_set(fresh->env, var->key, var->value);
+		if (arg[i] == '"' && sq == 0)
+			dq = !dq;
+		if (arg[i] == '\'' && dq == 0)
+			sq = !sq;
+
+		if (arg[i] == '=' && dq == 0 && sq==0)
+		{
+			
+			pos = i + 1;
+			i++;
+		}
+		else
+			i++;
 	}
-	free(split_cmd[0]);
-	free(split_cmd[1]);
-	free(split_cmd);
+
 }
