@@ -82,7 +82,6 @@ static void	list_print(t_list *list)
 
 int		main(int argc, char **argv, char **envp, char **apple)
 {
-
 	t_fresh *fresh;
 	signal(SIGINT, ft_signal);
 	fresh = malloc(sizeof(t_fresh));
