@@ -58,10 +58,8 @@ void replace_variables(t_fresh *fresh)
 				end++;
 			tmp_str = ft_substr(fresh->line, i, end - i);
 			var = variable_get(fresh->env, tmp_str + 1);
-			if (!var)
-				return ;
 			tmp = fresh->line;
-			fresh->line = ft_replace(fresh->line, tmp_str, var->value);
+			fresh->line = ft_replace(fresh->line, tmp_str, var == NULL ? "" : var->value);
 			free(tmp);
 			free(tmp_str);
 		}

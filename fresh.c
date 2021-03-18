@@ -30,6 +30,11 @@ void	ft_signal(int signum)
 	return ;
 }
 
+void	ft_quit(int signum)
+{
+	return ;
+}
+
 void	ft_load_env_vars(t_fresh *fresh, char **envp)
 {
 	char 	**split_var;
@@ -84,6 +89,7 @@ int		main(int argc, char **argv, char **envp, char **apple)
 {
 	t_fresh *fresh;
 	signal(SIGINT, ft_signal);
+	signal(SIGQUIT, ft_signal);
 	fresh = malloc(sizeof(t_fresh));
 //	ft_play_music(fresh);
 	ft_initialize(fresh);
