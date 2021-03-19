@@ -88,6 +88,8 @@ static void	list_print(t_list *list)
 int		main(int argc, char **argv, char **envp, char **apple)
 {
 	t_fresh *fresh;
+	int		reading;
+
 	signal(SIGINT, ft_signal);
 	signal(SIGQUIT, ft_signal);
 	fresh = malloc(sizeof(t_fresh));
@@ -96,6 +98,19 @@ int		main(int argc, char **argv, char **envp, char **apple)
 	ft_load_env_vars(fresh, envp);
 	fresh->user = variable_get(fresh->env, "USER")->value;
 	ft_print_header(fresh);
-	read_line(fresh);
+
+	reading = 1;
+	while (reading)
+	{
+		read_line(fresh);
+		if (!ft_valid_multiline(fresh))
+			ft_print_error(fresh, "Multiline commands not supported\n");
+		else
+			ft_parse_line(fresh);
+		free(fresh->line);
+		fresh->line = NULL;
+		ft_print_input(fresh);
+	}
+	
 	free(fresh);
 }

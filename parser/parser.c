@@ -67,20 +67,16 @@ void replace_variables(t_fresh *fresh)
 	}
 }
 
-void	ft_valid_multiline(t_fresh *fresh)
+int		ft_valid_multiline(t_fresh *fresh)
 {
 	t_list *commands;
 	int  valid_q;
-	
+
 	valid_q = ft_valid_quotes(fresh->line);
 	if (valid_q == 1)
-	{	
-		ft_split_commands(fresh);
-	}
+		return (1);
 	else
-	{
-		ft_print_error(fresh, "Multiline commands not supported\n");
-	}
+		return (0);
 }
 
 void	read_line(t_fresh *fresh)
@@ -102,13 +98,12 @@ void	read_line(t_fresh *fresh)
 			free(tmp);
 		}
 		if(fresh->line[pos] == '\n')
-		{
-			ft_valid_multiline(fresh);
-			free(fresh->line);
-			fresh->line = NULL;
-			tmp = NULL;
-			pos = -1;
-		}
+			break ;
 		pos++;
 	}
+}
+
+void	ft_parse_line(t_fresh *fresh)
+{
+	printf("Parseando linea xd\n");
 }
