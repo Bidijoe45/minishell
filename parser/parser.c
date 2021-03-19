@@ -103,7 +103,125 @@ void	read_line(t_fresh *fresh)
 	}
 }
 
+void	ft_parse_args(t_fresh *fresh, t_command *command, char **words)
+{
+	int	i;
+
+	i = 0;
+	if (words == NULL || *words == NULL)
+		return ;
+	while (words[i])
+		i++;
+	command->args = malloc(sizeof(char *) * (i + 1));
+	if (!command->args)
+		return ;
+	i = 0;
+	while (words[i])
+	{
+		command->args[i] = ft_strdup(words[i]);
+		i++;
+	}
+}
+
+int		ft_is_special_char(int c)
+{
+	if (c == '|' || c == '>' || c == '<')
+		return (1);
+	return (0);
+}
+
+void	ft_parse_cmd(t_fresh *fresh, char *command)
+{
+	int		i;
+	int		sq;
+	int		dq;
+	char	*cmd;
+	char	*args_str;
+	char	**args;
+	int		n_args;
+	int		pos;
+
+	dq = 0;
+	sq = 0;
+	cmd = NULL;
+	i = 0;
+
+	while (command[i] != '\0')
+	{
+		if (command[i] == '"' && !sq)
+			dq = !dq;
+		if (command[i] == '\'' && !dq)
+			sq = !sq;
+		if (!cmd && (ft_is_special_char(command[i]) || command[i] == ' ') && !sq && !dq)
+		{
+			cmd = ft_substr(command, 0, i);
+			break ;
+		}
+		i++;
+	}
+
+	while (command[i] == ' ')
+		i++;
+
+	pos = i;
+	n_args = 0;
+	printf("start |%s|\n", &command[i]);
+	while (command[i] != '\0')
+	{
+		if (command[i] == '"' && !sq)
+			dq = !dq;
+		if (command[i] == '\'' && !dq)
+			sq = !sq;
+		
+		if (ft_is_special_char(command[i]))
+		{
+			args_str = ft_substr(&command[pos], 0, i - pos);
+			printf("args_str: |%s|\n", args_str);
+
+			if (command[i] == '|' && !dq && !sq)
+			{
+				pos = i;
+			}
+			else if (command[i] == '>' && !dq && !sq)
+			{
+
+			}
+			else if (command[i] == '>' && command[i + 1] == '>' && !dq && !sq)
+			{
+
+			}
+			else if (command[i] == '<' && !dq && !sq)
+			{
+
+			}
+		}
+		i++;
+	}
+	
+	printf("cmd: %s\n", cmd);
+	printf("n_args: %d\n", n_args);
+}
+
 void	ft_parse_line(t_fresh *fresh)
 {
-	printf("Parseando linea xd\n");
+	int		i;
+	int		cmd_pos;
+	char	**cmds;
+
+	i = 0;
+	cmds = ft_split_ignore_quotes(fresh->line, ';');
+
+	while (cmds[i])
+	{
+		ft_parse_cmd(fresh, cmds[i]);
+		i++;
+	}
+
+	i = 0;
+	while (cmds[i])
+	{
+		free(cmds[i]);
+		i++;
+	}
+	free(cmds);
 }

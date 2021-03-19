@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/03/05 11:21:13 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/19 17:26:49 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,10 @@ typedef enum	e_ctype
 typedef struct	s_command
 {
 	char		*cmd;
-	char		*arg;
-	char		*redirect;
-	int			file;
-	int			fd[2];
-	int			index;
+	char		**args;
+	char		*file_redirect;
+	int			write_to_pipe;
+	int			read_from_pipe;
 	t_ctype		type;
 }				t_command;
 
