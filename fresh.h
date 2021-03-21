@@ -44,6 +44,13 @@ typedef struct	s_command
 	char		*file_redirect;
 	int			write_to_pipe;
 	int			read_from_pipe;
+	char		*arg;
+	char *	redirect;
+
+
+	int fd[2];
+	int index;
+	int file;
 	t_ctype		type;
 }				t_command;
 

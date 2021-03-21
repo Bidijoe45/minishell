@@ -130,76 +130,79 @@ int		ft_is_special_char(int c)
 	return (0);
 }
 
+char	*extract_cmd(char *command)
+{
+	int	i;
+	int	pos;
+	int	next_is_file;
+	
+	i = 0;
+	pos = 0;
+	next_is_file = 0;
+	while (command[i] != '\0')
+	{
+		while (command[i] == ' ')
+			i++;
+		if (command[i] == '>' || command[i] == '<')
+		{
+			i++;
+			while (command[i] == ' ')
+				i++;
+			while (command[i] != ' ' && command[i] != '<' && command[i] != '>'
+				&& command[i] != '\0')
+				i++;
+		}
+		else
+		{
+			pos = i;
+			while (command[i] != ' ' && command[i] != '>' && command[i] != '<'
+				&& command[i] != '\0' && command[i] != '\n')
+				i++;
+			return ft_substr(command, pos, i - pos);
+		}
+	}
+	return ft_substr(command, pos, i - pos);
+
+}
+
 void	ft_parse_cmd(t_fresh *fresh, char *command)
 {
-	int		i;
-	int		sq;
-	int		dq;
+	int i;
+	int j;
+	char **cmds;
 	char	*cmd;
-	char	*args_str;
 	char	**args;
-	int		n_args;
-	int		pos;
+	char	**files;
 
-	dq = 0;
-	sq = 0;
-	cmd = NULL;
-	i = 0;
-
-	while (command[i] != '\0')
-	{
-		if (command[i] == '"' && !sq)
-			dq = !dq;
-		if (command[i] == '\'' && !dq)
-			sq = !sq;
-		if (!cmd && (ft_is_special_char(command[i]) || command[i] == ' ') && !sq && !dq)
-		{
-			cmd = ft_substr(command, 0, i);
-			break ;
-		}
-		i++;
-	}
-
-	while (command[i] == ' ')
-		i++;
-
-	pos = i;
-	n_args = 0;
-	printf("start |%s|\n", &command[i]);
-	while (command[i] != '\0')
-	{
-		if (command[i] == '"' && !sq)
-			dq = !dq;
-		if (command[i] == '\'' && !dq)
-			sq = !sq;
-		
-		if (ft_is_special_char(command[i]))
-		{
-			args_str = ft_substr(&command[pos], 0, i - pos);
-			printf("args_str: |%s|\n", args_str);
-
-			if (command[i] == '|' && !dq && !sq)
-			{
-				pos = i;
-			}
-			else if (command[i] == '>' && !dq && !sq)
-			{
-
-			}
-			else if (command[i] == '>' && command[i + 1] == '>' && !dq && !sq)
-			{
-
-			}
-			else if (command[i] == '<' && !dq && !sq)
-			{
-
-			}
-		}
-		i++;
-	}
+	cmds = ft_split_ignore_quotes(command, '|');
 	
-	printf("cmd: %s\n", cmd);
-	printf("n_args: %d\n", n_args);
+	int n_pipes = 0;
+	while (cmds[n_pipes])
+		n_pipes++;
+	printf("n_pipes: %d\n", n_pipes);
+	
+	if (n_pipes - 1 != 0)
+	{
+		//Si entra aqui es que hay | pipes
+	
+		i = 0;
+		while (cmds[i])
+		{
+			printf("--ft_parse_cmd--\n");
+			printf("%s\n", cmds[i]);
+			printf("----\n");
+			cmd = extract_cmd(cmds[i]);
+			//args = extract_args(cmds[i]);
+			//files = extract_files(cmds[i]);
+			i++;
+			printf("cmd: |%s|\n", cmd);
+		}
+	}
+	else
+	{
+		//Si entra aqui es que no hay | por lo que es un simple comando
+		printf("cmd: |%s|\n", cmd);
+	}
 }
 
 void	ft_parse_line(t_fresh *fresh)

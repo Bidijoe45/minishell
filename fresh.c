@@ -110,4 +110,5 @@ int		main(int argc, char **argv, char **envp, char **apple)
 		ft_print_input(fresh);
 	}
 	free(fresh);
+
 }
