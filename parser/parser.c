@@ -1,6 +1,7 @@
 #include "../fresh.h"
 #include "../print/print.h"
 #include "../commands/command.h"
+#include "parser.h"
 
 int		ft_valid_quotes(char *line)
 {
@@ -130,6 +131,73 @@ int		ft_is_special_char(int c)
 	return (0);
 }
 
+int		is_between_quotes(char *str, int pos)
+{
+	int i;
+	int sq;
+	int dq;
+
+	while (str[i] != '\0')
+	{
+		if (str[i] == '\'' && dq == 0)
+			sq = !sq;
+		if (str[i] == '"' && sq == 0)
+			dq = !dq;
+		if (i == pos)
+			return (sq != 0 || dq != 0);	
+		i++;
+	}
+	return (0);
+}
+
+char	**extract_files(char *command)
+{
+	t_file	**files;
+	int		i;
+	int		pos;
+	int		j;	
+	t_file *file;
+
+	j = 0;
+	i = 0;
+	pos = 0;
+	while (command[i] != '\0')
+	{
+		if (command[i] == '>' && !is_between_quotes(command, i))
+			pos++;	
+		i++;
+	}
+	files = malloc(sizeof(t_file *) * (pos + 1));
+	files[pos] = NULL;
+	i = 0;
+	while (command[i] != '\0')
+	{
+		while (command[i] == ' ')
+			i++;
+		if (command[i] == '>' && command[i + 1] == '>' && !is_between_quotes(command, i))
+		{
+			
+		}
+		else if (command[i] == '>' && !is_between_quotes(command, i))
+		{
+			i++;
+			while (command[i] == ' ')
+				i++;
+			pos = i;
+			while (command[i] != ' ' && command[i] != '\0' && command[i] != '\0' && !is_between_quotes(command, i))
+				i++;
+			file = malloc(sizeof(file));
+			file->file_name = ft_substr(command, pos, i - pos);
+			file->type = OUT;
+			files[j] = file;	
+			j++;
+		}
+
+		i++;
+	}
+	printf("size: %d\n", j);
+}
+
 char	*extract_cmd(char *command)
 {
 	int	i;
@@ -162,8 +230,46 @@ char	*extract_cmd(char *command)
 		}
 	}
 	return ft_substr(command, pos, i - pos);
-
 }
+
+char	*extract_args(char *command)
+{
+	int	i;
+	int	pos;
+	int	next_is_file;
+	
+	i = 0;
+	pos = 0;
+	next_is_file = 0;
+	while (command[i] != '\0')
+	{
+		while (command[i] == ' ')
+			i++;
+		if (command[i] == '>' || command[i] == '<')
+		{
+			i++;
+			while (command[i] == ' ')
+				i++;
+			while (command[i] != ' ' && command[i] != '<' && command[i] != '>'
+				&& command[i] != '\0')
+				i++;
+		}
+		else
+		{
+			while (command[i] != ' ' && command[i] != '>' && command[i] != '<'
+				&& command[i] != '\0' && command[i] != '\n')
+				i++;
+			pos = i;
+			while (command[i] != '>' && command[i] != '<'
+				&& command[i] != '\0' && command[i] != '\n')
+				i++;
+			
+			return ft_substr(command, pos, i - pos);
+		}
+	}
+	return ft_substr(command, pos, i - pos);
+}
+
 
 void	ft_parse_cmd(t_fresh *fresh, char *command)
 {
@@ -171,9 +277,10 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	int j;
 	char **cmds;
 	char	*cmd;
+	char	*args_str;
 	char	**args;
 	char	**files;
-
+	char	*tmp;
 	cmds = ft_split_ignore_quotes(command, '|');
 	
 	int n_pipes = 0;
@@ -183,25 +290,12 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	
 	if (n_pipes - 1 != 0)
 	{
-		//Si entra aqui es que hay | pipes
 	
-		i = 0;
-		while (cmds[i])
-		{
-			printf("--ft_parse_cmd--\n");
-			printf("%s\n", cmds[i]);
-			printf("----\n");
-			cmd = extract_cmd(cmds[i]);
-			//args = extract_args(cmds[i]);
-			//files = extract_files(cmds[i]);
-			i++;
-			printf("cmd: |%s|\n", cmd);
-		}
 	}
 	else
 	{
-		//Si entra aqui es que no hay | por lo que es un simple comando
-		printf("cmd: |%s|\n", cmd);
+		files = extract_files(command);
+//		printf("cmd: |%s|\n", cmd);
 	}
 }
 
