@@ -278,6 +278,23 @@ char	*extract_args(char *command)
 	return ft_substr(command, pos, i - pos);
 }
 
+void	ft_free_cmd(char *cmd, char **args, t_file **files)
+{
+	int i;
+
+	i = 0;
+	while (args[i++])
+		free(args[i]);
+	i = 0;
+	while (files[i++])
+	{
+		free(files[i]->file_name);
+		free(files[i]);
+	}
+	free(files);
+	free(args);
+	free(cmd);
+}
 
 void	ft_parse_cmd(t_fresh *fresh, char *command)
 {
@@ -305,22 +322,9 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 		tmp = extract_args(command);
 		args = ft_split_ignore_quotes(tmp, ' ');
 		free(tmp);
-		printf("-------------\n");
-		printf("command: |%s|\n", cmd);
-		i = 0;
-		while (args[i])
-		{
-			printf("arg: |%s|\n", args[i]);
-			i++;
-		}
-		i = 0;
-		while (files[i])
-		{
-			printf("file: |%s|\n", files[i]->file_name);
-			i++;
-		}
-		printf("-------------\n");
+		ft_free_cmd(cmd, args, files);
 	}
+	ft_free_split(cmds);
 }
 
 void	ft_parse_line(t_fresh *fresh)
