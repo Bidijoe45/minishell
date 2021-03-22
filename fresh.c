@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fresh.c                                          :+:      :+:    :+:   */
+/*   fresh.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2020/11/23 14:15:00 by apavel           ###   ########.fr       */
+/*   Updated: 2021/03/22 15:51:25 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,33 +55,6 @@ void	ft_load_env_vars(t_fresh *fresh, char **envp)
 	}
 }
 
-//=========TEST ONLY============
-static void	list_print(t_list *list)
-{
-	t_list *elem;
-
-	if (!list)
-	{
-		ft_printf("lista vacia\n");
-		return ;
-	}
-
-	ft_printf("--LIST START--\n");
-	elem = list;
-	while (elem)
-	{	
-		if (elem->content)
-		{
-			ft_printf("key: %s\n", ((t_variable *)elem->content)->key);
-			ft_printf("value: %s\n", ((t_variable *)elem->content)->value);
-		}
-		else
-			ft_printf("no content\n");
-		elem = elem->next;
-	}
-	ft_printf("--LIST END--\n");
-}
-
 int		main(int argc, char **argv, char **envp, char **apple)
 {
 	t_fresh *fresh;
@@ -89,9 +62,7 @@ int		main(int argc, char **argv, char **envp, char **apple)
 
 	//signal(SIGINT, ft_signal);
 	//signal(SIGQUIT, ft_signal);
-
 	fresh = malloc(sizeof(t_fresh));
-	//ft_play_music(fresh);
 	ft_initialize(fresh);
 	ft_load_env_vars(fresh, envp);
 	fresh->user = variable_get(fresh->env, "USER")->value;
@@ -104,11 +75,9 @@ int		main(int argc, char **argv, char **envp, char **apple)
 			ft_print_error(fresh, "Multiline commands not supported\n");
 		else
 			ft_parse_line(fresh);
-	
 		free(fresh->line);
 		fresh->line = NULL;
 		ft_print_input(fresh);
 	}
 	free(fresh);
-
 }
