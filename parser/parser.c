@@ -155,13 +155,14 @@ int		is_between_quotes(char *str, int pos)
 	return (0);
 }
 
-char	**extract_files(char *command)
+t_file	**extract_files(char *command)
 {
 	t_file	**files;
 	int		i;
 	int		pos;
 	int		j;	
 	t_file *file;
+	char	*tmp;
 
 	j = 0;
 	i = 0;
@@ -193,13 +194,16 @@ char	**extract_files(char *command)
 				i++;
 			file = malloc(sizeof(file));
 			file->file_name = ft_substr(command, pos, i - pos);
+			tmp = file->file_name;
+			file->file_name = ft_strtrim(tmp, "\n");
+			free(tmp);
 			file->type = OUT;
 			files[j] = file;	
 			j++;
 		}
 		i++;
 	}
-	printf("size: %d\n", j);
+	return (files);
 }
 
 char	*extract_cmd(char *command)
@@ -283,15 +287,13 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	char	*cmd;
 	char	*args_str;
 	char	**args;
-	char	**files;
+	t_file	**files;
 	char	*tmp;
 	cmds = ft_split_ignore_quotes(command, '|');
 	
 	int n_pipes = 0;
 	while (cmds[n_pipes])
 		n_pipes++;
-	printf("n_pipes: %d\n", n_pipes);
-	
 	if (n_pipes - 1 != 0)
 	{
 	
@@ -299,7 +301,25 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	else
 	{
 		files = extract_files(command);
-//		printf("cmd: |%s|\n", cmd);
+		cmd = extract_cmd(command);
+		tmp = extract_args(command);
+		args = ft_split_ignore_quotes(tmp, ' ');
+		free(tmp);
+		printf("-------------\n");
+		printf("command: |%s|\n", cmd);
+		i = 0;
+		while (args[i])
+		{
+			printf("arg: |%s|\n", args[i]);
+			i++;
+		}
+		i = 0;
+		while (files[i])
+		{
+			printf("file: |%s|\n", files[i]->file_name);
+			i++;
+		}
+		printf("-------------\n");
 	}
 }
 
