@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 11:36:19 by apavel            #+#    #+#             */
-/*   Updated: 2020/11/04 13:17:45 by apavel           ###   ########.fr       */
+/*   Updated: 2021/03/22 16:46:18 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,5 @@ t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
 void			(*del)(void *));
 int				ft_isspace(char c);
 char			*ft_replace(char *str, char *key, char *word);
+void			ft_free_split(char **split);
 #endif
