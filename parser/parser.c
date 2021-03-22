@@ -137,6 +137,11 @@ int		is_between_quotes(char *str, int pos)
 	int sq;
 	int dq;
 
+	if (!str || !*str)
+		return (0);
+	i = 0;
+	sq = 0;
+	dq = 0;
 	while (str[i] != '\0')
 	{
 		if (str[i] == '\'' && dq == 0)
@@ -192,7 +197,6 @@ char	**extract_files(char *command)
 			files[j] = file;	
 			j++;
 		}
-
 		i++;
 	}
 	printf("size: %d\n", j);
