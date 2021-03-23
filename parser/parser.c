@@ -283,13 +283,17 @@ void	ft_free_cmd(char *cmd, char **args, t_file **files)
 	int i;
 
 	i = 0;
-	while (args[i++])
+	while (args[i])
+	{
 		free(args[i]);
+		i++;
+	}
 	i = 0;
-	while (files[i++])
+	while (files[i])
 	{
 		free(files[i]->file_name);
 		free(files[i]);
+		i++;
 	}
 	free(files);
 	free(args);
