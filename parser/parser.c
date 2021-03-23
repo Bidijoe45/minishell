@@ -155,18 +155,22 @@ int		is_between_quotes(char *str, int pos)
 	return (0);
 }
 
-t_file	**extract_files(char *command)
+t_file	**extract_files(char **ccommand)
 {
 	t_file	**files;
 	int		i;
 	int		pos;
-	int		j;	
+	int		redirect;
+	int		j;
 	t_file *file;
 	char	*tmp;
+	char	*command;
+	char	*tmp2;
 
 	j = 0;
 	i = 0;
 	pos = 0;
+	command = ft_strdup(*ccommand);
 	while (command[i] != '\0')
 	{
 		if (command[i] == '>' && !is_between_quotes(command, i))
@@ -186,6 +190,7 @@ t_file	**extract_files(char *command)
 		}
 		else if (command[i] == '>' && !is_between_quotes(command, i))
 		{
+			redirect = i;
 			i++;
 			while (command[i] == ' ')
 				i++;
@@ -194,15 +199,18 @@ t_file	**extract_files(char *command)
 				i++;
 			file = malloc(sizeof(file));
 			file->file_name = ft_substr(command, pos, i - pos);
-			tmp = file->file_name;
-			file->file_name = ft_strtrim(tmp, "\n");
-			free(tmp);
 			file->type = OUT;
-			files[j] = file;	
+			files[j] = file;
+			tmp2 = ft_substr(command, redirect, i - redirect);
+			*ccommand = ft_replace(command, tmp2, "");
+			free(command);
+			free(tmp2);
+			command = *ccommand;
 			j++;
 		}
 		i++;
 	}
+	free(command);
 	return (files);
 }
 
@@ -321,12 +329,30 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	}
 	else
 	{
-		files = extract_files(command);
 		cmd = extract_cmd(command);
+		files = extract_files(&command);
+		printf("|%s|\n", command);
 		tmp = extract_args(command);
 		args = ft_split_ignore_quotes(tmp, ' ');
 		free(tmp);
-		ft_free_cmd(cmd, args, files);
+		printf("---------------\n");
+		printf("· Command: |%s|\n", cmd);
+		printf("· Files:\n");
+		i = 0;
+		while (files[i])
+		{
+			printf(" - |%s|\n", files[i]->file_name);
+			i++;
+		}
+		i = 0;
+		printf("· Args:\n");
+		while (args[i])
+		{
+			printf(" - |%s|\n", args[i]);
+			i++;
+		}
+		printf("---------------\n");
+	ft_free_cmd(cmd, args, files);
 	}
 	ft_free_split(cmds);
 }
@@ -336,10 +362,13 @@ void	ft_parse_line(t_fresh *fresh)
 	int		i;
 	int		cmd_pos;
 	char	**cmds;
+	char	*tmp;
 
 	i = 0;
+	tmp = fresh->line;
+	fresh->line = ft_strtrim(fresh->line, "\n");
+	free(tmp);
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
-
 	while (cmds[i])
 	{
 		ft_parse_cmd(fresh, cmds[i]);
