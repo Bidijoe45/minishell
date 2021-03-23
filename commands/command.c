@@ -6,13 +6,14 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/16 10:24:24 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/23 10:51:58 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fresh.h"
 #include "command.h"
 #include "../print/print.h"
+#include "../list/list.h"
 
 void    ft_not_found(char *cmd)
 {

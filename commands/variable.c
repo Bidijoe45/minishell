@@ -6,44 +6,14 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 13:21:03 by apavel            #+#    #+#             */
-/*   Updated: 2021/03/15 09:16:03 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/23 10:52:15 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../fresh.h"
 #include "command.h"
-
-t_list	*list_new_element(void *content)
-{
-	t_list *list;
-
-	list = malloc(sizeof(t_list));
-	list->content = content;
-	list->next = NULL;
-
-	return (list);
-}
-
-void	list_add_back(t_list *list, t_list *new_elem)
-{
-	t_list *elem;
-
-	if (!list)
-		return ;
-
-	elem = list;
-	while (elem)
-	{
-		if (elem->next == NULL)
-		{
-			elem->next = new_elem;
-			return ;
-		}
-		else
-			elem = elem->next;
-	}
-}
+#include "../list/list.h"
 
 t_variable *variable_new(char *key, char *value)
 {

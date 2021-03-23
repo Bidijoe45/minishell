@@ -2,7 +2,8 @@ SRCS =	fresh.c \
 		./print/print.c \
 		./commands/command.c ./commands/cd.c ./commands/clear.c ./commands/exit.c ./commands/export.c ./commands/pwd.c ./commands/unset.c ./commands/variable.c ./commands/env.c ./commands/echo.c \
 		./music.c \
-		./parser/parser.c
+		./parser/parser.c \
+		./list/list.c
 GNL	= ./get_next_line/get_next_line.c
 NAME = minishell
 OBJS = ${SRCS:.c=.o}

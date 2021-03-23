@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/03/22 16:49:21 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/23 10:53:25 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "music.h"
 #include "print/print.h"
 #include "parser/parser.h"
+#include "list/list.h"
 
 void	ft_initialize(t_fresh *fresh)
 {
