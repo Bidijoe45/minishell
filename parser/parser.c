@@ -155,7 +155,7 @@ int		is_between_quotes(char *str, int pos)
 	return (0);
 }
 
-t_file	**extract_files(char **ccommand)
+t_file	**extract_files(char *command, char **command_rpl)
 {
 	t_file	**files;
 	int		i;
@@ -164,13 +164,12 @@ t_file	**extract_files(char **ccommand)
 	int		j;
 	t_file *file;
 	char	*tmp;
-	char	*command;
 	char	*tmp2;
 
 	j = 0;
 	i = 0;
 	pos = 0;
-	command = ft_strdup(*ccommand);
+	*command_rpl = ft_strdup(command);
 	while (command[i] != '\0')
 	{
 		if (command[i] == '>' && !is_between_quotes(command, i))
@@ -191,26 +190,27 @@ t_file	**extract_files(char **ccommand)
 		else if (command[i] == '>' && !is_between_quotes(command, i))
 		{
 			redirect = i;
-			i++;
+			i++; 
 			while (command[i] == ' ')
 				i++;
 			pos = i;
-			while (command[i] != ' ' && command[i] != '\0' && command[i] != '\0' && !is_between_quotes(command, i))
+			while (command[i] != '\0')
+			{
+				if (command[i] == ' ' && !is_between_quotes(command, i))
+						break ;
 				i++;
+			}
 			file = malloc(sizeof(file));
 			file->file_name = ft_substr(command, pos, i - pos);
 			file->type = OUT;
 			files[j] = file;
-			tmp2 = ft_substr(command, redirect, i - redirect);
-			*ccommand = ft_replace(command, tmp2, "");
-			free(command);
-			free(tmp2);
-			command = *ccommand;
+			char *key = ft_substr(command, redirect, i - redirect);
+			*command_rpl = ft_replace(*command_rpl, key, "");
+			free(key);
 			j++;
 		}
 		i++;
 	}
-	free(command);
 	return (files);
 }
 
@@ -219,7 +219,7 @@ char	*extract_cmd(char *command, char **command_rpl)
 	int	i;
 	int	pos;
 	int	next_is_file;
-	
+
 	i = 0;
 	pos = 0;
 	next_is_file = 0;
@@ -242,7 +242,9 @@ char	*extract_cmd(char *command, char **command_rpl)
 			while ((command[i] != ' ' && command[i] != '>' && command[i] != '<'
 				&& command[i] != '\0' && command[i] != '\n') || (is_between_quotes(command, i) && command[i] != '\0'))
 				i++;
-			
+			char *key = ft_substr(command, pos, i - pos);
+			*command_rpl = ft_replace(command, key, "");
+			free(key);
 			return ft_substr(command, pos, i - pos);
 		}
 	}
@@ -330,11 +332,11 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	}
 	else
 	{
-		cmd = extract_cmd(command);
-		files = extract_files(&command);
-		printf("|%s|\n", command);
-		tmp = extract_args(command);
-		args = ft_split_ignore_quotes(tmp, ' ');
+		cmd = extract_cmd(command, &tmp);
+		command = tmp;
+		files = extract_files(command, &tmp);
+		command = tmp;
+		args = ft_split_ignore_quotes(command, ' ');
 		free(tmp);
 		printf("---------------\n");
 		printf("· Command: |%s|\n", cmd);
@@ -353,7 +355,7 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 			i++;
 		}
 		printf("---------------\n");
-	ft_free_cmd(cmd, args, files);
+		//ft_free_cmd(cmd, args, files);
 	}
 	ft_free_split(cmds);
 }
