@@ -172,7 +172,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 	*command_rpl = ft_strdup(command);
 	while (command[i] != '\0')
 	{
-		if (command[i] == '>' && !is_between_quotes(command, i))
+		if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
 			pos++;	
 		i++;
 	}
@@ -187,7 +187,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 		{
 
 		}
-		else if (command[i] == '>' && !is_between_quotes(command, i))
+		else if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
 		{
 			redirect = i;
 			i++; 
@@ -202,7 +202,10 @@ t_file	**extract_files(char *command, char **command_rpl)
 			}
 			file = malloc(sizeof(file));
 			file->file_name = ft_substr(command, pos, i - pos);
-			file->type = OUT;
+			if (command[redirect] == '>')
+				file->type = OUT;
+			else if (command[redirect] == '<')
+				file->type = IN;
 			files[j] = file;
 			char *key = ft_substr(command, redirect, i - redirect);
 			*command_rpl = ft_replace(*command_rpl, key, "");
@@ -344,7 +347,7 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 		i = 0;
 		while (files[i])
 		{
-			printf(" - |%s|\n", files[i]->file_name);
+			printf(" - |%s| (%d)\n", files[i]->file_name, files[i]->type);
 			i++;
 		}
 		i = 0;
