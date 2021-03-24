@@ -186,7 +186,7 @@ t_file	**extract_files(char **ccommand)
 			i++;
 		if (command[i] == '>' && command[i + 1] == '>' && !is_between_quotes(command, i))
 		{
-			
+
 		}
 		else if (command[i] == '>' && !is_between_quotes(command, i))
 		{
@@ -214,7 +214,7 @@ t_file	**extract_files(char **ccommand)
 	return (files);
 }
 
-char	*extract_cmd(char *command)
+char	*extract_cmd(char *command, char **command_rpl)
 {
 	int	i;
 	int	pos;
@@ -227,7 +227,7 @@ char	*extract_cmd(char *command)
 	{
 		while (command[i] == ' ')
 			i++;
-		if (command[i] == '>' || command[i] == '<')
+		if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
 		{
 			i++;
 			while (command[i] == ' ')
@@ -239,9 +239,10 @@ char	*extract_cmd(char *command)
 		else
 		{
 			pos = i;
-			while (command[i] != ' ' && command[i] != '>' && command[i] != '<'
-				&& command[i] != '\0' && command[i] != '\n')
+			while ((command[i] != ' ' && command[i] != '>' && command[i] != '<'
+				&& command[i] != '\0' && command[i] != '\n') || (is_between_quotes(command, i) && command[i] != '\0'))
 				i++;
+			
 			return ft_substr(command, pos, i - pos);
 		}
 	}
@@ -261,7 +262,7 @@ char	*extract_args(char *command)
 	{
 		while (command[i] == ' ')
 			i++;
-		if (command[i] == '>' || command[i] == '<')
+		if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
 		{
 			i++;
 			while (command[i] == ' ')
@@ -273,11 +274,11 @@ char	*extract_args(char *command)
 		else
 		{
 			while (command[i] != ' ' && command[i] != '>' && command[i] != '<'
-				&& command[i] != '\0' && command[i] != '\n')
+				&& command[i] != '\0' && command[i] != '\n' )
 				i++;
 			pos = i;
-			while (command[i] != '>' && command[i] != '<'
-				&& command[i] != '\0' && command[i] != '\n')
+			while ((command[i] != '>' && command[i] != '<'
+				&& command[i] != '\0' && command[i] != '\n') || is_between_quotes(command, i))
 				i++;
 			
 			return ft_substr(command, pos, i - pos);
