@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/03/19 17:26:49 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/25 14:34:13 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,17 @@
 # include <signal.h>
 # include <sys/wait.h>
 
+enum	e_rtype
+{
+	IN, OUT, APPEND
+};
+
+typedef	struct	s_file
+{
+	char		*file_name;
+	enum	e_rtype		type;
+}				t_file;
+
 typedef enum	e_ctype
 {
 	simple,
@@ -41,17 +52,9 @@ typedef struct	s_command
 {
 	char		*cmd;
 	char		**args;
-	char		*file_redirect;
+	t_file		**files;
 	int			write_to_pipe;
 	int			read_from_pipe;
-	char		*arg;
-	char *	redirect;
-
-
-	int fd[2];
-	int index;
-	int file;
-	t_ctype		type;
 }				t_command;
 
 typedef struct  s_fresh

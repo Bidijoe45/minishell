@@ -296,17 +296,18 @@ char	*extract_args(char *command)
 
 void	ft_parse_cmd(t_fresh *fresh, char *command)
 {
-	int i;
-	int j;
-	char **cmds;
-	char	*cmd;
-	char	*args_str;
-	char	**args;
-	t_file	**files;
-	char	*tmp;
-	cmds = ft_split_ignore_quotes(command, '|');
+	int			i;
+	int			j;
+	int			n_pipes;
+	char 		**cmds;
+	char		*cmd_name;
+	char		*args_str;
+	char		**args;
+	t_file		**files;
+	char		*tmp;
+	t_command	*cmd;
 	
-	int n_pipes = 0;
+	cmds = ft_split_ignore_quotes(command, '|');
 	while (cmds[n_pipes])
 		n_pipes++;
 	if (n_pipes - 1 != 0)
@@ -315,12 +316,18 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	}
 	else
 	{
-		cmd = extract_cmd(command, &tmp);
+		cmd_name= extract_cmd(command, &tmp);
 		command = tmp;
 		files = extract_files(command, &tmp);
 		free(command);
 		command = tmp;
 		args = ft_split_ignore_quotes(command, ' ');
+		cmd = malloc(sizeof(t_command));
+		if (!cmd)
+			return ;
+		cmd->cmd = cmd_name;
+		cmd->files = files;
+		cmd->args = args;
 		i = 0; /* TODO: ARREGLAR QUE SI PONGO "ls > >" DA SEGFAULT PORQUE NO ALOCAMOS UN PAR DE COSAS! */
 		while (files[i])
 		{
