@@ -176,7 +176,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 			pos++;	
 		i++;
 	}
-	files = malloc(sizeof(t_file *) * (pos + 1));
+	files = malloc(sizeof(t_file *) * pos + 1);
 	files[pos] = NULL;
 	i = 0;
 	while (command[i] != '\0')
@@ -200,16 +200,18 @@ t_file	**extract_files(char *command, char **command_rpl)
 						break ;
 				i++;
 			}
-			file = malloc(sizeof(file));
+			file = malloc(sizeof(t_file));
 			file->file_name = ft_substr(command, pos, i - pos);
 			if (command[redirect] == '>')
 				file->type = OUT;
 			else if (command[redirect] == '<')
 				file->type = IN;
 			files[j] = file;
+			tmp = *command_rpl;
 			char *key = ft_substr(command, redirect, i - redirect);
-			*command_rpl = ft_replace(*command_rpl, key, "");
+			*command_rpl = ft_replace(tmp, key, "");
 			free(key);
+			free(tmp);
 			j++;
 		}
 		i++;
@@ -292,28 +294,6 @@ char	*extract_args(char *command)
 	return ft_substr(command, pos, i - pos);
 }
 
-void	ft_free_cmd(char *cmd, char **args, t_file **files)
-{
-	int i;
-
-	i = 0;
-	while (args[i])
-	{
-		free(args[i]);
-		i++;
-	}
-	i = 0;
-	while (files[i])
-	{
-		free(files[i]->file_name);
-		free(files[i]);
-		i++;
-	}
-	free(files);
-	free(args);
-	free(cmd);
-}
-
 void	ft_parse_cmd(t_fresh *fresh, char *command)
 {
 	int i;
@@ -338,27 +318,26 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 		cmd = extract_cmd(command, &tmp);
 		command = tmp;
 		files = extract_files(command, &tmp);
+		free(command);
 		command = tmp;
 		args = ft_split_ignore_quotes(command, ' ');
-		free(tmp);
-		printf("---------------\n");
-		printf("· Command: |%s|\n", cmd);
-		printf("· Files:\n");
-		i = 0;
+		i = 0; /* TODO: ARREGLAR QUE SI PONGO "ls > >" DA SEGFAULT PORQUE NO ALOCAMOS UN PAR DE COSAS! */
 		while (files[i])
 		{
-			printf(" - |%s| (%d)\n", files[i]->file_name, files[i]->type);
+			free(files[i]->file_name);
+			free(files[i]);
 			i++;
 		}
 		i = 0;
-		printf("· Args:\n");
 		while (args[i])
 		{
-			printf(" - |%s|\n", args[i]);
+			free(args[i]);
 			i++;
 		}
-		printf("---------------\n");
-		//ft_free_cmd(cmd, args, files);
+		free(args);
+		free(files);
+		free(tmp);
+		free(cmd);
 	}
 	ft_free_split(cmds);
 }
