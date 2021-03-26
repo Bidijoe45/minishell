@@ -395,6 +395,7 @@ int		check_invalid_pipes(char **cmds)
 
 char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 {
+	t_variable	*var;
 	char	*ret;
 	char	*tmp;
 	char	*key;
@@ -413,7 +414,11 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 				pos++;
 			key = ft_substr(ret, i, pos - i);
 			tmp = ret;
-			ret = ft_replace(ret, key, variable_get(fresh->env, key + 1)->value);
+			var = variable_get(fresh->env, key + 1);
+			if (var)
+				ret = ft_replace(ret, key, var->value);
+			else
+				ret = ft_replace(ret, key, "");
 			free(tmp);
 			free(key);
 			i = 0;
