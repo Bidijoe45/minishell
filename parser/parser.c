@@ -274,6 +274,34 @@ char	*extract_args(char *command)
 	return ft_substr(command, pos, i - pos);
 }
 
+int		check_chars(char c)
+{
+	return (c == '>' || c == '<');
+}
+
+int		check_invalid_redirections(char **cmds)
+{
+	int		l;
+	int		i;
+	char	*cmd;
+	
+	i = 0;
+	while (cmds[i])
+	{
+		cmd = ft_strtrim(cmds[i], " ");
+		l = ft_strlen(cmd);
+		if ((check_chars(cmd[0]) || check_chars(cmd[l - 1])) &&
+				(!is_between_quotes(cmd, 0) && !is_between_quotes(cmd, l - 1)))
+		{
+			free(cmd);
+			return (0);
+		}
+		free(cmd);
+		i++;
+	}
+	return (1);
+}
+
 void	ft_parse_cmd(t_fresh *fresh, char *command)
 {
 	int			i;
@@ -288,6 +316,11 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	t_command	*cmd;
 	
 	cmds = ft_split_ignore_quotes(command, '|');
+	if (!(check_invalid_redirections(cmds)))
+	{
+		printf("Error: wrong syntax\n");
+		return ;
+	}
 	while (cmds[n_pipes])
 		n_pipes++;
 	if (n_pipes - 1 != 0)
