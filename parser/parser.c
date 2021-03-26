@@ -129,7 +129,13 @@ int		is_between_quotes(char *str, int pos)
 		if (str[i] == '"' && sq == 0)
 			dq = !dq;
 		if (i == pos)
-			return (sq != 0 || dq != 0);	
+		{
+			if (sq)
+				return (1);
+			if (dq)
+				return (2);
+			return (0);
+		}
 		i++;
 	}
 	return (0);
@@ -315,6 +321,7 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	char		*tmp;
 	t_command	*cmd;
 	
+	n_pipes = 0;
 	cmds = ft_split_ignore_quotes(command, '|');
 	if (!(check_invalid_redirections(cmds)))
 	{
@@ -341,6 +348,7 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 		cmd->cmd = cmd_name;
 		cmd->files = files;
 		cmd->args = args;
+		printf("command: |%s|\n", cmd->cmd);
 		i = 0; /* TODO: ARREGLAR QUE SI PONGO "ls > >" DA SEGFAULT PORQUE NO ALOCAMOS UN PAR DE COSAS! */
 		while (files[i])
 		{
@@ -385,6 +393,35 @@ int		check_invalid_pipes(char **cmds)
 	return (1);
 }
 
+char	*ft_replace_vars(t_fresh *fresh, char *cmds)
+{
+	char	*ret;
+	char	*tmp;
+	char	*key;
+	int		i;
+	int		pos;
+
+	i = 0;
+	ret = ft_strdup(cmds);
+	while (ret[i])
+	{
+		if (ret[i] == '$' && is_between_quotes(ret, i) != 1)
+		{
+			pos = i;
+			while (ret[pos] != ' ' && ret[pos] != '$' && ret[pos] != '"' && ret[pos] != '\0')
+				pos++;
+			key = ft_substr(ret, i, pos - i);
+			tmp = ret;
+			ret = ft_replace(ret, key, variable_get(fresh->env, key + 1)->value);
+			free(key);
+			i = pos;
+		}
+		i++;
+	}
+	printf("|%s|\n", ret);
+	return (ret);
+}
+
 void	ft_parse_line(t_fresh *fresh)
 {
 	int		i;
@@ -395,6 +432,9 @@ void	ft_parse_line(t_fresh *fresh)
 	i = 0;
 	tmp = fresh->line;
 	fresh->line = ft_strtrim(fresh->line, "\n");
+	free(tmp);
+	tmp = fresh->line;
+	fresh->line = ft_replace_vars(fresh, fresh->line);
 	free(tmp);
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
 	if (!check_invalid_pipes(cmds))
