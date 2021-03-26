@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/03/16 10:24:29 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/26 11:46:29 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ int		ft_unset(t_fresh *fresh, t_command *command)
 	char	**vars;
 
 	i = 0;
-	vars = ft_split(command->arg, ' ');
+	/*vars = ft_split(command->arg, ' ');
 	while (vars[i])
 	{
 		remove_var(fresh, ft_strtrim(vars[i], "\n"));
 		i++;
-	}
+	}*/
 	return (1);
 }

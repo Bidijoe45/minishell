@@ -1,6 +1,7 @@
 SRCS =	fresh.c \
 		./print/print.c \
-		./commands/command.c ./commands/cd.c ./commands/clear.c ./commands/exit.c ./commands/export.c ./commands/pwd.c ./commands/unset.c ./commands/variable.c ./commands/env.c ./commands/echo.c \
+		./commands/variable.c \
+		./commands/command.c \
 		./music.c \
 		./parser/parser.c \
 		./list/list.c

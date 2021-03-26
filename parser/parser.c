@@ -104,26 +104,6 @@ void	read_line(t_fresh *fresh)
 	}
 }
 
-void	ft_parse_args(t_fresh *fresh, t_command *command, char **words)
-{
-	int	i;
-
-	i = 0;
-	if (words == NULL || *words == NULL)
-		return ;
-	while (words[i])
-		i++;
-	command->args = malloc(sizeof(char *) * (i + 1));
-	if (!command->args)
-		return ;
-	i = 0;
-	while (words[i])
-	{
-		command->args[i] = ft_strdup(words[i]);
-		i++;
-	}
-}
-
 int		ft_is_special_char(int c)
 {
 	if (c == '|' || c == '>' || c == '<')
@@ -349,6 +329,29 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	ft_free_split(cmds);
 }
 
+int		check_invalid_pipes(char **cmds)
+{
+	int		l;
+	int		i;
+	char	*cmd;
+	
+	i = 0;
+	while (cmds[i])
+	{
+		cmd = ft_strtrim(cmds[i], " ");
+		l = ft_strlen(cmd);
+		if ((cmd[0] == '|' || cmd[l - 1] == '|') &&
+				(!is_between_quotes(cmd, 0) && !is_between_quotes(cmd, l - 1)))
+		{
+			free(cmd);
+			return (0);
+		}
+		free(cmd);
+		i++;
+	}
+	return (1);
+}
+
 void	ft_parse_line(t_fresh *fresh)
 {
 	int		i;
@@ -361,12 +364,16 @@ void	ft_parse_line(t_fresh *fresh)
 	fresh->line = ft_strtrim(fresh->line, "\n");
 	free(tmp);
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
+	if (!check_invalid_pipes(cmds))
+	{
+		printf("Error: wrong syntax\n");
+		return ;
+	}
 	while (cmds[i])
 	{
 		ft_parse_cmd(fresh, cmds[i]);
 		i++;
 	}
-
 	i = 0;
 	while (cmds[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/03/15 09:20:02 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/03/26 11:46:09 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static	void	free_bidimensional(char **mem)
 
 int	ft_cd(t_fresh *fresh, t_command *command)
 {
-	char	**argv;
+/*	char	**argv;
 	char	*tmp;
 	int		ret;
 
@@ -48,5 +48,6 @@ int	ft_cd(t_fresh *fresh, t_command *command)
 		ft_print_error(fresh, "Not found");
 	free_bidimensional(argv);
 	free(tmp);
-	return (ret);
+	return (ret);*/
+	return (1);
 }

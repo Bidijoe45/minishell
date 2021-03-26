@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/23 10:51:58 by apavel           ###   ########.fr       */
+/*   Updated: 2021/03/26 11:45:37 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "command.h"
 #include "../print/print.h"
 #include "../list/list.h"
-
+/*
 void    ft_not_found(char *cmd)
 {
 	ft_print_color(RESET, "");
@@ -340,7 +340,7 @@ void    ft_parse_command(t_fresh *fresh, t_command *command, t_command *next)
 			fresh->last_fd = command->fd[0];
 		}
 	}
-	else if (command->type == s_redirect || command->type == d_redirect) /* >? */
+	else if (command->type == s_redirect || command->type == d_redirect)
 	{
 		pid = fork();
 
@@ -400,4 +400,4 @@ void	exec_commands(t_fresh *fresh)
 	fresh->commands = NULL;
 	free(fresh->commands);
 	ft_print_input(fresh);
-}
+}*/
