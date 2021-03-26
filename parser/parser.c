@@ -408,15 +408,18 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 		if (ret[i] == '$' && is_between_quotes(ret, i) != 1)
 		{
 			pos = i;
+			pos++;
 			while (ret[pos] != ' ' && ret[pos] != '$' && ret[pos] != '"' && ret[pos] != '\0')
 				pos++;
 			key = ft_substr(ret, i, pos - i);
 			tmp = ret;
 			ret = ft_replace(ret, key, variable_get(fresh->env, key + 1)->value);
+			free(tmp);
 			free(key);
-			i = pos;
+			i = 0;
 		}
-		i++;
+		else
+			i++;
 	}
 	printf("|%s|\n", ret);
 	return (ret);
