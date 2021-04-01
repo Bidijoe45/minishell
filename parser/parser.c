@@ -160,7 +160,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 	while (command[i] != '\0')
 	{
 		if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
-			pos++;	
+			pos++;
 		i++;
 	}
 	files = malloc(sizeof(t_file *) * pos + 1);
@@ -241,7 +241,8 @@ char	*extract_cmd(char *command, char **command_rpl)
 			return ft_substr(command, pos, i - pos);
 		}
 	}
-	return ft_substr(command, pos, i - pos);
+	*command_rpl = ft_strdup(command);
+	return (ft_strdup(""));
 }
 
 char	*extract_args(char *command)
