@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/01 11:31:45 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/01 13:50:21 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ enum	e_rtype
 
 typedef	struct	s_file
 {
-	char		*file_name;
-	enum	e_rtype		type;
+	char			*file_name;
+	enum	e_rtype	type;
+	int				fd;
 }				t_file;
 
 typedef enum	e_ctype

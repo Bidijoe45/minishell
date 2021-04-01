@@ -48,11 +48,13 @@ char     **get_key_pos(char *str, char *key)
 void    replace_keys(t_replace *replace, char *str, char *key, char *word)
 {
 	int key_len;
+	int replaced;
 
+	replaced = 0;
 	key_len = ft_strlen(key);
 	while (replace->i < replace->ret_str_len)
 	{
-		if (&str[replace->j] == replace->key_pos[replace->l])
+		if (&str[replace->j] == replace->key_pos[replace->l] && !replaced)
 		{
 		   replace->k = 0;
 		   while (replace->k < replace->word_len)
@@ -63,6 +65,7 @@ void    replace_keys(t_replace *replace, char *str, char *key, char *word)
 		   }
 		   replace->j += key_len;
 		   replace->l++;
+		   replaced = 1;
 		}
 		else
 			replace->ret_str[replace->i++] = str[replace->j++];
@@ -80,7 +83,8 @@ char    *ft_replace(char *str, char *key, char *word)
 	replace->j = 0;
 	replace->k = 0;
 	replace->l = 0;
-	replace->key_count = count_keys(str, key);
+//	replace->key_count = count_keys(str, key);
+	replace->key_count = 1; 
 	replace->ret_str_len = (ft_strlen(str) - (ft_strlen(key) * replace->key_count)) + (ft_strlen(word) * replace->key_count) + 1;
 	replace->ret_str = malloc(replace->ret_str_len);
 	if (replace->key_count > 0)

@@ -196,7 +196,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 			files[j] = file;
 			tmp = *command_rpl;
 			key = ft_substr(command, redirect, i - redirect);
-			*command_rpl = ft_replace(tmp, key, "");
+			*command_rpl = ft_replace(tmp, key, "");	
 			free(key);
 			free(tmp);
 			j++;
@@ -298,8 +298,8 @@ int		check_invalid_redirections(char **cmds)
 	{
 		cmd = ft_strtrim(cmds[i], " ");
 		l = ft_strlen(cmd);
-		if ((check_chars(cmd[0]) || check_chars(cmd[l - 1])) &&
-				(!is_between_quotes(cmd, 0) && !is_between_quotes(cmd, l - 1)))
+		if ((check_chars(cmd[0] && cmd[0] == '|') || check_chars(cmd[l - 1])) &&
+			(!is_between_quotes(cmd, 0) && !is_between_quotes(cmd, l - 1)))
 		{
 			free(cmd);
 			return (0);
@@ -337,7 +337,6 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	cmd->read_from_pipe = rfp;
 	cmd->write_to_pipe = wtp;
 	command_set(&fresh->commands, cmd);
-	printf("command: |%s|\n", cmd->cmd);
 	free(cmd_name);
 	free(tmp);
 }

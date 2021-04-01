@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/01 13:22:52 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/01 16:23:36 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_load_env_vars(t_fresh *fresh, char **envp)
 	char 	**split_var;
 	int		i;
 	t_variable	*var;
-	
+
 	i = 0;
 	while (envp[i])
 	{
@@ -59,22 +59,6 @@ void	ft_load_env_vars(t_fresh *fresh, char **envp)
 		i++;
 		ft_free_split(split_var);
 	}
-}
-
-void	ft_execute_commands(t_fresh *fresh)
-{
-	t_list *list_elem;
-	list_elem = fresh->commands;
-
-	while (list_elem)
-	{
-		t_command *cmd = (t_command *)list_elem->content;
-	
-		printf("list_cmd: %s\n", cmd->cmd);
-
-		list_elem = list_elem->next;
-	}
-
 }
 
 void	ft_free_commands(t_fresh *fresh)
@@ -115,6 +99,243 @@ void	ft_free_commands(t_fresh *fresh)
 	fresh->commands = NULL;
 }
 
+int		ft_listsize(t_list *list)
+{
+	t_list	*tmp;
+	int		i;
+
+	i = 0;
+	tmp = list;
+	while (tmp != NULL)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
+}
+
+char	**ft_list_to_chararr(t_list *list)
+{
+	char	**arr;
+	t_list	*tmp;
+	int		size;
+	int		i;
+
+	size = ft_listsize(list);
+	i = 0;
+	arr = malloc(sizeof(char *) * (size + 1));
+	tmp = list;
+	while (tmp)
+	{
+		if (((t_variable *)tmp->content)->value != NULL)
+			arr[i] = ft_strjoin(ft_strjoin(((t_variable *)tmp->content)->key, "="), ((t_variable *)tmp->content)->value);
+		tmp = tmp->next;
+		i++;
+	}
+	arr[i] = NULL;
+	return (arr);
+}
+
+char	**ft_create_argv(t_command *command, char *path)
+{
+	char	**argv;
+	char	**arg;
+	int		argc;
+	int		i;
+	int		j;
+
+	argc = 0;
+	i = 1;
+	j = 0;
+	while (command->args[argc])
+		argc++;
+	argv = malloc(sizeof(char *) * (argc + 2));
+	argv[0] = path;
+	while (j < argc)
+	{
+		argv[i] = command->args[j];
+		i++;
+		j++;
+	}
+	argv[i] = NULL;
+	//free_bidimensional(arg);
+	arg = NULL;
+	return (argv);
+}
+
+char	*create_path(char *path, char *cmd)
+{
+	char	*tmp;
+
+	tmp = path;
+	path = ft_strjoin(path, "/");
+	free(tmp);
+	tmp = path;
+	path = ft_strjoin(path, cmd);
+	free(tmp);
+	tmp = path;
+	path = ft_strtrim(path, "\n");
+	return (path);
+}
+
+
+char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
+{
+	struct	stat	f_stat;
+	int				i;
+	int				status;
+	char			*path;
+	char			**paths;
+
+	i = 0;
+	path = NULL;
+	paths = ft_split(variable_get(fresh->env, "PATH")->value, ':');
+	while (paths[i])
+	{
+		path = create_path(paths[i], command->cmd);
+		status = lstat(path, &f_stat);
+		if (!status)
+		{
+			free(paths);
+			return (path);
+		}
+		i++;
+	}
+	if (path)
+		free(path);
+	path = ft_strtrim(command->cmd, "\n");
+	if (!lstat(path, &f_stat) && !S_ISDIR(f_stat.st_mode))
+		return (path);
+	free(paths);
+	return (NULL);
+}
+
+int		ft_exec_bin(t_fresh *fresh, t_command *command)
+{
+	int		pid;
+	int		status;
+	char	**argv;
+	char	*path;
+	char	**chararr;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		path = ft_check_if_valid(fresh, command);
+		argv = ft_create_argv(command, path);
+		chararr = ft_list_to_chararr(fresh->env);
+		if (path)
+			execve(path, argv, chararr);
+		else
+		{ 
+			//free_bidimensional(argv);
+			argv = NULL;
+			free(path);
+			path = NULL;
+			//free_bidimensional(chararr);
+			exit(127);
+		}
+		//free_bidimensional(argv);
+		argv = NULL;
+		exit(errno);
+	}
+	else
+		wait(&status);
+	return (status);
+}
+
+int		ft_is_builtin(t_fresh *fresh, t_command *command)
+{
+	char *name;
+
+	name = command->cmd;
+	if (!ft_strncmp(name, "echo", 4))
+		return (1);
+	else if (!ft_strncmp(name, "cd", 2))
+		return (1);
+	else if (!ft_strncmp(name, "export", 6))
+		return (1);
+	else if (!ft_strncmp(name, "env", 3))
+		return (1);
+	else if (!ft_strncmp(name, "unset", 5))
+		return (1);
+	else if (!ft_strncmp(name, "pwd", 3))
+		return (1);
+	else if (!ft_strncmp(name, "exit", 4))
+		return (1);
+	return (0);
+}
+
+void	ft_execute_commands(t_fresh *fresh)
+{
+	int i;
+	int	pid;
+	t_list	*list_elem;
+	t_file	*last_in;
+	t_file	*last_out;
+
+	last_in = NULL;
+	last_out = NULL;
+	list_elem = fresh->commands;
+	while (list_elem)
+	{
+		t_command *command = (t_command *)list_elem->content;
+
+		i = 0;
+		while (command->files[i])
+		{
+			if (command->files[i]->type == IN)
+				last_in = command->files[i];
+			else
+			{
+				if (last_out)
+					close(last_out->fd);
+				last_out = command->files[i];
+				last_out->fd = open(last_out->file_name, O_RDWR | O_CREAT, 0700);
+			}
+			i++;
+		}
+		if (last_in != NULL)
+		{
+			pid = fork();
+			if (!pid)
+			{
+				last_in->fd = open(last_in->file_name, O_RDONLY);
+				if (last_in->fd == -1)
+				{
+					printf("%s: No such file or directory\n", last_in->file_name);
+					exit(1);
+				}
+				dup2(last_in->fd, 0);
+				if (last_out != NULL)
+					dup2(last_out->fd, 1);
+				if (ft_is_builtin(fresh, command))
+					;//ft_execute_builtin(fresh, command);
+				else
+					ft_exec_bin(fresh, command);
+				exit(errno);
+			}
+			wait(NULL);
+		}
+		else
+		{
+			pid = fork();
+			if (!pid)
+			{
+				if (last_out != NULL)
+					dup2(last_out->fd, 1);
+				if (ft_is_builtin(fresh, command))
+					;//ft_execute_builtin(fresh, command);
+				else
+					ft_exec_bin(fresh, command);
+				exit(errno);
+			}
+			wait(NULL);
+		}
+		list_elem = list_elem->next;
+	}
+}
+
 int		main(int argc, char **argv, char **envp, char **apple)
 {
 	t_fresh *fresh;
@@ -137,7 +358,7 @@ int		main(int argc, char **argv, char **envp, char **apple)
 			ft_parse_line(fresh);
 		free(fresh->line);
 		fresh->line = NULL;
-		
+
 		//ejecutar comandos
 		ft_execute_commands(fresh);
 		ft_free_commands(fresh);
