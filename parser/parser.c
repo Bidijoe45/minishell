@@ -151,6 +151,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 	t_file *file;
 	char	*tmp;
 	char	*tmp2;
+	char	*key;
 
 	j = 0;
 	i = 0;
@@ -194,7 +195,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 				file->type = IN;
 			files[j] = file;
 			tmp = *command_rpl;
-			char *key = ft_substr(command, redirect, i - redirect);
+			key = ft_substr(command, redirect, i - redirect);
 			*command_rpl = ft_replace(tmp, key, "");
 			free(key);
 			free(tmp);
@@ -210,6 +211,7 @@ char	*extract_cmd(char *command, char **command_rpl)
 	int	i;
 	int	pos;
 	int	next_is_file;
+	char *key;
 
 	i = 0;
 	pos = 0;
@@ -233,7 +235,7 @@ char	*extract_cmd(char *command, char **command_rpl)
 			while ((command[i] != ' ' && command[i] != '>' && command[i] != '<'
 				&& command[i] != '\0' && command[i] != '\n') || (is_between_quotes(command, i) && command[i] != '\0'))
 				i++;
-			char *key = ft_substr(command, pos, i - pos);
+			key = ft_substr(command, pos, i - pos);
 			*command_rpl = ft_replace(command, key, "");
 			free(key);
 			return ft_substr(command, pos, i - pos);
@@ -308,17 +310,58 @@ int		check_invalid_redirections(char **cmds)
 	return (1);
 }
 
+//rfp -> read from pipe
+//wtp -> write to pipe
+void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
+{
+	int i;
+	char *cmd_name;
+	char *args_str;
+	char **args;
+	t_file **files;
+	char *tmp;
+	t_command *cmd;
+
+	cmd_name = extract_cmd(command, &tmp);
+	command = tmp;
+	files = extract_files(command, &tmp);
+	free(command);
+	command = tmp;
+	args = ft_split_ignore_quotes(command, ' ');
+	cmd = malloc(sizeof(t_command));
+	if (!cmd)
+		return ;
+	cmd->cmd = cmd_name;
+	cmd->files = files;
+	cmd->args = args;
+	cmd->read_from_pipe = rfp;
+	cmd->write_to_pipe = wtp;
+	printf("command: |%s|\n", cmd->cmd);
+	i = 0; /* TODO: ARREGLAR QUE SI PONGO "ls > >" DA SEGFAULT PORQUE NO ALOCAMOS UN PAR DE COSAS! */
+	while (files[i])
+	{
+		free(files[i]->file_name);
+		free(files[i]);
+		i++;
+	}
+	i = 0;
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+	free(cmd_name);
+	free(args);
+	free(files);
+	free(tmp);
+	free(cmd);
+}
+
 void	ft_parse_cmd(t_fresh *fresh, char *command)
 {
 	int			i;
-	int			j;
 	int			n_pipes;
 	char 		**cmds;
-	char		*cmd_name;
-	char		*args_str;
-	char		**args;
-	t_file		**files;
-	char		*tmp;
 	t_command	*cmd;
 	
 	n_pipes = 0;
@@ -332,41 +375,20 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 		n_pipes++;
 	if (n_pipes - 1 != 0)
 	{
-	
+		i = 0;
+		while (cmds[i])
+		{
+			if (i == 0)
+				ft_parse_instruction(fresh, cmds[i], 0, 1);
+			else if (i == n_pipes - 1)
+				ft_parse_instruction(fresh, cmds[i], 1, 0);
+			else
+				ft_parse_instruction(fresh, cmds[i], 1, 1);
+			i++;	
+		}
 	}
 	else
-	{
-		cmd_name= extract_cmd(command, &tmp);
-		command = tmp;
-		files = extract_files(command, &tmp);
-		free(command);
-		command = tmp;
-		args = ft_split_ignore_quotes(command, ' ');
-		cmd = malloc(sizeof(t_command));
-		if (!cmd)
-			return ;
-		cmd->cmd = cmd_name;
-		cmd->files = files;
-		cmd->args = args;
-		printf("command: |%s|\n", cmd->cmd);
-		i = 0; /* TODO: ARREGLAR QUE SI PONGO "ls > >" DA SEGFAULT PORQUE NO ALOCAMOS UN PAR DE COSAS! */
-		while (files[i])
-		{
-			free(files[i]->file_name);
-			free(files[i]);
-			i++;
-		}
-		i = 0;
-		while (args[i])
-		{
-			free(args[i]);
-			i++;
-		}
-		free(args);
-		free(files);
-		free(tmp);
-		free(cmd);
-	}
+		ft_parse_instruction(fresh, command, 0, 0);
 	ft_free_split(cmds);
 }
 
@@ -426,7 +448,6 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 		else
 			i++;
 	}
-	printf("|%s|\n", ret);
 	return (ret);
 }
 

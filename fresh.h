@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/03/26 11:43:48 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/01 10:56:28 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,6 @@ typedef	struct	s_file
 typedef enum	e_ctype
 {
 	simple,
-	s_redirect,
-	d_redirect,
-	r_redirect,
-	f_pipe
 }				t_ctype;
 
 typedef struct	s_command
