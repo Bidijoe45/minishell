@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/01 10:56:28 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/01 11:31:45 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,12 @@ typedef struct  s_fresh
 	t_list		*local_vars;
 	t_list		*commands;
 }               t_fresh;
+
+typedef struct s_variable
+{
+	char	*key;
+	char	*value;
+}				t_variable;
 
 t_list		*list_new_element(void *content);
 void		list_add_back(t_list *list, t_list *new_elem);

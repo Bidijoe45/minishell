@@ -321,7 +321,7 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	t_file **files;
 	char *tmp;
 	t_command *cmd;
-
+	
 	cmd_name = extract_cmd(command, &tmp);
 	command = tmp;
 	files = extract_files(command, &tmp);
@@ -331,30 +331,15 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	cmd = malloc(sizeof(t_command));
 	if (!cmd)
 		return ;
-	cmd->cmd = cmd_name;
+	cmd->cmd = ft_strdup(cmd_name);
 	cmd->files = files;
 	cmd->args = args;
 	cmd->read_from_pipe = rfp;
 	cmd->write_to_pipe = wtp;
+	command_set(&fresh->commands, cmd);
 	printf("command: |%s|\n", cmd->cmd);
-	i = 0; /* TODO: ARREGLAR QUE SI PONGO "ls > >" DA SEGFAULT PORQUE NO ALOCAMOS UN PAR DE COSAS! */
-	while (files[i])
-	{
-		free(files[i]->file_name);
-		free(files[i]);
-		i++;
-	}
-	i = 0;
-	while (args[i])
-	{
-		free(args[i]);
-		i++;
-	}
 	free(cmd_name);
-	free(args);
-	free(files);
 	free(tmp);
-	free(cmd);
 }
 
 void	ft_parse_cmd(t_fresh *fresh, char *command)

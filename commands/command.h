@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:46 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/16 10:23:40 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/01 11:29:35 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 #ifndef COMMAND_H
 # define COMMAND_H
 
-typedef struct	s_variable
-{
-	char 	*key;
-	char	*value;
-}			t_variable;
 
 void		ft_parse_command(t_fresh *fresh, t_command *command, t_command *next);
 void		ft_exit(char *exit_code);

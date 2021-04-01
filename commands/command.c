@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/26 11:45:37 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/01 11:18:30 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 #include "command.h"
 #include "../print/print.h"
 #include "../list/list.h"
+
+void	*command_set(t_list **list, t_command *command)
+{
+	if (!*list)
+		*list = list_new_element(command);
+	else
+		list_add_back(*list, list_new_element(command));
+	return NULL;
+}
+
 /*
 void    ft_not_found(char *cmd)
 {
@@ -27,25 +37,6 @@ int		ft_is_variable(char *command)
 	if (ft_strchr(command, '='))
 		return (1);
 	return (0);
-}
-
-//TODO: si una variable local es cambiada tambien tiene que cambiar en export
-void    new_local_var(t_fresh *fresh, char *cmd)
-{
-	char        **split_cmd;
-	t_variable  *var;
-
-	split_cmd = ft_split(cmd, '=');
-	if (split_cmd[1] == NULL)
-		return ft_not_found(cmd);
-	if (fresh->local_vars)
-	{
-		variable_set(fresh->local_vars, split_cmd[0], split_cmd[1]);
-		variable_mod(fresh->env, split_cmd[0], split_cmd[1]);
-	}
-	else
-		fresh->local_vars = list_new_element(variable_new(split_cmd[0], split_cmd[1]));
-	free(split_cmd);
 }
 
 //=========TEST ONLY============

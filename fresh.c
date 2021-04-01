@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/01 09:57:48 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/01 13:22:52 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,60 @@ void	ft_load_env_vars(t_fresh *fresh, char **envp)
 	}
 }
 
+void	ft_execute_commands(t_fresh *fresh)
+{
+	t_list *list_elem;
+	list_elem = fresh->commands;
+
+	while (list_elem)
+	{
+		t_command *cmd = (t_command *)list_elem->content;
+	
+		printf("list_cmd: %s\n", cmd->cmd);
+
+		list_elem = list_elem->next;
+	}
+
+}
+
+void	ft_free_commands(t_fresh *fresh)
+{
+	t_list *list_elem;
+	list_elem = fresh->commands;
+	int	i;
+
+	while (list_elem)
+	{
+		t_command *cmd = (t_command *)list_elem->content;
+		free(cmd->cmd);
+		if (cmd->files)
+		{
+			i = 0;
+			while (cmd->files[i])
+			{
+				free(cmd->files[i]->file_name);
+				free(cmd->files[i]);
+				i++;
+			}
+		}
+		free(cmd->files);
+		if (cmd->args)
+		{
+			i = 0;
+			while (cmd->args[i])
+			{
+				free(cmd->args[i]);
+				i++;
+			}
+		}
+		free(cmd->args);
+		free(cmd);
+		free(list_elem);
+		list_elem = list_elem->next;
+	}
+	fresh->commands = NULL;
+}
+
 int		main(int argc, char **argv, char **envp, char **apple)
 {
 	t_fresh *fresh;
@@ -83,7 +137,12 @@ int		main(int argc, char **argv, char **envp, char **apple)
 			ft_parse_line(fresh);
 		free(fresh->line);
 		fresh->line = NULL;
+		
+		//ejecutar comandos
+		ft_execute_commands(fresh);
+		ft_free_commands(fresh);
 		ft_print_input(fresh);
 	}
+	//Creo que aqui nunca llega xD
 	free(fresh);
 }
