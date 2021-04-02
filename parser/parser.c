@@ -401,7 +401,7 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 		{
 			pos = i;
 			pos++;
-			while (ret[pos] != ' ' && ret[pos] != '$' && ret[pos] != '"' && ret[pos] != '\0')
+			while (ret[pos] != ' ' && ret[pos] != '$' && ret[pos] != '"' && ret[pos] != '\'' && ret[pos] != '\0')
 				pos++;
 			key = ft_substr(ret, i, pos - i);
 			tmp = ret;
