@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 11:36:19 by apavel            #+#    #+#             */
-/*   Updated: 2021/03/22 16:46:18 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/02 14:00:08 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct	s_replace
 	int 		j;
 	int 		k;
 	int 		l;
+	int			n;
 }				t_replace;
 
 size_t			ft_strlen(const char *str);
@@ -82,6 +83,6 @@ void			ft_lstiter(t_list *lst, void(*f)(void *));
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
 void			(*del)(void *));
 int				ft_isspace(char c);
-char			*ft_replace(char *str, char *key, char *word);
+char			*ft_replace(char *str, char *key, char *word, int n);
 void			ft_free_split(char **split);
 #endif
