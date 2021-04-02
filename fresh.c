@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/02 13:08:46 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/02 13:45:09 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,7 +284,7 @@ void	ft_execute_builtin(t_command *command, t_fresh *fresh)
 	else if (!ft_strncmp(name, "pwd", 3))
 		return ;
 	else if (!ft_strncmp(name, "exit", 4))
-		return ;
+		ft_exit(command, fresh);
 	else
 		return ;
 }
