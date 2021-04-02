@@ -14,6 +14,11 @@ int		ft_valid_quotes(char *line)
 	i = 0;
 	while (line[i] != '\0')
 	{
+		if (line[i] == '\\')
+		{
+			i += 2;
+			continue ;
+		}
 		if (line[i] == '"' && dq == 0 && sq == 0)
 			dq = 1;
 		else if (line[i] == '"' && dq == 1)
@@ -60,7 +65,7 @@ void replace_variables(t_fresh *fresh)
 			tmp_str = ft_substr(fresh->line, i, end - i);
 			var = variable_get(fresh->env, tmp_str + 1);
 			tmp = fresh->line;
-			fresh->line = ft_replace(fresh->line, tmp_str, var == NULL ? "" : var->value);
+			fresh->line = ft_replace(fresh->line, tmp_str, var == NULL ? "" : var->value, 0);
 			free(tmp);
 			free(tmp_str);
 		}
@@ -124,6 +129,11 @@ int		is_between_quotes(char *str, int pos)
 	dq = 0;
 	while (str[i] != '\0')
 	{
+		if (str[i] == '\\')
+		{
+			i += 2;
+			continue ;
+		}
 		if (str[i] == '\'' && dq == 0)
 			sq = !sq;
 		if (str[i] == '"' && sq == 0)
@@ -196,7 +206,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 			files[j] = file;
 			tmp = *command_rpl;
 			key = ft_substr(command, redirect, i - redirect);
-			*command_rpl = ft_replace(tmp, key, "");	
+			*command_rpl = ft_replace(tmp, key, "", 1);	
 			free(key);
 			free(tmp);
 			j++;
@@ -236,7 +246,7 @@ char	*extract_cmd(char *command, char **command_rpl)
 				&& command[i] != '\0' && command[i] != '\n') || (is_between_quotes(command, i) && command[i] != '\0'))
 				i++;
 			key = ft_substr(command, pos, i - pos);
-			*command_rpl = ft_replace(command, key, "");
+			*command_rpl = ft_replace(command, key, "", 0);
 			free(key);
 			return ft_substr(command, pos, i - pos);
 		}
@@ -294,6 +304,23 @@ void	ft_trim_args(char ***argsp)
 	}
 }
 
+void	ft_replace_escape(char ***argsp)
+{
+	int		i;
+	char	**args;
+	char	*tmp;
+	char	*tmp2;
+
+	i = 0;
+	args = *argsp;
+	while (args[i])
+	{
+		tmp = ft_replace(args[i], "\\", "", 0);
+		free(args[i]);
+		args[i] = tmp;
+		i++;
+	}
+}
 //rfp -> read from pipe
 //wtp -> write to pipe
 void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
@@ -313,6 +340,7 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	command = tmp;
 	args = ft_split_ignore_quotes(command, ' ');
 	ft_trim_args(&args);
+	ft_replace_escape(&args);
 	cmd = malloc(sizeof(t_command));
 	if (!cmd)
 		return ;
@@ -407,9 +435,9 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 			tmp = ret;
 			var = variable_get(fresh->env, key + 1);
 			if (var)
-				ret = ft_replace(ret, key, var->value);
+				ret = ft_replace(ret, key, var->value, 0);
 			else
-				ret = ft_replace(ret, key, "");
+				ret = ft_replace(ret, key, "", 0);
 			free(tmp);
 			free(key);
 			i = 0;
