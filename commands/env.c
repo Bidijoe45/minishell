@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/02 16:41:58 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/02 17:33:46 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	ft_env(t_command *command, t_fresh *fresh)
 		printf("\033%s%s\033%s%s\n", RED, "Error: ", RESET, "Options not supported.");
 		return (1);
 	}*/
+
 	elem = fresh->env;
 	while (elem)
 	{

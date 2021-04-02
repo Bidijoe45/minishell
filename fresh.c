@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/02 16:57:25 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/02 17:47:25 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,40 +320,47 @@ void	ft_execute_commands(t_fresh *fresh)
 		}
 		if (last_in != NULL)
 		{
-			pid = fork();
-			if (!pid)
+			last_in->fd = open(last_in->file_name, O_RDONLY);
+			if (last_in->fd == -1)
 			{
-				last_in->fd = open(last_in->file_name, O_RDONLY);
-				if (last_in->fd == -1)
-				{
-					printf("%s: No such file or directory\n", last_in->file_name);
-					exit(1);
-				}
-				dup2(last_in->fd, 0);
-				if (last_out != NULL)
-					dup2(last_out->fd, 1);
-				if (ft_is_builtin(fresh, command))
-					;//ft_execute_builtin(fresh, command);
-				else
-					ft_exec_bin(fresh, command);
-				exit(errno);
+				printf("%s: No such file or directory\n", last_in->file_name);
+				exit(1);
 			}
-			wait(NULL);
+			fresh->fd_in = dup(0);
+			dup2(last_in->fd, 0);
+			if (last_out != NULL)
+			{
+				fresh->fd_out = dup(1);
+				dup2(last_out->fd, 1);
+			}
+			if (ft_is_builtin(fresh, command))
+				;//ft_execute_builtin(fresh, command);
+			else
+				ft_exec_bin(fresh, command);
+			close(last_in->fd);
+			dup2(fresh->fd_in, 0);
+			if (last_out != NULL)
+			{
+				close(last_out->fd);
+				dup2(fresh->fd_out, 1);
+			}
 		}
 		else
 		{
-			pid = fork();
-			if (!pid)
+			if (last_out != NULL)
 			{
-				if (last_out != NULL)
-					dup2(last_out->fd, 1);
-				if (ft_is_builtin(fresh, command))
-					ft_execute_builtin(command, fresh);
-				else
-					ft_exec_bin(fresh, command);
-				exit(errno);
+				fresh->fd_out = dup(1);
+				dup2(last_out->fd, 1);
 			}
-			wait(NULL);
+			if (ft_is_builtin(fresh, command))
+				ft_execute_builtin(command, fresh);
+			else
+				ft_exec_bin(fresh, command);
+			if (last_out != NULL)
+			{
+				close(last_out->fd);
+				dup2(fresh->fd_out, 1);
+			}
 		}
 		list_elem = list_elem->next;
 	}
@@ -387,6 +394,7 @@ int		main(int argc, char **argv, char **envp, char **apple)
 		ft_free_commands(fresh);
 		ft_print_input(fresh);
 	}
+
 	//Creo que aqui nunca llega xD
 	free(fresh);
 }
