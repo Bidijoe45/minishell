@@ -6,23 +6,45 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2020/11/30 11:56:14 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/02 13:44:40 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fresh.h"
-#include "../print/print.h"
 
-void    ft_exit(char *exit_code)
+int	ft_exit(t_command *command, t_fresh *fresh)
 {
-    int i;
+	int	i;
+	int	code;
 
-    i = 0;
-    while (exit_code && exit_code[i++])
-    {
-        if (!ft_isdigit(exit_code[i]))
-            exit(255);
-    }
-    ft_print_color(BOLD_GREEN, "See you soon!\n\n");
-    exit(!*exit_code ? 0 : ft_atoi(exit_code));
+	i = 0;
+	while (command->args[i])
+		i++;
+	if (i == 0)
+		return (0);
+	if (i > 1)
+	{
+		printf("exit: too many arguments\n");
+		return (1);
+	}
+	i = 0;
+	while (command->args[0][i] == ' ')
+		i++;
+	if (command->args[0][i] == '-' || command->args[0][i] == '+')
+		i++;
+	while (command->args[0][i])
+	{
+		if (!ft_isdigit(command->args[0][i]))
+		{
+			printf("exit: %s: numeric argument required\n", command->args[0]);
+			return (1);
+		}
+		i++;
+	}
+	code = ft_atoi(command->args[0]);
+	if (code < 0)
+		code = 256 + code;
+	else if (code > 255)
+		code = code - 256;
+	return (code);
 }

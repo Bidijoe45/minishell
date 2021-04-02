@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:46 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/04/02 12:18:14 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/02 13:55:39 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@
 
 
 void		ft_parse_command(t_fresh *fresh, t_command *command, t_command *next);
-void		ft_exit(char *exit_code);
 int			ft_cd(t_fresh *fresh, t_command *command);
-int			ft_pwd();
 void		ft_export(t_fresh *fresh, char *cmd);
 int			ft_unset(t_fresh *fresh, t_command *command);
 int			ft_env(t_fresh *fresh, t_command *command);
