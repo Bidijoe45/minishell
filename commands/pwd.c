@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/02 13:55:16 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/02 17:28:34 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,18 @@
 
 int    ft_pwd(t_command *command, t_fresh *fresh)
 {
-    char *cwd;
-
-    cwd = getcwd(NULL, 0);
-    printf("%s\n", cwd);
-    free(cwd);
-    return (0);
+	char *cwd;
+	
+	if (command->args[0])
+	{
+		if (command->args[0][0] == '-')
+		{
+			printf("pwd: %s: invalid option\n", command->args[0]);
+			return (1);
+		}
+	}
+	cwd = getcwd(NULL, 0);
+	printf("%s\n", cwd);
+	free(cwd);
+	return (0);
 }
