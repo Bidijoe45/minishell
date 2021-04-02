@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/02 13:17:00 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/02 13:56:42 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,6 @@ void		command_print_list(t_list *list);
 // commands
 int			ft_exit(t_command *command, t_fresh *fresh);
 int			ft_echo(t_command *command, t_fresh *fresh);
+int			ft_pwd(t_command *command, t_fresh *fresh);
 
 #endif
