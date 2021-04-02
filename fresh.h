@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/01 13:50:21 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/02 12:21:35 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ void		exec_commands(t_fresh *fresh);
 t_command	*command_new(char *cmd, char *arg, t_ctype type, char *redirect);
 void		*command_set(t_list **list, t_command *command);
 void		command_print_list(t_list *list);
+int		ft_echo(t_command *command, t_fresh *fresh);
 
 #endif

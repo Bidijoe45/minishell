@@ -6,46 +6,49 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 12:13:11 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/12/22 13:25:21 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/02 13:08:43 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fresh.h"
 #include "command.h"
 
-int		ft_set_trail(char *str)
+static	void	set_trail(char **args, int *trail)
 {
 	int i;
-	int	trail;
-	
+
 	i = 0;
-	if (str[i++] == '-')
+	if (args[0][0] == '-' && args[0][1] == 'n')
 	{
-		while (str[i] == 'n')
-		{
-			trail = 0;
+		i++;
+		while (args[0][i] == 'n')
 			i++;
-		}
-		if (str[i] != ' ' && str[i] != '\0')
-			trail = 1;
+		*trail = 0;
+		if (args[0][i] != ' ' && args[0][i] != '\0')
+			*trail = 1;
 	}
-	return (trail);
 }
 
-void	ft_echo(char *cmd, t_fresh *fresh)
+int	ft_echo(t_command *command, t_fresh *fresh)
 {
-	int		i;
-	int		trail;
-	char	*str;
-	char	*tmp;
+	int	trail;
+	int	i;
 
-	i = 0;
 	trail = 1;
-	if (cmd[4] != '\n' && cmd[4] != ' ')
-		return ft_not_found(cmd);
-	str = ft_substr(cmd, 4, ft_strlen(cmd) - 5);
-	while (ft_isspace(str[i]))
+	if (command->args)
+		set_trail(command->args, &trail);
+	if (trail)
+		i = 0;
+	else
+		i = 1;
+	while (command->args[i])
+	{
+		write(1, command->args[i], ft_strlen(command->args[i]));
+		if (command->args[i + 1])
+			write(1, " ", 1);
 		i++;
-	trail = ft_set_trail(&str[i]);
-	free(str);
+	}
+	if (trail)
+		write(1, "\n", 1);
+	return (0);
 }

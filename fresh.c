@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/01 16:23:36 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/02 13:08:46 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,29 @@ int		ft_is_builtin(t_fresh *fresh, t_command *command)
 	return (0);
 }
 
+void	ft_execute_builtin(t_command *command, t_fresh *fresh)
+{
+	char *name;
+
+	name = command->cmd;
+	if (!ft_strncmp(name, "echo", 4))
+		ft_echo(command, fresh);
+	else if (!ft_strncmp(name, "cd", 2))
+		return ;
+	else if (!ft_strncmp(name, "export", 6))
+		return ;
+	else if (!ft_strncmp(name, "env", 3))
+		return ;
+	else if (!ft_strncmp(name, "unset", 5))
+		return ;
+	else if (!ft_strncmp(name, "pwd", 3))
+		return ;
+	else if (!ft_strncmp(name, "exit", 4))
+		return ;
+	else
+		return ;
+}
+
 void	ft_execute_commands(t_fresh *fresh)
 {
 	int i;
@@ -325,7 +348,7 @@ void	ft_execute_commands(t_fresh *fresh)
 				if (last_out != NULL)
 					dup2(last_out->fd, 1);
 				if (ft_is_builtin(fresh, command))
-					;//ft_execute_builtin(fresh, command);
+					ft_execute_builtin(command, fresh);
 				else
 					ft_exec_bin(fresh, command);
 				exit(errno);
