@@ -245,44 +245,6 @@ char	*extract_cmd(char *command, char **command_rpl)
 	return (ft_strdup(""));
 }
 
-char	*extract_args(char *command)
-{
-	int	i;
-	int	pos;
-	int	next_is_file;
-	
-	i = 0;
-	pos = 0;
-	next_is_file = 0;
-	while (command[i] != '\0')
-	{
-		while (command[i] == ' ')
-			i++;
-		if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
-		{
-			i++;
-			while (command[i] == ' ')
-				i++;
-			while (command[i] != ' ' && command[i] != '<' && command[i] != '>'
-				&& command[i] != '\0')
-				i++;
-		}
-		else
-		{
-			while (command[i] != ' ' && command[i] != '>' && command[i] != '<'
-				&& command[i] != '\0' && command[i] != '\n' )
-				i++;
-			pos = i;
-			while ((command[i] != '>' && command[i] != '<'
-				&& command[i] != '\0' && command[i] != '\n') || is_between_quotes(command, i))
-				i++;
-			
-			return ft_substr(command, pos, i - pos);
-		}
-	}
-	return ft_substr(command, pos, i - pos);
-}
-
 int		check_chars(char c)
 {
 	return (c == '>' || c == '<');
@@ -311,6 +273,27 @@ int		check_invalid_redirections(char **cmds)
 	return (1);
 }
 
+void	ft_trim_args(char ***argsp)
+{
+	int		i;
+	char	**args;
+	char	*tmp;
+	char	*tmp2;
+
+	i = 0;
+	args = *argsp;
+	while (args[i])
+	{
+		tmp = ft_strtrim(args[i], "'");
+		free(args[i]);
+		tmp2 = tmp;
+		tmp = ft_strtrim(tmp2, "\"");
+		free(tmp2);
+		args[i] = tmp;
+		i++;
+	}
+}
+
 //rfp -> read from pipe
 //wtp -> write to pipe
 void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
@@ -329,6 +312,7 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	free(command);
 	command = tmp;
 	args = ft_split_ignore_quotes(command, ' ');
+	ft_trim_args(&args);
 	cmd = malloc(sizeof(t_command));
 	if (!cmd)
 		return ;
