@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/02 13:55:31 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/02 16:41:01 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,11 +274,11 @@ void	ft_execute_builtin(t_command *command, t_fresh *fresh)
 	if (!ft_strncmp(name, "echo", 4))
 		ft_echo(command, fresh);
 	else if (!ft_strncmp(name, "cd", 2))
-		return ;
+		ft_cd(command, fresh);
 	else if (!ft_strncmp(name, "export", 6))
 		return ;
 	else if (!ft_strncmp(name, "env", 3))
-		return ;
+		ft_env(command, fresh);
 	else if (!ft_strncmp(name, "unset", 5))
 		return ;
 	else if (!ft_strncmp(name, "pwd", 3))

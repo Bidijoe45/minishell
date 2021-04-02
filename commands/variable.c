@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 13:21:03 by apavel            #+#    #+#             */
-/*   Updated: 2021/03/26 14:58:06 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/02 16:49:16 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,25 @@ t_variable	*variable_get(t_list *variables, char *key)
 	return (NULL);
 }
 
-void	variable_set(t_list *variables, char *key, char *value)
+void	variable_set(t_list **variables, char *key, char *value)
 {
 	t_list *new_elem;
 	t_variable *var;
 
-	if (!variables)
+	if (!*variables)
 		return ;
-
-	if ((var = variable_get(variables, key)) != NULL)
+	if ((var = variable_get(*variables, key)) != NULL)
 	{
 		var->value = value;
 		return ;
 	}
-	if (variables)
+	if (*variables)
 	{
 		new_elem = list_new_element(variable_new(key, value));
-		list_add_back(variables, new_elem);
+		list_add_back(*variables, new_elem);
 	}
 	else
-		variables = list_new_element(variable_new(key, value));
+		*variables = list_new_element(variable_new(key, value));
 }
 
 void	variable_mod(t_list *variables, char *key, char *value)
