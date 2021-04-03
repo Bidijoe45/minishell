@@ -340,7 +340,10 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	command = tmp;
 	args = ft_split_ignore_quotes(command, ' ');
 	ft_trim_args(&args);
-	ft_replace_escape(&args);
+	// TODO:
+	// esto da core dump adri (seg fault y esas cosas)
+	// ==3927==The signal is caused by a READ memory access 
+	//ft_replace_escape(&args);
 	cmd = malloc(sizeof(t_command));
 	if (!cmd)
 		return ;
