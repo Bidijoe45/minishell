@@ -333,6 +333,9 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	char *tmp;
 	t_command *cmd;
 	
+	//TODO: arreglar esta puta mierda
+	if (ft_strchr(command, '$'))
+		command = ft_replace(command, "$?", ft_itoa(fresh->cmd_return), 0);
 	cmd_name = extract_cmd(command, &tmp);
 	command = tmp;
 	files = extract_files(command, &tmp);
@@ -343,7 +346,7 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	// TODO:
 	// esto da core dump adri (seg fault y esas cosas)
 	// ==3927==The signal is caused by a READ memory access 
-	//ft_replace_escape(&args);
+//	ft_replace_escape(&args);
 	cmd = malloc(sizeof(t_command));
 	if (!cmd)
 		return ;
@@ -428,7 +431,7 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 	ret = ft_strdup(cmds);
 	while (ret[i])
 	{
-		if (ret[i] == '$' && is_between_quotes(ret, i) != 1)
+		if (ret[i] == '$' && ret[i + 1] != '?' && is_between_quotes(ret, i) != 1)
 		{
 			pos = i;
 			pos++;
@@ -461,7 +464,6 @@ void	ft_parse_line(t_fresh *fresh)
 	i = 0;
 	tmp = fresh->line;
 	fresh->line = ft_strtrim(fresh->line, "\n");
-	free(tmp);
 	tmp = fresh->line;
 	fresh->line = ft_replace_vars(fresh, fresh->line);
 	free(tmp);

@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/03 11:46:44 by alvaro           ###   ########.fr       */
+/*   Updated: 2021/04/04 01:41:49 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 void	ft_initialize(t_fresh *fresh)
 {
+	fresh->cmd_return = 0;
 	fresh->env = NULL;
 	fresh->line = NULL;
 	fresh->local_vars = NULL;
@@ -242,6 +243,7 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 	}
 	else
 		wait(&status);
+	fresh->cmd_return = status >> 8; 
 	return (status);
 }
 
@@ -273,19 +275,19 @@ void	ft_execute_builtin(t_command *command, t_fresh *fresh)
 
 	name = command->cmd;
 	if (!ft_strncmp(name, "echo", 4))
-		ft_echo(command, fresh);
+		fresh->cmd_return = ft_echo(command, fresh);
 	else if (!ft_strncmp(name, "cd", 2))
-		ft_cd(command, fresh);
+		fresh->cmd_return = ft_cd(command, fresh);
 	else if (!ft_strncmp(name, "export", 6))
 		return ;
 	else if (!ft_strncmp(name, "env", 3))
-		ft_env(command, fresh);
+		fresh->cmd_return = ft_env(command, fresh);
 	else if (!ft_strncmp(name, "unset", 5))
 		return ;
 	else if (!ft_strncmp(name, "pwd", 3))
-		ft_pwd(command, fresh);
+		fresh->cmd_return = ft_pwd(command, fresh);
 	else if (!ft_strncmp(name, "exit", 4))
-		ft_exit(command, fresh);
+		fresh->cmd_return = ft_exit(command, fresh);
 	else
 		return ;
 }
