@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/02 13:44:40 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/03 11:39:34 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ int	ft_exit(t_command *command, t_fresh *fresh)
 		code = 256 + code;
 	else if (code > 255)
 		code = code - 256;
+	exit(code);
 	return (code);
 }
