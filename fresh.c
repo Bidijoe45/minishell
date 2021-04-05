@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/04 01:41:49 by alvaro           ###   ########.fr       */
+/*   Updated: 2021/04/05 13:43:41 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,7 +279,7 @@ void	ft_execute_builtin(t_command *command, t_fresh *fresh)
 	else if (!ft_strncmp(name, "cd", 2))
 		fresh->cmd_return = ft_cd(command, fresh);
 	else if (!ft_strncmp(name, "export", 6))
-		return ;
+		fresh->cmd_return = ft_export(command, fresh);
 	else if (!ft_strncmp(name, "env", 3))
 		fresh->cmd_return = ft_env(command, fresh);
 	else if (!ft_strncmp(name, "unset", 5))
@@ -294,20 +294,24 @@ void	ft_execute_builtin(t_command *command, t_fresh *fresh)
 
 void	ft_execute_commands(t_fresh *fresh)
 {
-	int i;
-	int	pid;
-	t_list	*list_elem;
-	t_file	*last_in;
-	t_file	*last_out;
+	int			i;
+	int			pid;
+	t_list		*list_elem;
+	t_file		*last_in;
+	t_file		*last_out;
+	t_command	*p_command;
 
 	last_in = NULL;
 	last_out = NULL;
+	p_command = NULL;
 	list_elem = fresh->commands;
 	while (list_elem)
 	{
 		t_command *command = (t_command *)list_elem->content;
-
 		i = 0;
+
+		if (command->write_to_pipe || command->read_from_pipe)
+			pipe(command->fd);
 		while (command->files[i])
 		{
 			if (command->files[i]->type == IN)
@@ -350,6 +354,16 @@ void	ft_execute_commands(t_fresh *fresh)
 		}
 		else
 		{
+			if (command->read_from_pipe)
+			{
+				dup2(0, p_command->fd[0]);
+				close(p_command->fd[1]);
+			}
+			if (command->write_to_pipe)
+			{
+				dup2(command->fd[1], 1);
+				close(command->fd[0]);
+			}
 			if (last_out != NULL)
 			{
 				fresh->fd_out = dup(1);
@@ -365,6 +379,7 @@ void	ft_execute_commands(t_fresh *fresh)
 				dup2(fresh->fd_out, 1);
 			}
 		}
+		p_command = command;
 		list_elem = list_elem->next;
 	}
 }

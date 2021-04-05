@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/04 01:16:54 by alvaro           ###   ########.fr       */
+/*   Updated: 2021/04/05 12:49:12 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct	s_command
 	t_file		**files;
 	int			write_to_pipe;
 	int			read_from_pipe;
+	int			fd[2];
 }				t_command;
 
 typedef struct  s_fresh
@@ -87,5 +88,6 @@ int			ft_echo(t_command *command, t_fresh *fresh);
 int			ft_pwd(t_command *command, t_fresh *fresh);
 int			ft_cd(t_command *command, t_fresh *fresh);
 int			ft_env(t_command *command, t_fresh *fresh);
+int			ft_export(t_command *command, t_fresh *fresh);
 
 #endif

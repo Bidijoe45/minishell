@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/03/16 10:27:23 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/05 13:43:41 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,61 +121,55 @@ int		check_export(t_fresh *fres, char **split_arg, int vars)
 	return 1;
 }
 
-void		ft_export(t_fresh *fresh, char *arg)
+int	validate_variable(char *str)
+{
+	int i;
+
+	i = 0;
+	if (!ft_isalpha(str[i]))
+		return (0);
+	while (str[i])
+	{
+		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	ft_export(t_command *command, t_fresh *fresh)
 {
 	int		i;
-	int		start;
-	int		dq;
-	int		sq;
-	int		var;
 	char	*tmp;
-	char	**split_arg;
+	char	**variable;
 
-	if (ft_strlen(arg) == 0)
+	if (!*command->args)
 	{
 		sort_list(fresh->env);
 		print_list(fresh->env);
-		return ;
+		return (0);
 	}
-
-	tmp = ft_strtrim(arg, " ");
-	split_arg = malloc(count_vars(tmp) * sizeof(char *));
-	i = 0;
-	dq = 0;
-	sq = 0;
-	start = 0;
-	var = 0;
-	while (1)
+	if (command->args[0][0] == '-')
 	{
-		if (tmp[i] == '"' && sq == 0)
-			dq = !dq;
-		if (tmp[i] == '\'' && dq == 0)
-			sq = !sq;
-		if ((tmp[i] == '\n' || tmp[i] == ' ') && dq == 0 && sq==0)
+		printf("export: options not supported\n");
+		return (1);
+	}
+	i = 0;
+	while (command->args[i])
+	{
+		//TODO: leak probablemente jasjasj me da pereza
+		variable = ft_split_ignore_quotes(command->args[i], '=');
+		variable[0] = ft_replace(variable[0], "\"", "", 0);
+		if (!validate_variable(variable[0]))
 		{
-			split_arg[var] = ft_substr(tmp, start, i - start);
-			start = i + 1;
-			var++;
-			i++;
+			if (variable[1])
+				printf("export: `%s=%s': not a valid identifier\n", variable[0], variable[1]);
+			else
+				printf("export: `%s': not a valid identifier\n", variable[0]);
+			return (1);
 		}
-		else
-			i++;
-		if (tmp[i] == '\0')
-			break ;
+		printf("(%s=%s)\n", variable[0] ? variable[0] : NULL, variable[1] ? variable[1] : NULL);
+		i++;
 	}
-
-	int j = 0;
-	while (j < var)
-	{
-		printf("arg: |%s|\n", split_arg[j]);
-		j++;
-	}
-
-	check_export(fresh, split_arg, var);
-
-	free(tmp);
-	i = 0;
-	while (i < var)
-		free(split_arg[i]);
-	free(split_arg);
+	return (0);
 }

@@ -333,7 +333,7 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	char *tmp;
 	t_command *cmd;
 	
-	//TODO: arreglar esta puta mierda
+	//TODO: arreglar esto, quue esta mal!! bOBOBOBOBo
 	if (ft_strchr(command, '$'))
 		command = ft_replace(command, "$?", ft_itoa(fresh->cmd_return), 0);
 	cmd_name = extract_cmd(command, &tmp);
@@ -387,12 +387,12 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 				ft_parse_instruction(fresh, cmds[i], 1, 0);
 			else
 				ft_parse_instruction(fresh, cmds[i], 1, 1);
-			i++;	
+			i++;
 		}
 	}
 	else
 		ft_parse_instruction(fresh, command, 0, 0);
-	ft_free_split(cmds);
+	//ft_free_split(cmds);
 }
 
 int		check_invalid_pipes(char **cmds)
