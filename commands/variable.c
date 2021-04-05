@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 13:21:03 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/02 16:49:16 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/05 17:20:21 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_variable	*variable_get(t_list *variables, char *key)
 	while (elem)
 	{
 		var = elem->content;
-		if (!strncmp(var->key, key, ft_strlen(key)))
+		if (!strncmp(var->key, key, ft_strlen(key)) && ft_strlen(var->key) == ft_strlen(key))
 			return (var);
 		elem = elem->next;
 	}

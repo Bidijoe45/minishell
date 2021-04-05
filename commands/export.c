@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/05 13:56:01 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/05 17:27:02 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,11 @@ void	print_list(t_list *list)
  	while (i)
  	{
  		var = (t_variable *)i->content;
- 		printf("declare -x %s=%s\n", var->key, var->value);
- 		i = i->next;
+ 		if (var->value)
+			printf("declare -x %s=\"%s\"\n", var->key, var->value);
+		else
+			printf("declare -x %s\n", var->key);
+		i = i->next;
  	}
  }
 
@@ -117,10 +120,13 @@ int	ft_export(t_command *command, t_fresh *fresh)
 				variable_mod(fresh->env, variable[0], ft_strdup(variable[1]));
 			else
 				variable_set(&fresh->env, ft_strdup(variable[0]), ft_strdup(variable[1]));
-			if (variable[1])
-				free(variable[1]);
+			free(variable[1]);
 		}
-		/* TODO: HACER EXPORT SIN ARG 2 -> export hola */
+		else
+		{
+			if (!variable_get(fresh->env, variable[0]))
+				variable_set(&fresh->env, ft_strdup(variable[0]), NULL);
+		}
 		free(variable[0]);
 		free(variable);
 		i++;
