@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/05 13:49:37 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/05 13:54:13 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,17 @@ int	ft_export(t_command *command, t_fresh *fresh)
 				printf("export: `%s': not a valid identifier\n", variable[0]);
 			return (1);
 		}
-		printf("(%s=%s)\n", variable[0] ? variable[0] : NULL, variable[1] ? variable[1] : NULL);
+		if (variable[1])
+		{
+			if (variable_get(fresh->env, variable[0]))
+				variable_mod(fresh->env, variable[0], ft_strdup(variable[1]));
+			else
+				variable_set(&fresh->env, ft_strdup(variable[0]), ft_strdup(variable[1]));
+			if (variable[1])
+				free(variable[1]);
+		}
+		free(variable[0]);
+		free(variable);
 		i++;
 	}
 	return (0);
