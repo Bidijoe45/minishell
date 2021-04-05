@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/05 13:43:41 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/05 13:49:37 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,63 +62,6 @@ void	sort_list(t_list *list)
 		}
 		next_elem = elem;
 	}
-}
-
-int			count_vars(char *arg)
-{
-	int		i;
-	int		count;
-	int		dq;
-	int		sq;
-	i = 0;
-	dq = 0;
-	sq = 0;
-	count = 0;
-	
-	if (ft_strlen(arg) == 0)
-		return (count);
-	while (arg[i] != '\0')
-	{
-		if (arg[i] == '"' && sq == 0)
-			dq = !dq;
-		if (arg[i] == '\'' && dq == 0)
-			sq = !sq;
-		if (arg[i] == ' ' && dq == 0 && sq==0 && arg[i - 1] != ' ')
-			count++;
-		i++;
-	}
-
-	return (count + 1);
-}
-
-int		check_export(t_fresh *fres, char **split_arg, int vars)
-{
-	int		i;
-	int		j;
-	int		dq;
-	int		sq;
-	int		pos;
-	char	**split_var;
-	char	*key;
-	char	*value;
-
-	key = NULL;
-	value = NULL;
-	i = 0;
-	pos = 0;
-	while (i < vars)
-	{
-		j = 0;
-		while (split_arg[i][j] != '\0')
-		{
-			if (split_arg[i][j] == '"' && sq == 0)
-				dq = !dq;
-			if (split_arg[i][j] == '\'' && dq == 0)
-				sq = !sq;
-		}
-	}
-
-	return 1;
 }
 
 int	validate_variable(char *str)
