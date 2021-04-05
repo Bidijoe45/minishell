@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/05 13:54:13 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/05 13:56:01 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int	ft_export(t_command *command, t_fresh *fresh)
 			if (variable[1])
 				free(variable[1]);
 		}
+		/* TODO: HACER EXPORT SIN ARG 2 -> export hola */
 		free(variable[0]);
 		free(variable);
 		i++;
