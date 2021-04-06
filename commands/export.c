@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/05 17:27:02 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/06 11:33:31 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,11 @@ int	ft_export(t_command *command, t_fresh *fresh)
 {
 	int		i;
 	char	*tmp;
-	char	**variable;
+	char	*key;
+	char	*value;
 
+	key = NULL;
+	value = NULL;
 	if (!*command->args)
 	{
 		sort_list(fresh->env);
@@ -104,31 +107,40 @@ int	ft_export(t_command *command, t_fresh *fresh)
 	while (command->args[i])
 	{
 		//TODO: leak probablemente jasjasj me da pereza
-		variable = ft_split_ignore_quotes(command->args[i], '=');
-		variable[0] = ft_replace(variable[0], "\"", "", 0);
-		if (!validate_variable(variable[0]))
+		if (ft_strchr(command->args[i], '='))
 		{
-			if (variable[1])
-				printf("export: `%s=%s': not a valid identifier\n", variable[0], variable[1]);
+			key = ft_substr(command->args[i], 0, ft_strchr(command->args[i], '=') - command->args[i]);
+			value = ft_strdup(ft_strchr(command->args[i], '=') + 1);
+		}
+		else
+			key = ft_strdup(command->args[i]);
+		key = ft_replace(key, "\"", "", 0);
+		tmp = value;
+		value = ft_strtrim(value, "\"");
+		free(tmp);
+		tmp = value;
+		value = ft_strtrim(value, "'");
+		free(tmp);
+		if (!validate_variable(key))
+		{
+			if (value)
+				printf("export: `i%s=%s': not a valid identifier\n", key, value);
 			else
-				printf("export: `%s': not a valid identifier\n", variable[0]);
+				printf("export: `%s': not a valid identifier\n", key);
 			return (1);
 		}
-		if (variable[1])
+		if (!value)
 		{
-			if (variable_get(fresh->env, variable[0]))
-				variable_mod(fresh->env, variable[0], ft_strdup(variable[1]));
-			else
-				variable_set(&fresh->env, ft_strdup(variable[0]), ft_strdup(variable[1]));
-			free(variable[1]);
+			if (!variable_get(fresh->env, key))
+				variable_set(&fresh->env, key, NULL);
 		}
 		else
 		{
-			if (!variable_get(fresh->env, variable[0]))
-				variable_set(&fresh->env, ft_strdup(variable[0]), NULL);
+			if (variable_get(fresh->env, key))
+				variable_mod(fresh->env, key, value);
+			else
+				variable_set(&fresh->env, key, value);
 		}
-		free(variable[0]);
-		free(variable);
 		i++;
 	}
 	return (0);
