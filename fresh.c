@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/06 16:46:21 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/06 16:57:55 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -434,7 +434,6 @@ void	ft_execute_commands(t_fresh *fresh)
 				dup2(fresh->fd_out, 1);
 			}
 		}
-		p_command = command;
 		list_elem = list_elem->next;
 	}
 }

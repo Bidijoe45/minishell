@@ -341,6 +341,12 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	files = extract_files(command, &tmp);
 	free(command);
 	command = tmp;
+	/* TODO: joder bro estoy hasta los cojones,
+	 * hay demasiados leaks y no encuentro ni uno
+	 * hay leaks hasta cuando solo le das a enter
+	 * pues imaginate si haces export por ejemplo
+	 * 1 gb de leaks minimo...
+	*/
 	args = ft_split_ignore_quotes(command, ' ');
 	ft_trim_args(&args);
 	// TODO:
@@ -392,7 +398,12 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	}
 	else
 		ft_parse_instruction(fresh, command, 0, 0);
-	//ft_free_split(cmds);
+	i = 0;
+	while (cmds[i])
+	{
+		free(cmds[i]);
+		i++;
+	}
 }
 
 int		check_invalid_pipes(char **cmds)

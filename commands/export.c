@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/06 11:33:31 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/06 16:50:26 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,15 @@ int	ft_export(t_command *command, t_fresh *fresh)
 		else
 			key = ft_strdup(command->args[i]);
 		key = ft_replace(key, "\"", "", 0);
-		tmp = value;
-		value = ft_strtrim(value, "\"");
-		free(tmp);
-		tmp = value;
-		value = ft_strtrim(value, "'");
-		free(tmp);
+		if (value)
+		{
+			tmp = value;
+			value = ft_strtrim(value, "\"");
+			free(tmp);
+			tmp = value;
+			value = ft_strtrim(value, "'");
+			free(tmp);
+		}
 		if (!validate_variable(key))
 		{
 			if (value)
