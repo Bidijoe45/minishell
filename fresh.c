@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/05 13:43:41 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/06 12:52:08 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,6 +300,7 @@ void	ft_execute_commands(t_fresh *fresh)
 	t_file		*last_in;
 	t_file		*last_out;
 	t_command	*p_command;
+	int			fd[2];	
 
 	last_in = NULL;
 	last_out = NULL;
@@ -309,9 +310,10 @@ void	ft_execute_commands(t_fresh *fresh)
 	{
 		t_command *command = (t_command *)list_elem->content;
 		i = 0;
+		
 
-		if (command->write_to_pipe || command->read_from_pipe)
-			pipe(command->fd);
+		if (command->write_to_pipe)
+			pipe(fd);
 		while (command->files[i])
 		{
 			if (command->files[i]->type == IN)
@@ -354,25 +356,76 @@ void	ft_execute_commands(t_fresh *fresh)
 		}
 		else
 		{
-			if (command->read_from_pipe)
-			{
-				dup2(0, p_command->fd[0]);
-				close(p_command->fd[1]);
-			}
-			if (command->write_to_pipe)
-			{
-				dup2(command->fd[1], 1);
-				close(command->fd[0]);
-			}
 			if (last_out != NULL)
 			{
 				fresh->fd_out = dup(1);
 				dup2(last_out->fd, 1);
 			}
-			if (ft_is_builtin(fresh, command))
-				ft_execute_builtin(command, fresh);
-			else
-				ft_exec_bin(fresh, command);
+			if (!command->write_to_pipe && !command->read_from_pipe)
+			{
+				if (ft_is_builtin(fresh, command))
+					ft_execute_builtin(command, fresh);
+				else
+					ft_exec_bin(fresh, command);
+			}
+			if (command->write_to_pipe && !command->read_from_pipe)
+			{
+				pid = fork();
+
+				if (!pid)
+				{
+					close(fd[0]);
+					dup2(fd[1], 1);
+					ft_exec_bin(fresh, command);
+					exit(0);
+				}
+				else
+				{
+					close(fd[1]);
+					fresh->last_fd = dup(fd[0]);
+					close(fd[0]);
+					wait(NULL);
+				}
+			}
+			if (command->read_from_pipe && command->write_to_pipe)
+			{
+				pid = fork();
+
+				if (!pid)
+				{
+					dup2(fresh->last_fd, 0);
+					dup2(fd[1], 1);
+					close(fd[1]);
+					ft_exec_bin(fresh, command);
+					exit(0);
+				}
+				else
+				{
+					close(fd[1]);
+					fresh->last_fd = dup(fd[0]);
+					close(fd[0]);
+					wait(NULL);
+				}
+			}
+			if (command->read_from_pipe && !command->write_to_pipe)
+			{
+				pid = fork();
+
+				if (!pid)
+				{
+					close(fd[0]);
+					dup2(fresh->last_fd, 0);
+					ft_exec_bin(fresh, command);
+					exit(0);
+				}
+				else
+				{
+					close(fd[1]);
+					close(fd[0]);
+					close(fresh->last_fd);
+					wait(NULL);
+				}
+			}
 			if (last_out != NULL)
 			{
 				close(last_out->fd);
