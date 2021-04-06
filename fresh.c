@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/06 12:52:08 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/06 16:46:21 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,7 +310,6 @@ void	ft_execute_commands(t_fresh *fresh)
 	{
 		t_command *command = (t_command *)list_elem->content;
 		i = 0;
-		
 
 		if (command->write_to_pipe)
 			pipe(fd);
@@ -332,8 +331,11 @@ void	ft_execute_commands(t_fresh *fresh)
 			last_in->fd = open(last_in->file_name, O_RDONLY);
 			if (last_in->fd == -1)
 			{
+				fresh->cmd_return = 1;
 				printf("%s: No such file or directory\n", last_in->file_name);
-				exit(1);
+				// POR QUE ESTABA ESTO AQUI ASKJKADSJKADSKJADSKJADS lo q me ha costado encontrarlo 
+				// exit(1);
+				return ;
 			}
 			fresh->fd_in = dup(0);
 			dup2(last_in->fd, 0);
@@ -459,7 +461,6 @@ int		main(int argc, char **argv, char **envp, char **apple)
 			ft_parse_line(fresh);
 		free(fresh->line);
 		fresh->line = NULL;
-
 		//ejecutar comandos
 		ft_execute_commands(fresh);
 		ft_free_commands(fresh);
