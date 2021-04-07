@@ -404,6 +404,7 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 		free(cmds[i]);
 		i++;
 	}
+	free(cmds);
 }
 
 int		check_invalid_pipes(char **cmds)
