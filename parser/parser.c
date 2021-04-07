@@ -169,8 +169,12 @@ t_file	**extract_files(char *command, char **command_rpl)
 	*command_rpl = ft_strdup(command);
 	while (command[i] != '\0')
 	{
-		if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
+		if (command[i] == '>' || command[i] == '<')
+		{
+			if (command[i + 1] == '>')
+				i++;
 			pos++;
+		}
 		i++;
 	}
 	files = malloc(sizeof(t_file *) * pos + 1);
@@ -182,6 +186,27 @@ t_file	**extract_files(char *command, char **command_rpl)
 			i++;
 		if (command[i] == '>' && command[i + 1] == '>' && !is_between_quotes(command, i))
 		{
+			redirect = i;
+			i += 2;
+			while(command[i] == ' ')
+				i++;
+			pos = i;
+			while (command[i] != '\0')
+			{
+				if(command[i] == ' ' && !is_between_quotes(command, i))
+					break ;
+				i++;
+			}
+			file = malloc(sizeof(t_file));
+			file->file_name = ft_substr(command, pos, i - pos);
+			file->type = APPEND;
+			files[j] = file;
+			tmp = *command_rpl;
+			key = ft_substr(command, redirect, i - redirect);
+			*command_rpl = ft_replace(tmp, key, "", 1);	
+			free(key);
+			free(tmp);
+			j++;
 
 		}
 		else if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
