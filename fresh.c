@@ -6,7 +6,11 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2021/04/07 12:32:15 by apavel           ###   ########.fr       */
+=======
+/*   Updated: 2021/04/07 11:53:13 by alvrodri         ###   ########.fr       */
+>>>>>>> 28fdf008f0994d0a85a5b9b24f4f7f222959619d
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -453,7 +457,7 @@ int		main(int argc, char **argv, char **envp, char **apple)
 	int		reading;
 
 	//signal(SIGINT, ft_signal);
-	//signal(SIGQUIT, ft_signal);
+	signal(SIGQUIT, ft_signal);
 	fresh = malloc(sizeof(t_fresh));
 	ft_initialize(fresh);
 	ft_load_env_vars(fresh, envp);

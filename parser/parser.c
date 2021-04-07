@@ -505,6 +505,11 @@ void	ft_parse_line(t_fresh *fresh)
 	tmp = fresh->line;
 	fresh->line = ft_replace_vars(fresh, fresh->line);
 	free(tmp);
+	if (fresh->line[0] == ';')
+	{
+		printf("Error: wrong syntax\n");
+		return ;
+	}
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
 	if (!check_invalid_pipes(cmds))
 	{
