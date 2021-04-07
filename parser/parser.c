@@ -475,6 +475,7 @@ void	ft_parse_line(t_fresh *fresh)
 	i = 0;
 	tmp = fresh->line;
 	fresh->line = ft_strtrim(fresh->line, "\n");
+	free(tmp);
 	tmp = fresh->line;
 	fresh->line = ft_replace_vars(fresh, fresh->line);
 	free(tmp);
