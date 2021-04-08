@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/08 12:06:25 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/08 12:47:18 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,7 +324,10 @@ void	ft_execute_commands(t_fresh *fresh)
 				if (last_out)
 					close(last_out->fd);
 				last_out = command->files[i];
-				last_out->fd = open(last_out->file_name, O_RDWR | O_CREAT, 0700);
+				if (last_out->type == OUT)
+					last_out->fd = open(last_out->file_name, O_RDWR | O_CREAT, 0700);
+				else if (last_out->type == APPEND)
+					last_out->fd = open(last_out->file_name, O_RDWR | O_APPEND | O_CREAT, 0700);
 			}
 			i++;
 		}
@@ -335,8 +338,6 @@ void	ft_execute_commands(t_fresh *fresh)
 			{
 				fresh->cmd_return = 1;
 				printf("%s: No such file or directory\n", last_in->file_name);
-				// POR QUE ESTABA ESTO AQUI ASKJKADSJKADSKJADSKJADS lo q me ha costado encontrarlo 
-				// exit(1);
 				return ;
 			}
 			fresh->fd_in = dup(0);
