@@ -6,64 +6,82 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/03/26 11:46:29 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/08 12:45:59 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fresh.h"
 #include "./command.h"
 
-void	free_var(t_list *list)
+void	variable_unset(t_fresh *fresh, char *key)
 {
-	t_variable *var;
-
-	var = ((t_variable *)list->content);
-	free(var->key);
-	free(var->value);
-	free(var);
-	free(list);
-}
-
-void	remove_var(t_fresh *fresh, char *key)
-{
-	t_list		*elem;
-	t_list		*next;
-	t_list		*tmp;
+	t_list		*list;
+	t_list		*prev;
+	t_variable	*tmp;
 	t_variable	*var;
 
-	elem = fresh->env;
-	if (!ft_strncmp(((t_variable *)elem->content)->key, key, ft_strlen(key)))
-	{
-		tmp = elem;
-		fresh->env = elem->next;
-		free_var(elem);
+	var = variable_get(fresh->env, key);
+	if (!var)
 		return ;
-	}
-	while (elem)
+	list = fresh->env;
+	while (list)
 	{
-		next = elem->next;
-		if (!next)
-			break ;
-		if (!ft_strncmp(((t_variable *)next->content)->key, key, ft_strlen(key)))
+		tmp = (t_variable *)list->content;
+		if (!ft_strncmp(tmp->key, var->key, ft_strlen(var->key)) && ft_strlen(tmp->key) == ft_strlen(var->key))
 		{
-			elem->next = next->next;
-			free_var(next);
+			free(tmp->key);
+			free(tmp->value);
+			free(tmp);
+			if (list == fresh->env)
+				fresh->env = list->next;
+			else
+				prev->next = list->next;
+			free(list);
 		}
-		elem = elem->next;
+		prev = list;
+		list = list->next;
 	}
 }
 
-int		ft_unset(t_fresh *fresh, t_command *command)
+static	int	validate_variable(char *str)
 {
-	int		i;
-	char	**vars;
+	int i;
 
 	i = 0;
-	/*vars = ft_split(command->arg, ' ');
-	while (vars[i])
+	if (!ft_isalpha(str[i]) && str[i] != '_')
+		return (0);
+	while (str[i])
 	{
-		remove_var(fresh, ft_strtrim(vars[i], "\n"));
+		if (!ft_isalpha(str[i]) && str[i] != '_' && !ft_isdigit(str[i]))
+			return (0);
 		i++;
-	}*/
+	}
 	return (1);
+}
+
+int	ft_unset(t_command *command, t_fresh *fresh)
+{
+	int	i;
+
+	if (command->args[0])
+	{
+		if (command->args[0][0] == '-')
+		{
+			if (!command->args[0][1])
+				printf("unset: `%s': not a valid identifier\n", command->args[0]);
+			else
+				printf("unset: %s: invalid option\n", command->args[0]);
+			return (1);
+		}
+	}
+	i = 0;
+	while (command->args[i])
+	{
+		if (!(validate_variable(command->args[i])))
+			printf("unset: `%s': not a valid identifier\n", command->args[i]);
+		else
+			variable_unset(fresh, command->args[i]);
+		i++;
+	}
+	return (0);
 }

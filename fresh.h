@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/06 16:46:38 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/08 12:05:43 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ int			ft_pwd(t_command *command, t_fresh *fresh);
 int			ft_cd(t_command *command, t_fresh *fresh);
 int			ft_env(t_command *command, t_fresh *fresh);
 int			ft_export(t_command *command, t_fresh *fresh);
+int			ft_unset(t_command *command, t_fresh *fresh);
 
 #endif

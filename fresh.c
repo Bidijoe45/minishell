@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/08 12:13:47 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/08 12:51:52 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include "print/print.h"
 #include "parser/parser.h"
 #include "list/list.h"
+
+t_fresh	*fresh;
 
 void	ft_initialize(t_fresh *fresh)
 {
@@ -283,7 +285,7 @@ void	ft_execute_builtin(t_command *command, t_fresh *fresh)
 	else if (!ft_strncmp(name, "env", 3))
 		fresh->cmd_return = ft_env(command, fresh);
 	else if (!ft_strncmp(name, "unset", 5))
-		return ;
+		fresh->cmd_return = ft_unset(command, fresh);
 	else if (!ft_strncmp(name, "pwd", 3))
 		fresh->cmd_return = ft_pwd(command, fresh);
 	else if (!ft_strncmp(name, "exit", 4))
@@ -323,7 +325,7 @@ void	ft_execute_commands(t_fresh *fresh)
 					close(last_out->fd);
 				last_out = command->files[i];
 				if (last_out->type == OUT)
-					last_out->fd = open(last_out->file_name, O_RDWR | O_CREAT, 0700);
+					last_out->fd = open(last_out->file_name, O_RDWR | O_TRUNC | O_CREAT, 0700);
 				else if (last_out->type == APPEND)
 					last_out->fd = open(last_out->file_name, O_RDWR | O_APPEND | O_CREAT, 0700);
 			}
@@ -449,7 +451,6 @@ void	ft_execute_commands(t_fresh *fresh)
 
 int		main(int argc, char **argv, char **envp, char **apple)
 {
-	t_fresh *fresh;
 	int		reading;
 
 	//signal(SIGINT, ft_signal);
