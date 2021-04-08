@@ -6,7 +6,7 @@ SRCS =	fresh.c \
 		./parser/parser.c \
 		./list/list.c \
 		./commands/echo.c ./commands/exit.c ./commands/pwd.c ./commands/cd.c \
-		./commands/env.c ./commands/export.c
+		./commands/env.c ./commands/export.c ./commands/unset.c
 GNL	= ./get_next_line/get_next_line.c
 NAME = minishell
 OBJS = ${SRCS:.c=.o}
