@@ -497,6 +497,7 @@ void	ft_parse_line(t_fresh *fresh)
 	int		cmd_pos;
 	char	**cmds;
 	char	*tmp;
+	int		sc;
 
 	i = 0;
 	tmp = fresh->line;
@@ -505,10 +506,28 @@ void	ft_parse_line(t_fresh *fresh)
 	tmp = fresh->line;
 	fresh->line = ft_replace_vars(fresh, fresh->line);
 	free(tmp);
-	if (fresh->line[0] == ';')
+	while (fresh->line[i])
 	{
-		printf("Error: wrong syntax\n");
-		return ;
+		if (fresh->line[i] == ' ')
+		{
+			i++;
+			continue;
+		}
+		if (fresh->line[i] == ';' && i == 0)
+		{
+			printf("Error: wrong syntax\n");
+			return ;
+		}
+		if (fresh->line[i] == ';' && sc == 1)
+		{
+			printf("Error: wrong syntax\n");
+			return ;
+		}
+		if (fresh->line[i] != ';' && sc == 1)
+			sc = 0;
+		if (fresh->line[i] == ';' && sc == 0)
+			sc = 1;
+		i++;
 	}
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
 	if (!check_invalid_pipes(cmds))
@@ -516,6 +535,7 @@ void	ft_parse_line(t_fresh *fresh)
 		printf("Error: wrong syntax\n");
 		return ;
 	}
+	i = 0;
 	while (cmds[i])
 	{
 		ft_parse_cmd(fresh, cmds[i]);
