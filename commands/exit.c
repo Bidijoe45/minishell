@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/05 11:26:01 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/09 20:50:15 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_exit(t_command *command, t_fresh *fresh)
 	while (command->args[i])
 		i++;
 	if (i == 0)
-		return (0);
+		exit(0);
 	if (i > 1)
 	{
 		printf("exit: too many arguments\n");

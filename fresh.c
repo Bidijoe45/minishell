@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/08 12:51:52 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/09 20:55:02 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,18 @@ void	ft_initialize(t_fresh *fresh)
 	fresh->commands = NULL;
 }
 
-void	ft_signal(int signum)
+void	ft_ctrl_c(int signum)
 {
+	if (!fresh->pid)
+	{
+		printf("\n");
+		ft_print_input(fresh);
+	}
+	fresh->pid = 0;
 	return ;
 }
 
-void	ft_quit(int signum)
+void	ft_ctrl_backslash(int signum)
 {
 	return ;
 }
@@ -221,8 +227,8 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 	char	*path;
 	char	**chararr;
 
-	pid = fork();
-	if (pid == 0)
+	fresh->pid = fork();
+	if (fresh->pid == 0)
 	{
 		path = ft_check_if_valid(fresh, command);
 		argv = ft_create_argv(command, path);
@@ -452,14 +458,15 @@ void	ft_execute_commands(t_fresh *fresh)
 int		main(int argc, char **argv, char **envp, char **apple)
 {
 	int		reading;
-
-	//signal(SIGINT, ft_signal);
-	signal(SIGQUIT, ft_signal);
+	
+	signal(SIGINT, ft_ctrl_c);
+	signal(SIGQUIT, ft_ctrl_backslash);
 	fresh = malloc(sizeof(t_fresh));
 	ft_initialize(fresh);
 	ft_load_env_vars(fresh, envp);
 	fresh->user = variable_get(fresh->env, "USER")->value;
 	ft_print_header(fresh);
+	fresh->pid = 0;
 	reading = 1;
 	while (reading)
 	{

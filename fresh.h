@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/08 12:05:43 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/09 20:51:08 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct  s_fresh
 	int			fd_in;
 	int			fd_out;
 	int			cmd_return;
+	int			pid;
 	t_list		*env;
 	t_list		*local_vars;
 	t_list		*commands;
