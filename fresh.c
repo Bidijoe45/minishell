@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/09 22:48:41 by alvaro           ###   ########.fr       */
+/*   Updated: 2021/04/09 22:54:48 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -464,7 +464,10 @@ int		main(int argc, char **argv, char **envp, char **apple)
 	fresh = malloc(sizeof(t_fresh));
 	ft_initialize(fresh);
 	ft_load_env_vars(fresh, envp);
-	fresh->user = variable_get(fresh->env, "USER")->value;
+	if (variable_get(fresh->env, "USER"))
+		fresh->user = variable_get(fresh->env, "USER")->value;
+	else
+		fresh->user = ft_strdup("Unknown");
 	ft_print_header(fresh);
 	fresh->pid = 0;
 	reading = 1;
