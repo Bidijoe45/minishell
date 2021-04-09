@@ -89,23 +89,42 @@ void	read_line(t_fresh *fresh)
 {
 	char	c[2];
 	int		pos;
+	int		rd;
 	char	*tmp;
+	char	*real;
 
 	pos = 0;
-	while (read(0, c, 1) > 0)
+	rd = read(0, c, 1);
+	real = NULL;
+	if (rd == 0)
+	{
+		printf("exit\n");
+		exit(0);
+	}
+	while (1)
 	{
 		c[1] = '\0';
 		if (!fresh->line)
 			fresh->line = ft_strdup(c);
 		else
 		{
+			if (rd == 0 && !real)
+				real = ft_strdup(fresh->line);
 			tmp = fresh->line;
 			fresh->line = ft_strjoin(fresh->line, c);
 			free(tmp);
 		}
 		if(fresh->line[pos] == '\n')
+		{
+			if (real)
+			{
+				free(fresh->line);
+				fresh->line = real;
+			}
 			break ;
+		}
 		pos++;
+		rd = read(0, c, 1);
 	}
 }
 
