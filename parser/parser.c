@@ -517,6 +517,7 @@ void	ft_parse_line(t_fresh *fresh)
 	char	**cmds;
 	char	*tmp;
 	int		sc;
+	int		p;
 
 	i = 0;
 	tmp = fresh->line;
@@ -544,7 +545,7 @@ void	ft_parse_line(t_fresh *fresh)
 		}
 		if (fresh->line[i] != ';' && sc == 1)
 			sc = 0;
-		if (fresh->line[i] == ';' && sc == 0)
+		if (fresh->line[i] == ';' && sc == 0 && !is_between_quotes(fresh->line, i))
 			sc = 1;
 		i++;
 	}
