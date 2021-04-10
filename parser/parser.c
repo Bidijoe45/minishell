@@ -377,9 +377,6 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	char *tmp;
 	t_command *cmd;
 	
-	//TODO: arreglar esto, quue esta mal!! bOBOBOBOBo
-	if (ft_strchr(command, '$'))
-		command = ft_replace(command, "$?", ft_itoa(fresh->cmd_return), 0);
 	cmd_name = extract_cmd(command, &tmp);
 	command = tmp;
 	files = extract_files(command, &tmp);

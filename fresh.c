@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/09 22:54:48 by alvaro           ###   ########.fr       */
+/*   Updated: 2021/04/10 11:20:06 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,6 +300,38 @@ void	ft_execute_builtin(t_command *command, t_fresh *fresh)
 		return ;
 }
 
+/*
+ * No me deja hacer free en estos replace de abajo, weird right?
+ * osea que no se si hay leaks o no, porque es como que command
+ * no está alocado, pero whatever yqc.
+ *
+ * Por cierto, hay que hacer que si están entre ' ' no se haga
+ * el replace... (pero aquí ya nos llegan los arguments sin ').
+ * */
+void	ft_replace_exit_status(t_fresh *fresh, t_command *command)
+{
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	tmp = command->cmd;
+	command->cmd = ft_replace(tmp, "$?", ft_itoa(fresh->cmd_return), 0);
+	while (command->args[i])
+	{
+		tmp = command->args[i];
+		command->args[i] = ft_replace(tmp, "$?", ft_itoa(fresh->cmd_return), 0);
+		i++;
+	}
+	i = 0;
+	while (command->files[i])
+	{
+		tmp = command->files[i]->file_name;
+		command->files[i]->file_name = ft_replace(tmp, "$?",
+				ft_itoa(fresh->cmd_return), 0);
+		i++;
+	}
+}
+
 void	ft_execute_commands(t_fresh *fresh)
 {
 	int			i;
@@ -319,6 +351,7 @@ void	ft_execute_commands(t_fresh *fresh)
 		t_command *command = (t_command *)list_elem->content;
 		i = 0;
 
+		ft_replace_exit_status(fresh, command);
 		if (command->write_to_pipe)
 			pipe(fd);
 		while (command->files[i])
@@ -480,12 +513,9 @@ int		main(int argc, char **argv, char **envp, char **apple)
 			ft_parse_line(fresh);
 		free(fresh->line);
 		fresh->line = NULL;
-		//ejecutar comandos
 		ft_execute_commands(fresh);
 		ft_free_commands(fresh);
 		ft_print_input(fresh);
 	}
-
-	//Creo que aqui nunca llega xD
 	free(fresh);
 }
