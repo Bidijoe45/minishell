@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/10 11:20:06 by alvaro           ###   ########.fr       */
+/*   Updated: 2021/04/10 12:12:07 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ char	**ft_list_to_chararr(t_list *list)
 {
 	char	**arr;
 	t_list	*tmp;
+	char	*tmp2;
 	int		size;
 	int		i;
 
@@ -137,7 +138,11 @@ char	**ft_list_to_chararr(t_list *list)
 	while (tmp)
 	{
 		if (((t_variable *)tmp->content)->value != NULL)
-			arr[i] = ft_strjoin(ft_strjoin(((t_variable *)tmp->content)->key, "="), ((t_variable *)tmp->content)->value);
+		{
+			tmp2 = ft_strjoin(((t_variable *)tmp->content)->key, "=");
+			arr[i] = ft_strjoin(tmp2, ((t_variable *)tmp->content)->value);
+			free(tmp2);
+		}
 		tmp = tmp->next;
 		i++;
 	}
@@ -148,7 +153,6 @@ char	**ft_list_to_chararr(t_list *list)
 char	**ft_create_argv(t_command *command, char *path)
 {
 	char	**argv;
-	char	**arg;
 	int		argc;
 	int		i;
 	int		j;
@@ -158,6 +162,10 @@ char	**ft_create_argv(t_command *command, char *path)
 	j = 0;
 	while (command->args[argc])
 		argc++;
+	if (argc == 0)
+		return (ft_split(path, ' '));
+	if (path == NULL)
+		return (NULL);
 	argv = malloc(sizeof(char *) * (argc + 2));
 	argv[0] = path;
 	while (j < argc)
@@ -167,8 +175,6 @@ char	**ft_create_argv(t_command *command, char *path)
 		j++;
 	}
 	argv[i] = NULL;
-	//free_bidimensional(arg);
-	arg = NULL;
 	return (argv);
 }
 
@@ -176,14 +182,14 @@ char	*create_path(char *path, char *cmd)
 {
 	char	*tmp;
 
+	if (path == NULL)
+		return (NULL);
 	tmp = path;
 	path = ft_strjoin(path, "/");
 	free(tmp);
 	tmp = path;
 	path = ft_strjoin(path, cmd);
 	free(tmp);
-	tmp = path;
-	path = ft_strtrim(path, "\n");
 	return (path);
 }
 
@@ -210,11 +216,13 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 		}
 		i++;
 	}
+	printf("|%s|\n", path);
 	if (path)
 		free(path);
 	path = ft_strtrim(command->cmd, "\n");
 	if (!lstat(path, &f_stat) && !S_ISDIR(f_stat.st_mode))
 		return (path);
+	free(path);
 	free(paths);
 	return (NULL);
 }
@@ -314,22 +322,21 @@ void	ft_replace_exit_status(t_fresh *fresh, t_command *command)
 	int		i;
 
 	i = 0;
-	tmp = command->cmd;
-	command->cmd = ft_replace(tmp, "$?", ft_itoa(fresh->cmd_return), 0);
+	tmp = ft_itoa(fresh->cmd_return);
+	command->cmd = ft_replace(command->cmd, "$?", tmp, 0);
 	while (command->args[i])
 	{
-		tmp = command->args[i];
-		command->args[i] = ft_replace(tmp, "$?", ft_itoa(fresh->cmd_return), 0);
+		command->args[i] = ft_replace(command->args[i], "$?", tmp, 0);
 		i++;
 	}
 	i = 0;
 	while (command->files[i])
 	{
-		tmp = command->files[i]->file_name;
-		command->files[i]->file_name = ft_replace(tmp, "$?",
-				ft_itoa(fresh->cmd_return), 0);
+		command->files[i]->file_name =
+			ft_replace(command->files[i]->file_name, "$?", tmp, 0);
 		i++;
 	}
+	free(tmp);
 }
 
 void	ft_execute_commands(t_fresh *fresh)
