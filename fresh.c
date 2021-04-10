@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/10 12:12:07 by alvaro           ###   ########.fr       */
+/*   Updated: 2021/04/10 12:13:50 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,6 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 		}
 		i++;
 	}
-	printf("|%s|\n", path);
 	if (path)
 		free(path);
 	path = ft_strtrim(command->cmd, "\n");
