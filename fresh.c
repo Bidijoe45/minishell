@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/10 12:13:50 by alvaro           ###   ########.fr       */
+/*   Updated: 2021/04/11 12:54:53 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -356,7 +356,6 @@ void	ft_execute_commands(t_fresh *fresh)
 	{
 		t_command *command = (t_command *)list_elem->content;
 		i = 0;
-
 		ft_replace_exit_status(fresh, command);
 		if (command->write_to_pipe)
 			pipe(fd);
