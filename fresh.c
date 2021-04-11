@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/11 12:54:53 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/11 16:02:56 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,8 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 
 	i = 0;
 	path = NULL;
+	if (variable_get(fresh->env, "PATH") == NULL)
+		return (NULL);
 	paths = ft_split(variable_get(fresh->env, "PATH")->value, ':');
 	while (paths[i])
 	{
