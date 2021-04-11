@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/03 11:36:42 by alvaro           ###   ########.fr       */
+/*   Updated: 2021/04/11 16:12:04 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@ int	ft_cd(t_command *command, t_fresh *fresh)
 		return (-1);
 	}
 	if (i == 0)
+	{
+		if (variable_get(fresh->env, "HOME") == NULL)
+			return (0);
 		path = variable_get(fresh->env, "HOME")->value;
+	}
 	else
 		path = command->args[0];
 	old = getcwd(NULL, 0);
