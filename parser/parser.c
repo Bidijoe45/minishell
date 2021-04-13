@@ -507,6 +507,66 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 	return (ret);
 }
 
+char	*trim_q_ftw(char *line)
+{
+	int i;
+	char q;
+	int qs;
+	int nq;
+
+	nq = 0;
+	i = 0;
+	qs = 0;
+	while (line[i])
+	{
+		if ((line[i] == '\'' || line[i] == '"') && qs == 0)
+		{
+			qs = 1;
+			q = line[i];
+			nq++;
+			i++;
+		}
+		else
+			i++;
+		if (line[i] && line[i] == q && qs == 1)
+		{
+			qs = 0;
+			nq++;
+			i++;
+		}
+	}
+
+	printf("len: %d\n", nq);
+
+	int new_len = ft_strlen(line) - nq;
+	char *ret = malloc(sizeof(char) * (new_len + 1));
+	
+	i = 0;
+	int j = 0;
+	while (line[i])
+	{
+		if ((line[i] == '\'' || line[i] == '"') && qs == 0)
+		{
+			q = line[i];
+			qs = 1;
+			i++;
+		}
+		else
+		{
+			ret[j] = line[i];
+			i++;
+			j++;
+		}
+		if (line[i] && line[i] == q)
+		{
+			qs = 0;
+			i++;
+		}
+	}
+	ret[j] = '\0';
+	printf("ret: %s\n", ret);
+}
+
 void	ft_parse_line(t_fresh *fresh)
 {
 	int		i;
@@ -519,6 +579,7 @@ void	ft_parse_line(t_fresh *fresh)
 	i = 0;
 	tmp = fresh->line;
 	fresh->line = ft_strtrim(fresh->line, "\n");
+	char *ret = trim_q_ftw(fresh->line);
 	free(tmp);
 	tmp = fresh->line;
 	fresh->line = ft_replace_vars(fresh, fresh->line);
