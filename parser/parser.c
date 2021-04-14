@@ -581,10 +581,10 @@ void	ft_parse_line(t_fresh *fresh)
 	fresh->line = ft_strtrim(fresh->line, "\n");
 	free(tmp);
 	tmp = fresh->line;
-	fresh->line= trim_q_ftw(fresh->line);
+	fresh->line = ft_replace_vars(fresh, fresh->line);
 	free(tmp);
 	tmp = fresh->line;
-	fresh->line = ft_replace_vars(fresh, fresh->line);
+	fresh->line= trim_q_ftw(fresh->line);
 	free(tmp);
 	//check si hay mas de un pipe junto
 	i = 0;
