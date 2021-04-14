@@ -389,7 +389,6 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	 * 1 gb de leaks minimo...
 	*/
 	args = ft_split_ignore_quotes(command, ' ');
-	ft_trim_args(&args);
 	// TODO:
 	// esto da core dump adri (seg fault y esas cosas)
 	// ==3927==The signal is caused by a READ memory access 
@@ -507,64 +506,65 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 	return (ret);
 }
 
-char	*trim_q_ftw(char *line)
+int		trim_count_ftw(char *line)
 {
+	int nq;
 	int i;
 	char q;
-	int qs;
-	int nq;
 
 	nq = 0;
 	i = 0;
-	qs = 0;
+	q = 0;
 	while (line[i])
 	{
-		if ((line[i] == '\'' || line[i] == '"') && qs == 0)
+		if ((line[i] == '\'' || line[i] == '"') && q == 0)
 		{
-			qs = 1;
 			q = line[i];
 			nq++;
 			i++;
 		}
 		else
 			i++;
-		if (line[i] && line[i] == q && qs == 1)
+		if (line[i] && line[i] == q && q)
 		{
-			qs = 0;
+			q = 0;
 			nq++;
 			i++;
 		}
 	}
+	return nq;
+}
 
-	printf("len: %d\n", nq);
-
-	int new_len = ft_strlen(line) - nq;
-	char *ret = malloc(sizeof(char) * (new_len + 1));
+char	*trim_q_ftw(char *line)
+{
+	char	q;
+	char	*ret;
+	int		i;
+	int		nq;
+	int		j;
 	
+	nq = trim_count_ftw(line);
+	ret = malloc(sizeof(char) * (ft_strlen(line) - nq + 1));
 	i = 0;
-	int j = 0;
+	j = 0;
+	q = 0;
 	while (line[i])
 	{
-		if ((line[i] == '\'' || line[i] == '"') && qs == 0)
+		if ((line[i] == '\'' || line[i] == '"') && q == 0)
 		{
 			q = line[i];
-			qs = 1;
 			i++;
 		}
 		else
+			ret[j++] = line[i++];
+		if (line[i] && line[i] == q && q)
 		{
-			ret[j] = line[i];
-			i++;
-			j++;
-		}
-		if (line[i] && line[i] == q)
-		{
-			qs = 0;
+			q = 0;
 			i++;
 		}
 	}
 	ret[j] = '\0';
-	printf("ret: %s\n", ret);
+	return ret;
 }
 
 void	ft_parse_line(t_fresh *fresh)
@@ -579,11 +579,31 @@ void	ft_parse_line(t_fresh *fresh)
 	i = 0;
 	tmp = fresh->line;
 	fresh->line = ft_strtrim(fresh->line, "\n");
-	char *ret = trim_q_ftw(fresh->line);
+	free(tmp);
+	tmp = fresh->line;
+	fresh->line= trim_q_ftw(fresh->line);
 	free(tmp);
 	tmp = fresh->line;
 	fresh->line = ft_replace_vars(fresh, fresh->line);
 	free(tmp);
+	//check si hay mas de un pipe junto
+	i = 0;
+	p = 0;
+	while (fresh->line[i])
+	{
+		if (fresh->line[i] == '|' && p == 0)	
+			p = 1;
+		else if (fresh->line[i] != '|' && fresh->line[i] != ' ' && p == 1)
+			p = 0;
+		else if (fresh->line[i] == '|' && p == 1)
+		{
+			printf("Error: wrong syntax\n");
+			return ;
+		}
+		i++;
+	}
+	
+	i = 0;
 	while (fresh->line[i])
 	{
 		if (fresh->line[i] == ' ')
