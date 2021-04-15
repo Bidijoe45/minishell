@@ -365,6 +365,77 @@ void	ft_replace_escape(char ***argsp)
 		i++;
 	}
 }
+
+int		trim_count_ftw(char *line)
+{
+	int nq;
+	int i;
+	char q;
+
+	nq = 0;
+	i = 0;
+	q = 0;
+	while (line[i])
+	{
+		if (line[i] == '\\' && q == 0)
+		{
+			i += 2;
+			nq++;
+		}
+		if ((line[i] == '\'' || line[i] == '"') && q == 0)
+		{
+			q = line[i];
+			nq++;
+			i++;
+		}
+		else
+			i++;
+		if (line[i] && line[i] == q && q)
+		{
+			q = 0;
+			nq++;
+			i++;
+		}
+	}
+	return nq;
+}
+
+char	*trim_q_ftw(char *line)
+{
+	char	q;
+	char	*ret;
+	int		i;
+	int		nq;
+	int		j;
+	
+	nq = trim_count_ftw(line);
+	ret = malloc(sizeof(char) * (ft_strlen(line) - nq + 1));
+	i = 0;
+	j = 0;
+	q = 0;
+	while (line[i])
+	{
+		if (line[i] == '\\' && q == 0)
+		{
+			ret[j++] = line[++i];
+			i++;
+		}
+		else if ((line[i] == '\'' || line[i] == '"') && q == 0)
+		{
+			q = line[i];
+			i++;
+		}
+		else
+			ret[j++] = line[i++];
+		if (line[i] && line[i] == q && q)
+		{
+			q = 0;
+			i++;
+		}
+	}
+	ret[j] = '\0';
+	return ret;
+}
 //rfp -> read from pipe
 //wtp -> write to pipe
 void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
@@ -389,6 +460,12 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	 * 1 gb de leaks minimo...
 	*/
 	args = ft_split_ignore_quotes(command, ' ');
+	i = 0;
+	while (args[i])
+	{
+		args[i] = trim_q_ftw(args[i]);
+		i++;
+	}	
 	// TODO:
 	// esto da core dump adri (seg fault y esas cosas)
 	// ==3927==The signal is caused by a READ memory access 
@@ -396,9 +473,15 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	cmd = malloc(sizeof(t_command));
 	if (!cmd)
 		return ;
-	cmd->cmd = ft_strdup(cmd_name);
+	cmd->cmd = trim_q_ftw(cmd_name);
 	cmd->files = files;
 	cmd->args = args;
+	i = 0;
+	while (cmd->files[i])
+	{
+		cmd->files[i]->file_name = trim_q_ftw(cmd->files[i]->file_name);
+		i++;
+	}
 	cmd->read_from_pipe = rfp;
 	cmd->write_to_pipe = wtp;
 	command_set(&fresh->commands, cmd);
@@ -478,7 +561,6 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 	char	*key;
 	int		i;
 	int		pos;
-
 	i = 0;
 	ret = ft_strdup(cmds);
 	while (ret[i])
@@ -506,67 +588,6 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 	return (ret);
 }
 
-int		trim_count_ftw(char *line)
-{
-	int nq;
-	int i;
-	char q;
-
-	nq = 0;
-	i = 0;
-	q = 0;
-	while (line[i])
-	{
-		if ((line[i] == '\'' || line[i] == '"') && q == 0)
-		{
-			q = line[i];
-			nq++;
-			i++;
-		}
-		else
-			i++;
-		if (line[i] && line[i] == q && q)
-		{
-			q = 0;
-			nq++;
-			i++;
-		}
-	}
-	return nq;
-}
-
-char	*trim_q_ftw(char *line)
-{
-	char	q;
-	char	*ret;
-	int		i;
-	int		nq;
-	int		j;
-	
-	nq = trim_count_ftw(line);
-	ret = malloc(sizeof(char) * (ft_strlen(line) - nq + 1));
-	i = 0;
-	j = 0;
-	q = 0;
-	while (line[i])
-	{
-		if ((line[i] == '\'' || line[i] == '"') && q == 0)
-		{
-			q = line[i];
-			i++;
-		}
-		else
-			ret[j++] = line[i++];
-		if (line[i] && line[i] == q && q)
-		{
-			q = 0;
-			i++;
-		}
-	}
-	ret[j] = '\0';
-	return ret;
-}
-
 void	ft_parse_line(t_fresh *fresh)
 {
 	int		i;
@@ -583,15 +604,11 @@ void	ft_parse_line(t_fresh *fresh)
 	tmp = fresh->line;
 	fresh->line = ft_replace_vars(fresh, fresh->line);
 	free(tmp);
-	tmp = fresh->line;
-	fresh->line= trim_q_ftw(fresh->line);
-	free(tmp);
-	//check si hay mas de un pipe junto
 	i = 0;
 	p = 0;
 	while (fresh->line[i])
 	{
-		if (fresh->line[i] == '|' && p == 0)	
+		if (fresh->line[i] == '|' && p == 0 && !is_between_quotes(fresh->line, i))	
 			p = 1;
 		else if (fresh->line[i] != '|' && fresh->line[i] != ' ' && p == 1)
 			p = 0;

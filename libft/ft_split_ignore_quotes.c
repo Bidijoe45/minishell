@@ -6,7 +6,7 @@
 /*   By: apavel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 16:18:07 by apavel            #+#    #+#             */
-/*   Updated: 2020/01/21 18:14:44 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/15 13:01:04 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ static size_t	ft_count_words(const char *s, char c)
 	while (s[i] != '\0')
 	{
 		if (s[i] == '\\')
+		{
 			i += 2;
+			continue ;
+		}
 		if (s[i] == '"' && sq == 0)
 			dq = !dq;
 		if (s[i] == '\'' && dq == 0)
@@ -53,7 +56,10 @@ static size_t	ft_next_sep(const char *s, char c)
 	while (s[i] != '\0')
 	{
 		if (s[i] == '\\')
+		{
 			i += 2;
+			continue ;
+		}
 		if (s[i] == '"' && sq == 0)
 			dq = !dq;
 		if (s[i] == '\'' && dq == 0)

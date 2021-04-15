@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/11 16:02:56 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/15 12:48:46 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,19 +269,19 @@ int		ft_is_builtin(t_fresh *fresh, t_command *command)
 	char *name;
 
 	name = command->cmd;
-	if (!ft_strncmp(name, "echo", 4))
+	if (!ft_strncmp(name, "echo\0", 5))
 		return (1);
-	else if (!ft_strncmp(name, "cd", 2))
+	else if (!ft_strncmp(name, "cd\0", 3))
 		return (1);
-	else if (!ft_strncmp(name, "export", 6))
+	else if (!ft_strncmp(name, "export\0", 7))
 		return (1);
-	else if (!ft_strncmp(name, "env", 3))
+	else if (!ft_strncmp(name, "env\0", 4))
 		return (1);
-	else if (!ft_strncmp(name, "unset", 5))
+	else if (!ft_strncmp(name, "unset\0", 6))
 		return (1);
-	else if (!ft_strncmp(name, "pwd", 3))
+	else if (!ft_strncmp(name, "pwd\0", 4))
 		return (1);
-	else if (!ft_strncmp(name, "exit", 4))
+	else if (!ft_strncmp(name, "exit\0", 5))
 		return (1);
 	return (0);
 }
@@ -291,19 +291,19 @@ void	ft_execute_builtin(t_command *command, t_fresh *fresh)
 	char *name;
 
 	name = command->cmd;
-	if (!ft_strncmp(name, "echo", 4))
+	if (!ft_strncmp(name, "echo\0", 5))
 		fresh->cmd_return = ft_echo(command, fresh);
-	else if (!ft_strncmp(name, "cd", 2))
+	else if (!ft_strncmp(name, "cd\0", 3))
 		fresh->cmd_return = ft_cd(command, fresh);
-	else if (!ft_strncmp(name, "export", 6))
+	else if (!ft_strncmp(name, "export\0", 7))
 		fresh->cmd_return = ft_export(command, fresh);
-	else if (!ft_strncmp(name, "env", 3))
+	else if (!ft_strncmp(name, "env\0", 4))
 		fresh->cmd_return = ft_env(command, fresh);
-	else if (!ft_strncmp(name, "unset", 5))
+	else if (!ft_strncmp(name, "unset\0", 6))
 		fresh->cmd_return = ft_unset(command, fresh);
-	else if (!ft_strncmp(name, "pwd", 3))
+	else if (!ft_strncmp(name, "pwd\0", 4))
 		fresh->cmd_return = ft_pwd(command, fresh);
-	else if (!ft_strncmp(name, "exit", 4))
+	else if (!ft_strncmp(name, "exit\0", 5))
 		fresh->cmd_return = ft_exit(command, fresh);
 	else
 		return ;

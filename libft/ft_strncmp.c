@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 15:48:50 by apavel            #+#    #+#             */
-/*   Updated: 2020/12/15 12:09:39 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/15 12:49:17 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n)
 
 	if (!s1 && !s2)
 		return (0);
-	if (n > ft_strlen(s1))
-		return (-1);
 	i = 0;
 	while ((s1[i] != '\0' || s2[i] != '\0') && i < n)
 	{
