@@ -23,7 +23,6 @@ int		ft_valid_quotes(char *line)
 			dq = 1;
 		else if (line[i] == '"' && dq == 1)
 			dq = 0;
-
 		if (line[i] == '\'' && sq == 0 && dq == 0)
 			sq = 1;
 		else if (line[i] == '\'' && sq == 1)
@@ -134,6 +133,38 @@ int		ft_is_special_char(int c)
 		return (1);
 	return (0);
 }
+
+
+int		is_between_quotes2(char *str, int pos)
+{
+	int i;
+	int sq;
+	int dq;
+
+	if (!str || !*str)
+		return (0);
+	i = 0;
+	sq = 0;
+	dq = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == '\'' && dq == 0)
+			sq = !sq;
+		if (str[i] == '"' && sq == 0)
+			dq = !dq;
+		if (i == pos)
+		{
+			if (sq)
+				return (1);
+			if (dq)
+				return (2);
+			return (0);
+		}
+		i++;
+	}
+	return (0);
+}
+
 
 int		is_between_quotes(char *str, int pos)
 {
@@ -415,7 +446,21 @@ char	*trim_q_ftw(char *line)
 	q = 0;
 	while (line[i])
 	{
-		if (line[i] == '\\' && q == 0)
+		if (line[i] == '\\' && is_between_quotes2(line, i) == 1)
+		{
+			ret[j++] = line[i++];
+		}
+		else if (line[i] == '\\' && is_between_quotes2(line, i) == 2)
+		{
+			if (line[i + 1] && line[i + 1] == '\\')
+			{
+				ret[j++] = line[++i];
+				i++;
+			}
+			else
+				ret[j++] = line[i++];
+		}
+		else if (line[i] == '\\' && q == 0)
 		{
 			ret[j++] = line[++i];
 			i++;
