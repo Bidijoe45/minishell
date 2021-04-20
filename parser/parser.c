@@ -546,8 +546,10 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 
 	//Comprueba los pipes del principio y final
 	i = 0;
-	while (command [i] == ' ')
+	while (ft_isspace(command[i]))
 		i++;
+	if (!command[i])
+		return ;
 	if (command[i] == '|')
 	{
 		printf("ERROR: wrong syntax\n");
@@ -568,7 +570,6 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 		}	
 		i++;
 	}
-
 	cmds = ft_split_ignore_quotes(command, '|');
 	
 	//Borra esto
