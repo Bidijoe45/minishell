@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/15 12:48:46 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/20 11:59:28 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -483,14 +483,6 @@ void	ft_execute_commands(t_fresh *fresh)
 				dup2(fresh->fd_out, 1);
 			}
 		}
-		/*
-		 * POR QUE NO PUEDO HACER FREE JODER....
-		 * ni free(command->cmd);
-		 * SE SUPOONE QUE TIENE QUE ESTAR TODO ALOCADO
-		 * ...........
-		 * non-sense
-		 * free(command);
-		 * */
 		list_elem = list_elem->next;
 	}
 }

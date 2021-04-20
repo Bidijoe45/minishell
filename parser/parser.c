@@ -23,7 +23,6 @@ int		ft_valid_quotes(char *line)
 			dq = 1;
 		else if (line[i] == '"' && dq == 1)
 			dq = 0;
-
 		if (line[i] == '\'' && sq == 0 && dq == 0)
 			sq = 1;
 		else if (line[i] == '\'' && sq == 1)
@@ -134,6 +133,38 @@ int		ft_is_special_char(int c)
 		return (1);
 	return (0);
 }
+
+
+int		is_between_quotes2(char *str, int pos)
+{
+	int i;
+	int sq;
+	int dq;
+
+	if (!str || !*str)
+		return (0);
+	i = 0;
+	sq = 0;
+	dq = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == '\'' && dq == 0)
+			sq = !sq;
+		if (str[i] == '"' && sq == 0)
+			dq = !dq;
+		if (i == pos)
+		{
+			if (sq)
+				return (1);
+			if (dq)
+				return (2);
+			return (0);
+		}
+		i++;
+	}
+	return (0);
+}
+
 
 int		is_between_quotes(char *str, int pos)
 {
@@ -415,7 +446,21 @@ char	*trim_q_ftw(char *line)
 	q = 0;
 	while (line[i])
 	{
-		if (line[i] == '\\' && q == 0)
+		if (line[i] == '\\' && is_between_quotes2(line, i) == 1)
+		{
+			ret[j++] = line[i++];
+		}
+		else if (line[i] == '\\' && is_between_quotes2(line, i) == 2)
+		{
+			if (line[i + 1] && line[i + 1] == '\\')
+			{
+				ret[j++] = line[++i];
+				i++;
+			}
+			else
+				ret[j++] = line[i++];
+		}
+		else if (line[i] == '\\' && q == 0)
 		{
 			ret[j++] = line[++i];
 			i++;
@@ -495,9 +540,48 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	int			n_pipes;
 	char 		**cmds;
 	t_command	*cmd;
+	int command_len;
 	
 	n_pipes = 0;
+
+	//Comprueba los pipes del principio y final
+	i = 0;
+	while (command [i] == ' ')
+		i++;
+	if (command[i] == '|')
+	{
+		printf("ERROR: wrong syntax\n");
+		return ;
+	}
+	command_len = ft_strlen(command);
+	while (command[i])
+	{
+		if (command[i] == '\\')
+		{
+			i += 2;
+			continue ;
+		}
+		if (command[i] == '|' && i == command_len - 1)
+		{
+			printf("ERROR: wrong syntax\n");
+			return ;
+		}	
+		i++;
+	}
+
 	cmds = ft_split_ignore_quotes(command, '|');
+	
+	//Borra esto
+	/*
+	i=0;
+	while (cmds[i])
+	{
+		printf("cmd: |%s|\n", cmds[i]);
+		i++;
+	}
+	*/
+	//Borrar esto
+	
 	if (!(check_invalid_redirections(cmds)))
 	{
 		printf("Error: wrong syntax\n");
@@ -606,6 +690,7 @@ void	ft_parse_line(t_fresh *fresh)
 	free(tmp);
 	i = 0;
 	p = 0;
+	int line_len = ft_strlen(fresh->line);
 	while (fresh->line[i])
 	{
 		if (fresh->line[i] == '|' && p == 0 && !is_between_quotes(fresh->line, i))	
@@ -645,11 +730,13 @@ void	ft_parse_line(t_fresh *fresh)
 		i++;
 	}
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
+	/*	
 	if (!check_invalid_pipes(cmds))
 	{
 		printf("Error: wrong syntax\n");
 		return ;
 	}
+	*/
 	i = 0;
 	while (cmds[i])
 	{
