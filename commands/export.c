@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/11 14:06:53 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/20 15:13:11 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ int	validate_variable(char *str)
 	int i;
 
 	i = 0;
-	if (!ft_isalpha(str[i]))
+	if (!ft_isalpha(str[i]) && str[i] != '_')
 		return (0);
 	while (str[i])
 	{
-		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]))
+		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
 			return (0);
 		i++;
 	}
@@ -124,7 +124,6 @@ int	ft_export(t_command *command, t_fresh *fresh)
 			value = ft_strtrim(value, "'");
 			free(tmp);
 		}
-
 		if (!validate_variable(key))
 		{
 			if (value)
@@ -148,6 +147,8 @@ int	ft_export(t_command *command, t_fresh *fresh)
 			else
 				variable_set(&fresh->env, key, value);
 		}
+		value = NULL;
+		key = NULL;
 		i++;
 	}
 	return (0);
