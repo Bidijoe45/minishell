@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/20 11:59:28 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/20 16:55:47 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,6 @@ void	ft_load_env_vars(t_fresh *fresh, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (!ft_strncmp(envp[i], "OLDPWD", 6))
-		{
-			i++;
-			continue ;
-		}
 		split_var = ft_split(envp[i], '=');
 		var = variable_new(ft_strdup(split_var[0]), ft_strdup(split_var[1]));
 		if (fresh->env)
@@ -68,6 +63,8 @@ void	ft_load_env_vars(t_fresh *fresh, char **envp)
 		i++;
 		ft_free_split(split_var);
 	}
+	if (variable_get(fresh->env, "OLDPWD"))
+		variable_mod(fresh->env, "OLDPWD", NULL);
 }
 
 void	ft_free_commands(t_fresh *fresh)
