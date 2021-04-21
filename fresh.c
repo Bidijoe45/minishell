@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/20 16:55:47 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/21 20:02:04 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,7 +256,10 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 		exit(errno);
 	}
 	else
+	{
 		wait(&status);
+		fresh->pid = 0;
+	}
 	fresh->cmd_return = status >> 8; 
 	return (status);
 }

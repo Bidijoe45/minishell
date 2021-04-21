@@ -552,7 +552,7 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 		return ;
 	if (command[i] == '|')
 	{
-		printf("ERROR: wrong syntax\n");
+		printf("minishell: syntax error near unexpected token `%c'\n", command[i]);
 		return ;
 	}
 	command_len = ft_strlen(command);
@@ -565,7 +565,7 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 		}
 		if (command[i] == '|' && i == command_len - 1)
 		{
-			printf("ERROR: wrong syntax\n");
+			printf("minishell: syntax error near unexpected token `%c'\n", command[i]);
 			return ;
 		}	
 		i++;
@@ -700,7 +700,7 @@ void	ft_parse_line(t_fresh *fresh)
 			p = 0;
 		else if (fresh->line[i] == '|' && p == 1)
 		{
-			printf("Error: wrong syntax\n");
+			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
 			return ;
 		}
 		i++;
@@ -716,12 +716,12 @@ void	ft_parse_line(t_fresh *fresh)
 		}
 		if (fresh->line[i] == ';' && i == 0)
 		{
-			printf("Error: wrong syntax\n");
+			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
 			return ;
 		}
 		if (fresh->line[i] == ';' && sc == 1)
 		{
-			printf("Error: wrong syntax\n");
+			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
 			return ;
 		}
 		if (fresh->line[i] != ';' && sc == 1)
