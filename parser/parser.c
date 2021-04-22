@@ -730,6 +730,21 @@ void	ft_parse_line(t_fresh *fresh)
 			sc = 1;
 		i++;
 	}
+	i = 0;
+	while (fresh->line[i])
+	{
+		if (fresh->line[i] == '\\')
+		{
+			i += 2;
+			continue ;
+		}
+		if (fresh->line[i] == '|' && i == line_len - 1)
+		{
+			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+			return ;
+		}	
+		i++;
+	}
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
 	/*	
 	if (!check_invalid_pipes(cmds))
