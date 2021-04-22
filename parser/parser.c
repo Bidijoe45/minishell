@@ -219,7 +219,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 	*command_rpl = ft_strdup(command);
 	while (command[i] != '\0')
 	{
-		if (command[i] == '>' || command[i] == '<')
+		if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
 		{
 			if (command[i + 1] == '>')
 				i++;
@@ -522,11 +522,13 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	cmd->files = files;
 	cmd->args = args;
 	i = 0;
+	
 	while (cmd->files[i])
 	{
 		cmd->files[i]->file_name = trim_q_ftw(cmd->files[i]->file_name);
 		i++;
 	}
+	
 	cmd->read_from_pipe = rfp;
 	cmd->write_to_pipe = wtp;
 	command_set(&fresh->commands, cmd);
@@ -681,6 +683,7 @@ void	ft_parse_line(t_fresh *fresh)
 	char	*tmp;
 	int		sc;
 	int		p;
+	int		rd;
 
 	i = 0;
 	tmp = fresh->line;
@@ -743,6 +746,21 @@ void	ft_parse_line(t_fresh *fresh)
 			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
 			return ;
 		}	
+		i++;
+	}
+	i = 0;
+	while (fresh->line[i])
+	{
+		if (fresh->line[i] == '>' && !is_between_quotes(fresh->line, i) && rd <= 2)
+			rd++;
+		else if (fresh->line[i] != '>' && fresh->line[i] != ' ')
+			rd = 0;
+		
+		if (rd >= 3)	
+		{
+			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+			return ;
+		}
 		i++;
 	}
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
