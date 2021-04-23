@@ -14,7 +14,7 @@ int		ft_valid_quotes(char *line)
 	i = 0;
 	while (line[i] != '\0')
 	{
-		if (line[i] == '\\')
+		if (line[i] == '\\' && !sq)
 		{
 			i += 2;
 			continue ;
