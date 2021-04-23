@@ -550,30 +550,7 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 
 	//Comprueba los pipes del principio y final
 	i = 0;
-	while (ft_isspace(command[i]))
-		i++;
-	if (!command[i])
-		return ;
-	if (command[i] == '|')
-	{
-		printf("minishell: syntax error near unexpected token `%c'\n", command[i]);
-		return ;
-	}
-	command_len = ft_strlen(command);
-	while (command[i])
-	{
-		if (command[i] == '\\')
-		{
-			i += 2;
-			continue ;
-		}
-		if (command[i] == '|' && i == command_len - 1)
-		{
-			printf("minishell: syntax error near unexpected token `%c'\n", command[i]);
-			return ;
-		}	
-		i++;
-	}
+	
 	cmds = ft_split_ignore_quotes(command, '|');
 	
 	if (!(check_invalid_redirections(cmds)))
@@ -809,7 +786,6 @@ void	ft_parse_line(t_fresh *fresh)
 			sc = 1;
 		if (fresh->line[i] != ' ' && fresh->line[i] != ';' && fresh->line[i] != '|')
 			sc = 0;
-//		printf("sc: %d, i: |%c|\n", sc, fresh->line[i]);
 		if (fresh->line[i] == '|' && sc == 1)
 		{
 			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
@@ -817,7 +793,24 @@ void	ft_parse_line(t_fresh *fresh)
 		}
 		i++;
 	}
-	
+
+	//comprobar que no haya pipe antes de ;
+	i = 0;
+	p = 0;
+	while (fresh->line[i])
+	{
+		if (fresh->line[i] == '|')
+			p = 1;
+		if (fresh->line[i] != ' ' && fresh->line[i] != '|' && fresh->line[i] != ';')
+			p = 0;
+		if (fresh->line[i] == ';' && p == 1)
+		{
+			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+			return ;
+		}
+		i++;
+	}
+
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
 	i = 0;
 	while (cmds[i])
