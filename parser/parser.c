@@ -576,17 +576,6 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	}
 	cmds = ft_split_ignore_quotes(command, '|');
 	
-	//Borra esto
-	/*
-	i=0;
-	while (cmds[i])
-	{
-		printf("cmd: |%s|\n", cmds[i]);
-		i++;
-	}
-	*/
-	//Borrar esto
-	
 	if (!(check_invalid_redirections(cmds)))
 	{
 		printf("Error: wrong syntax\n");
@@ -756,8 +745,15 @@ void	ft_parse_line(t_fresh *fresh)
 		if (fresh->line[i] == '>' && !is_between_quotes(fresh->line, i) && rd <= 2)
 			rd++;
 		else if (fresh->line[i] != '>' && fresh->line[i] != ' ')
+		{
+			if (fresh->line[i] == '<')
+			{
+				printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+				return ;
+			}
 			rd = 0;
-		
+		}	
+
 		if (rd >= 3)	
 		{
 			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
@@ -771,7 +767,15 @@ void	ft_parse_line(t_fresh *fresh)
 		if (fresh->line[i] == '<' && !is_between_quotes(fresh->line, i) && rd <= 2)
 			rd++;
 		else if (fresh->line[i] != '<' && fresh->line[i] != ' ')
+		{
+			if (fresh->line[i] == '<')
+			{
+				printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+				return ;
+			}
+
 			rd = 0;
+		}
 		
 		if (rd >= 2)
 		{
@@ -780,15 +784,41 @@ void	ft_parse_line(t_fresh *fresh)
 		}
 		i++;
 	}
-
-	cmds = ft_split_ignore_quotes(fresh->line, ';');
-	/*	
-	if (!check_invalid_pipes(cmds))
+	i = 0;
+	while (fresh->line[i])
 	{
-		printf("Error: wrong syntax\n");
-		return ;
+		if (fresh->line[i] == '\\')
+		{
+			i += 2;
+			continue ;
+		}
+		if (fresh->line[i] == '|' && i == line_len - 1)
+		{
+			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+			return ;
+		}	
+		i++;
 	}
-	*/
+	
+	//comprobar que despues de un ; no haya un pipe
+	i = 0;	
+	sc = 0;
+	while (fresh->line[i])
+	{
+		if (fresh->line[i] == ';')
+			sc = 1;
+		if (fresh->line[i] != ' ' && fresh->line[i] != ';' && fresh->line[i] != '|')
+			sc = 0;
+//		printf("sc: %d, i: |%c|\n", sc, fresh->line[i]);
+		if (fresh->line[i] == '|' && sc == 1)
+		{
+			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+			return ;
+		}
+		i++;
+	}
+	
+	cmds = ft_split_ignore_quotes(fresh->line, ';');
 	i = 0;
 	while (cmds[i])
 	{
