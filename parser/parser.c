@@ -457,6 +457,8 @@ char	*trim_q_ftw(char *line)
 				ret[j++] = line[++i];
 				i++;
 			}
+			else if (line[i + 1] && line[i + 1] == '"')
+				ret[j++] = line[++i];
 			else
 				ret[j++] = line[i++];
 		}
