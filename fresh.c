@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/22 11:39:16 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/24 22:44:04 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,6 +247,7 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 			argv = NULL;
 			free(path);
 			path = NULL;
+			dup2(fresh->fd_out, 1);
 			printf("%s: command not found\n", command->cmd);
 			//free_bidimensional(chararr);
 			exit(127);
