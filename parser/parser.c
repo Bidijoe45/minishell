@@ -620,6 +620,8 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 	ret = ft_strdup(cmds);
 	while (ret[i])
 	{
+		if (ret[i] == '\\')
+			i += 2;
 		if (ret[i] == '$' && ret[i + 1] != '?' && is_between_quotes(ret, i) != 1)
 		{
 			pos = i;
@@ -717,14 +719,16 @@ void	ft_parse_line(t_fresh *fresh)
 		i++;
 	}
 	i = 0;
+	rd = 0;
 	while (fresh->line[i])
 	{
 		if (fresh->line[i] == '>' && !is_between_quotes(fresh->line, i) && rd <= 2)
 			rd++;
-		else if (fresh->line[i] != '>' && fresh->line[i] != ' ')
+		else if (fresh->line[i] != '>' && fresh->line[i] != ' ' && rd > 0) 
 		{
 			if (fresh->line[i] == '<')
 			{
+				printf ("entra\n");
 				printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
 				return ;
 			}
@@ -739,11 +743,12 @@ void	ft_parse_line(t_fresh *fresh)
 		i++;
 	}
 	i = 0;
+	rd = 0;
 	while (fresh->line[i])
 	{
 		if (fresh->line[i] == '<' && !is_between_quotes(fresh->line, i) && rd <= 2)
 			rd++;
-		else if (fresh->line[i] != '<' && fresh->line[i] != ' ')
+		else if (fresh->line[i] != '<' && fresh->line[i] != ' ' && rd > 0)
 		{
 			if (fresh->line[i] == '<')
 			{
