@@ -552,12 +552,13 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	i = 0;
 	
 	cmds = ft_split_ignore_quotes(command, '|');
-	
+	/*	
 	if (!(check_invalid_redirections(cmds)))
 	{
 		printf("Error: wrong syntax\n");
 		return ;
 	}
+	*/
 	while (cmds[n_pipes])
 		n_pipes++;
 	if (n_pipes - 1 != 0)
@@ -662,6 +663,8 @@ void	ft_parse_line(t_fresh *fresh)
 	tmp = fresh->line;
 	fresh->line = ft_replace_vars(fresh, fresh->line);
 	free(tmp);
+
+	//comrpobar si hay mas de un pipe seguidos
 	i = 0;
 	p = 0;
 	int line_len = ft_strlen(fresh->line);
@@ -678,7 +681,9 @@ void	ft_parse_line(t_fresh *fresh)
 		}
 		i++;
 	}
-	
+
+	//Comrprobar si hay ; al inicio
+	//Comprobar si hay mas de un ; seguido
 	i = 0;
 	while (fresh->line[i])
 	{
@@ -703,25 +708,23 @@ void	ft_parse_line(t_fresh *fresh)
 			sc = 1;
 		i++;
 	}
-	i = 0;
-	while (fresh->line[i])
-	{
-		if (fresh->line[i] == '\\')
-		{
-			i += 2;
-			continue ;
-		}
-		if (fresh->line[i] == '|' && i == line_len - 1)
-		{
-			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
-			return ;
-		}	
-		i++;
-	}
+
+	//Comprobar si hay > al inicio
+	//Comprobar si hay mas de 3 > seguidos
 	i = 0;
 	rd = 0;
 	while (fresh->line[i])
 	{
+		if (fresh->line[i] == ' ')
+		{
+			i++;
+			continue;
+		}
+		if (fresh->line[i] == '>' && i == 0)
+		{
+			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+			return ;
+		}
 		if (fresh->line[i] == '>' && !is_between_quotes(fresh->line, i) && rd <= 2)
 			rd++;
 		else if (fresh->line[i] != '>' && fresh->line[i] != ' ' && rd > 0) 
@@ -741,10 +744,23 @@ void	ft_parse_line(t_fresh *fresh)
 		}
 		i++;
 	}
+
+	//Comprobar si hay < al inicio
+	//Comprobar si hay mas de 3 < seguidos
 	i = 0;
 	rd = 0;
 	while (fresh->line[i])
 	{
+		if (fresh->line[i] == ' ')
+		{
+			i++;
+			continue;
+		}
+		if (fresh->line[i] == '<' && i == 0)
+		{
+			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+			return ;
+		}
 		if (fresh->line[i] == '<' && !is_between_quotes(fresh->line, i) && rd <= 2)
 			rd++;
 		else if (fresh->line[i] != '<' && fresh->line[i] != ' ' && rd > 0)
@@ -765,6 +781,8 @@ void	ft_parse_line(t_fresh *fresh)
 		}
 		i++;
 	}
+
+	//Comprobar si hay pipe al final
 	i = 0;
 	while (fresh->line[i])
 	{
@@ -808,6 +826,74 @@ void	ft_parse_line(t_fresh *fresh)
 		if (fresh->line[i] != ' ' && fresh->line[i] != '|' && fresh->line[i] != ';')
 			p = 0;
 		if (fresh->line[i] == ';' && p == 1)
+		{
+			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+			return ;
+		}
+		i++;
+	}
+	
+	//comprobar que no haya < antes de ;
+	i = 0;
+	p = 0;
+	while (fresh->line[i])
+	{
+		if (fresh->line[i] == '<' && !is_between_quotes(fresh->line, i))
+			p = 1;
+		if (fresh->line[i] != ' ' && fresh->line[i] != '<' && fresh->line[i] != ';')
+			p = 0;
+		if (fresh->line[i] == ';' && p == 1)
+		{
+			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+			return ;
+		}
+		i++;
+	}
+
+	//comprobar que no haya > antes de ;
+	i = 0;
+	p = 0;
+	while (fresh->line[i])
+	{
+		if (fresh->line[i] == '>' && !is_between_quotes(fresh->line, i))
+			p = 1;
+		if (fresh->line[i] != ' ' && fresh->line[i] != '>' && fresh->line[i] != ';')
+			p = 0;
+		if (fresh->line[i] == ';' && p == 1)
+		{
+			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+			return ;
+		}
+		i++;
+	}
+	
+	//comprobar que no haya | antes de > o <
+	i = 0;
+	p = 0;
+	while (fresh->line[i])
+	{
+		if (fresh->line[i] == '|' && !is_between_quotes(fresh->line, i))
+			p = 1;
+		if (fresh->line[i] != ' ' && fresh->line[i] != '|')
+			p = 0;
+		if ((fresh->line[i] == '>' || fresh->line[i] == '<') && p == 1)
+		{
+			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+			return ;
+		}
+		i++;
+	}
+
+	//comprobar que no haya > o < antes de | 
+	i = 0;
+	p = 0;
+	while (fresh->line[i])
+	{
+		if ((fresh->line[i] == '>' && fresh->line[i] == '<') && !is_between_quotes(fresh->line, i))
+			p = 1;
+		if (fresh->line[i] != ' ' && fresh->line[i] != '>' && fresh->line[i] == '<')
+			p = 0;
+		if (fresh->line[i] == '|' && p == 1)
 		{
 			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
 			return ;
