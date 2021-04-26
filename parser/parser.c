@@ -620,6 +620,8 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 	ret = ft_strdup(cmds);
 	while (ret[i])
 	{
+		if (ret[i] == '\\')
+			i += 2;
 		if (ret[i] == '$' && ret[i + 1] != '?' && is_between_quotes(ret, i) != 1)
 		{
 			pos = i;
