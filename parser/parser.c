@@ -717,14 +717,16 @@ void	ft_parse_line(t_fresh *fresh)
 		i++;
 	}
 	i = 0;
+	rd = 0;
 	while (fresh->line[i])
 	{
 		if (fresh->line[i] == '>' && !is_between_quotes(fresh->line, i) && rd <= 2)
 			rd++;
-		else if (fresh->line[i] != '>' && fresh->line[i] != ' ')
+		else if (fresh->line[i] != '>' && fresh->line[i] != ' ' && rd > 0) 
 		{
 			if (fresh->line[i] == '<')
 			{
+				printf ("entra\n");
 				printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
 				return ;
 			}
@@ -739,11 +741,12 @@ void	ft_parse_line(t_fresh *fresh)
 		i++;
 	}
 	i = 0;
+	rd = 0;
 	while (fresh->line[i])
 	{
 		if (fresh->line[i] == '<' && !is_between_quotes(fresh->line, i) && rd <= 2)
 			rd++;
-		else if (fresh->line[i] != '<' && fresh->line[i] != ' ')
+		else if (fresh->line[i] != '<' && fresh->line[i] != ' ' && rd > 0)
 		{
 			if (fresh->line[i] == '<')
 			{

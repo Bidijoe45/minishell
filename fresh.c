@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/24 22:44:04 by alvaro           ###   ########.fr       */
+/*   Updated: 2021/04/26 10:52:40 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,7 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 	if (path)
 		free(path);
 	path = ft_strtrim(command->cmd, "\n");
-	if (!lstat(path, &f_stat) && !S_ISDIR(f_stat.st_mode))
+	if (!lstat(path, &f_stat) && !S_ISDIR(f_stat.st_mode) && f_stat.st_mode & S_IXUSR)
 		return (path);
 	free(path);
 	free(paths);
@@ -242,7 +242,7 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 		if (path)
 			execve(path, argv, chararr);
 		else
-		{ 
+		{
 			//free_bidimensional(argv);
 			argv = NULL;
 			free(path);
