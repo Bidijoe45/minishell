@@ -873,9 +873,13 @@ void	ft_parse_line(t_fresh *fresh)
 	while (fresh->line[i])
 	{
 		if (fresh->line[i] == '|' && !is_between_quotes(fresh->line, i))
+		{
 			p = 1;
-		if (fresh->line[i] != ' ' && fresh->line[i] != '|')
+		}
+		if (fresh->line[i] != ' ' && fresh->line[i] != '|' && fresh->line[i] != '>' && fresh->line[i] != '<')
+		{
 			p = 0;
+		}
 		if ((fresh->line[i] == '>' || fresh->line[i] == '<') && p == 1)
 		{
 			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
