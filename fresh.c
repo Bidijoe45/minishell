@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/26 11:45:18 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/27 10:14:37 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,7 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 	if (path)
 		free(path);
 	path = ft_strtrim(command->cmd, "\n");
-	if (path[0] != '.')
+	if (path[0] != '.' && path[0] != '/')
 		return (NULL);
 	if (!lstat(path, &f_stat) && !S_ISDIR(f_stat.st_mode) && f_stat.st_mode & S_IXUSR)
 		return (path);
