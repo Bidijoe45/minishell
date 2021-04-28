@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/27 10:14:37 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/28 09:49:08 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -410,11 +410,9 @@ void	ft_execute_commands(t_fresh *fresh)
 		}
 		else
 		{
+			fresh->fd_out = dup(1);
 			if (last_out != NULL)
-			{
-				fresh->fd_out = dup(1);
 				dup2(last_out->fd, 1);
-			}
 			if (!command->write_to_pipe && !command->read_from_pipe)
 			{
 				if (ft_is_builtin(fresh, command))
