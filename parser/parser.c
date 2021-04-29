@@ -452,7 +452,12 @@ char	*trim_q_ftw(char *line)
 		}
 		else if (line[i] == '\\' && is_between_quotes2(line, i) == 2)
 		{
-			if (line[i + 1] && line[i + 1] == '\\')
+			if (line[i + 1] && line[i + 1] == '$')
+			{
+				ret[j++] = line[++i];
+				i++;
+			}
+			else if (line[i + 1] && line[i + 1] == '\\')
 			{
 				ret[j++] = line[++i];
 				i++;
