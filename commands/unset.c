@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/08 12:45:59 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/04/29 12:20:11 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	variable_unset(t_fresh *fresh, char *key)
 	while (list)
 	{
 		tmp = (t_variable *)list->content;
-		if (!ft_strncmp(tmp->key, var->key, ft_strlen(var->key)) && ft_strlen(tmp->key) == ft_strlen(var->key))
+		if (ft_strlen(tmp->key) == ft_strlen(var->key) && !ft_strncmp(tmp->key, var->key, ft_strlen(var->key)))
 		{
 			free(tmp->key);
 			free(tmp->value);
@@ -36,7 +36,9 @@ void	variable_unset(t_fresh *fresh, char *key)
 				fresh->env = list->next;
 			else
 				prev->next = list->next;
+		
 			free(list);
+			break;
 		}
 		prev = list;
 		list = list->next;
