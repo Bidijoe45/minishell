@@ -909,7 +909,6 @@ void	ft_parse_line(t_fresh *fresh)
 		}
 		i++;
 	}
-
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
 	i = 0;
 	while (cmds[i])

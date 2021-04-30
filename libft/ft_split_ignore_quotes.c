@@ -6,7 +6,7 @@
 /*   By: apavel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 16:18:07 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/16 10:52:33 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/30 12:50:10 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static size_t	ft_count_words(const char *s, char c)
 		if (s[i] == '\\')
 		{
 			i += 2;
-			continue ;
 		}
 		if (s[i] == '"' && sq == 0)
 			dq = !dq;
@@ -58,7 +57,6 @@ static size_t	ft_next_sep(const char *s, char c)
 		if (s[i] == '\\')
 		{
 			i += 2;
-			continue ;
 		}
 		if (s[i] == '"' && sq == 0)
 			dq = !dq;
@@ -115,6 +113,12 @@ char			**ft_split_ignore_quotes(const char *s, char c)
 		table[0] = NULL;
 		return (table);
 	}
-	ft_alloc_wrds(table, s, c, words);
+	if (s && !ft_strchr(s, c))
+	{
+		table[0] = ft_strdup(s);
+		table[1] = NULL;
+	}
+	else
+		ft_alloc_wrds(table, s, c, words);
 	return (table);
 }
