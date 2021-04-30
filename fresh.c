@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/29 12:14:07 by apavel           ###   ########.fr       */
+/*   Updated: 2021/04/30 11:33:52 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 	{
 		path = create_path(paths[i], command->cmd);
 		status = lstat(path, &f_stat);
-		if (!status)
+		if (!status && S_ISREG(f_stat.st_mode))
 		{
 			free(paths);
 			return (path);
