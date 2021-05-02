@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/02 13:10:46 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/02 15:25:11 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # define NAME "fresh"
 # define ART "███████╗██████╗ ███████╗███████╗██╗  ██╗\n██╔════╝██╔══██╗██╔════╝██╔════╝██║  ██║\n█████╗  ██████╔╝█████╗  ███████╗███████║\n██╔══╝  ██╔══██╗██╔══╝  ╚════██║██╔══██║\n██║     ██║  ██║███████╗███████║██║  ██║\n╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝\n                                        \n"
 
-# include "../resources/get_next_line/get_next_line.h"
 # include "../resources/libft/libft.h"
 # include "../resources/ft_printf/ft_printf.h"
 # include <sys/errno.h>
@@ -27,6 +26,7 @@
 # include <string.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <fcntl.h>
 
 enum	e_rtype
 {

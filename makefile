@@ -6,7 +6,6 @@ SRCS =	./srcs/fresh.c \
 		./srcs/list/list.c \
 		./srcs/commands/echo.c ./srcs/commands/exit.c ./srcs/commands/pwd.c ./srcs/commands/cd.c \
 		./srcs/commands/env.c ./srcs/commands/export.c ./srcs/commands/unset.c
-GNL	= ./resources/get_next_line/get_next_line.c
 NAME = minishell
 OBJS = ${SRCS:.c=.o}
 CC = gcc
@@ -15,7 +14,7 @@ SANITIZE = -g3 -fsanitize=address
 
 ${NAME}:	${OBJS}
 			make -C ./resources/ft_printf/
-			gcc ${GNL} ${OBJS} -L ./resources/ft_printf -l ftprintf -o ${NAME}
+			gcc ${OBJS} -L ./resources/ft_printf -l ftprintf -o ${NAME}
 all:		${NAME}
 clean:
 			rm -f ${OBJS}
