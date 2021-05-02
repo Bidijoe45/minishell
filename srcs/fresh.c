@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/02 12:53:48 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/02 13:43:32 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	ft_ctrl_backslash(int signum)
 
 void	ft_load_env_vars(t_fresh *fresh, char **envp)
 {
-	char 	**split_var;
-	int		i;
+	char		**split_var;
+	int			i;
 	t_variable	*var;
 
 	i = 0;
@@ -68,10 +68,10 @@ void	ft_load_env_vars(t_fresh *fresh, char **envp)
 
 void	ft_free_commands(t_fresh *fresh)
 {
-	t_list *list_elem;
-	list_elem = fresh->commands;
-	int	i;
+	t_list	*list_elem;
+	int		i;
 
+	list_elem = fresh->commands;
 	while (list_elem)
 	{
 		t_command *cmd = (t_command *)list_elem->content;
@@ -104,7 +104,7 @@ void	ft_free_commands(t_fresh *fresh)
 	fresh->commands = NULL;
 }
 
-int		ft_listsize(t_list *list)
+int	ft_listsize(t_list *list)
 {
 	t_list	*tmp;
 	int		i;
@@ -189,7 +189,6 @@ char	*create_path(char *path, char *cmd)
 	return (path);
 }
 
-
 char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 {
 	struct	stat	f_stat;
@@ -244,16 +243,13 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 			execve(path, argv, chararr);
 		else
 		{
-			//free_bidimensional(argv);
 			argv = NULL;
 			free(path);
 			path = NULL;
 			dup2(fresh->fd_out, 1);
 			printf("%s: command not found\n", command->cmd);
-			//free_bidimensional(chararr);
 			exit(127);
 		}
-		//free_bidimensional(argv);
 		argv = NULL;
 		exit(errno);
 	}
@@ -266,7 +262,7 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 	return (status);
 }
 
-int		ft_is_builtin(t_fresh *fresh, t_command *command)
+int	ft_is_builtin(t_fresh *fresh, t_command *command)
 {
 	char *name;
 
@@ -335,8 +331,8 @@ void	ft_replace_exit_status(t_fresh *fresh, t_command *command)
 	i = 0;
 	while (command->files[i])
 	{
-		command->files[i]->file_name =
-			ft_replace(command->files[i]->file_name, "$?", tmp, 0);
+		command->files[i]->file_name
+		= ft_replace(command->files[i]->file_name, "$?", tmp, 0);
 		i++;
 	}
 	free(tmp);
@@ -422,7 +418,6 @@ void	ft_execute_commands(t_fresh *fresh)
 			if (command->write_to_pipe && !command->read_from_pipe)
 			{
 				pid = fork();
-
 				if (!pid)
 				{
 					close(fd[0]);
@@ -441,7 +436,6 @@ void	ft_execute_commands(t_fresh *fresh)
 			if (command->read_from_pipe && command->write_to_pipe)
 			{
 				pid = fork();
-
 				if (!pid)
 				{
 					dup2(fresh->last_fd, 0);
@@ -461,7 +455,6 @@ void	ft_execute_commands(t_fresh *fresh)
 			if (command->read_from_pipe && !command->write_to_pipe)
 			{
 				pid = fork();
-
 				if (!pid)
 				{
 					close(fd[0]);
@@ -487,7 +480,7 @@ void	ft_execute_commands(t_fresh *fresh)
 	}
 }
 
-int		main(int argc, char **argv, char **envp, char **apple)
+int	main(int argc, char **argv, char **envp, char **apple)
 {
 	int		reading;
 	

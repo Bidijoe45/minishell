@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 13:04:28 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/02 13:04:46 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/02 13:38:56 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 void	sort_list(t_list *list)
 {
-	t_list 	*i;
-	t_list 	*j;
+	t_list	*i;
+	t_list	*j;
 	t_list	*tmp;
 
 	i = list;
@@ -36,8 +36,8 @@ void	sort_list(t_list *list)
 
 void	print_list(t_list *list)
 {
-	t_list	*i;
-	t_variable *var;
+	t_list		*i;
+	t_variable	*var;
 
 	i = list;
 	while (i)
