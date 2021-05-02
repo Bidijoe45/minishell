@@ -6,13 +6,13 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/11 16:12:04 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/02 13:02:58 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../fresh.h"
-#include "../print/print.h"
-#include "command.h"
+#include "../../includes/fresh.h"
+#include "../../includes/print.h"
+#include "../../includes/command.h"
 
 int	ft_cd(t_command *command, t_fresh *fresh)
 {

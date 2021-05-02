@@ -6,11 +6,11 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/10 11:32:25 by alvaro           ###   ########.fr       */
+/*   Updated: 2021/05/02 13:04:22 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../fresh.h"
+#include "../../includes/fresh.h"
 
 int    ft_pwd(t_command *command, t_fresh *fresh)
 {

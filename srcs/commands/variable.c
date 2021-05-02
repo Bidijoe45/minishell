@@ -6,14 +6,13 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 13:21:03 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/05 17:20:21 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/02 13:11:04 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "../fresh.h"
-#include "command.h"
-#include "../list/list.h"
+#include "../../includes/fresh.h"
+#include "../../includes/command.h"
+#include "../../includes/list.h"
 
 t_variable *variable_new(char *key, char *value)
 {

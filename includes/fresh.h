@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/09 20:51:08 by alvaro           ###   ########.fr       */
+/*   Updated: 2021/05/02 13:10:46 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 # define NAME "fresh"
 # define ART "███████╗██████╗ ███████╗███████╗██╗  ██╗\n██╔════╝██╔══██╗██╔════╝██╔════╝██║  ██║\n█████╗  ██████╔╝█████╗  ███████╗███████║\n██╔══╝  ██╔══██╗██╔══╝  ╚════██║██╔══██║\n██║     ██║  ██║███████╗███████║██║  ██║\n╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝\n                                        \n"
 
-# include "./get_next_line/get_next_line.h"
-# include "./libft/libft.h"
-# include "./ft_printf/ft_printf.h"
+# include "../resources/get_next_line/get_next_line.h"
+# include "../resources/libft/libft.h"
+# include "../resources/ft_printf/ft_printf.h"
 # include <sys/errno.h>
 # include <stdio.h>
 # include <sys/stat.h>

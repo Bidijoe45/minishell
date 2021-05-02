@@ -6,13 +6,13 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/02 17:49:25 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/02 13:03:17 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../fresh.h"
-#include "../print/print.h"
-#include "command.h"
+#include "../../includes/fresh.h"
+#include "../../includes/print.h"
+#include "../../includes/command.h"
 
 int	ft_env(t_command *command, t_fresh *fresh)
 {

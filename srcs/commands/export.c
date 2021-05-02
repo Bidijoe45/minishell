@@ -6,12 +6,12 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/20 15:13:11 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/02 13:07:54 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../fresh.h"
-#include "command.h"
+#include "../../includes/fresh.h"
+#include "../../includes/command.h"
 
 void	print_list(t_list *list)
  {

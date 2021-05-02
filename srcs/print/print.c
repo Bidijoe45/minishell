@@ -6,12 +6,12 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 10:31:58 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/03/11 15:01:09 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/02 13:05:14 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../fresh.h"
-#include "./print.h"
+#include "../../includes/fresh.h"
+#include "../../includes/print.h"
 
 void    ft_print_color(char *color, char *str)
 {

@@ -6,12 +6,12 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 12:13:11 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/04/26 11:29:38 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/02 13:05:33 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../fresh.h"
-#include "command.h"
+#include "../../includes/fresh.h"
+#include "../../includes/command.h"
 
 static	void	set_trail(char **args, int *trail)
 {

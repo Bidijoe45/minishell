@@ -6,14 +6,14 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:46:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/04/01 16:10:59 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/02 13:07:35 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../fresh.h"
-#include "command.h"
-#include "../print/print.h"
-#include "../list/list.h"
+#include "../../includes/fresh.h"
+#include "../../includes/command.h"
+#include "../../includes/print.h"
+#include "../../includes/list.h"
 
 void	*command_set(t_list **list, t_command *command)
 {

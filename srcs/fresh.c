@@ -6,16 +6,15 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/30 11:33:52 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/02 12:53:48 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fresh.h"
-#include "commands/command.h"
-#include "music.h"
-#include "print/print.h"
-#include "parser/parser.h"
-#include "list/list.h"
+#include "../includes/fresh.h"
+#include "../includes/command.h"
+#include "../includes/print.h"
+#include "../includes/parser.h"
+#include "../includes/list.h"
 
 t_fresh	*fresh;
 

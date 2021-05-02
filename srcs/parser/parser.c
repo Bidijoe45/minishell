@@ -1,7 +1,19 @@
-#include "../fresh.h"
-#include "../print/print.h"
-#include "../commands/command.h"
-#include "parser.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/02 12:55:18 by alvrodri          #+#    #+#             */
+/*   Updated: 2021/05/02 12:55:21 by alvrodri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/fresh.h"
+#include "../../includes/print.h"
+#include "../../includes/command.h"
+#include "../../includes/parser.h"
 
 int		ft_valid_quotes(char *line)
 {

@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clear.c                                            :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2020/11/30 12:06:31 by apavel           ###   ########.fr       */
+/*   Created: 2021/05/02 13:09:53 by alvrodri          #+#    #+#             */
+/*   Updated: 2021/05/02 13:10:02 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../fresh.h"
+#ifndef PARSER_H
+# define PARSER_H
+# include "./fresh.h"
 
-void    ft_clear()
-{
-    ft_printf("\033[2J\033[H");
-}
+void	sort_list(t_list *list);
+void	print_list(t_list *list);
+void	read_line(t_fresh *fresh);
+int     ft_valid_multiline(t_fresh *fresh);
+void    ft_parse_line(t_fresh *fres);
+
+#endif

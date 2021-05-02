@@ -6,12 +6,12 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/04/29 12:20:11 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/02 13:08:09 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../fresh.h"
-#include "./command.h"
+#include "../../includes/fresh.h"
+#include "../../includes/command.h"
 
 void	variable_unset(t_fresh *fresh, char *key)
 {

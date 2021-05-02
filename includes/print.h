@@ -6,14 +6,13 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:38:14 by alvrodri          #+#    #+#             */
-/*   Updated: 2020/11/30 12:52:29 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/02 13:10:18 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PRINT_H
 # define PRINT_H
-
-#include "../fresh.h"
+# include "./fresh.h"
 
 #define RED "[0;31m"
 #define BOLD_RED "[1;31m"
