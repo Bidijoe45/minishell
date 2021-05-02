@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/02 13:08:09 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/02 13:27:20 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	variable_unset(t_fresh *fresh, char *key)
 	while (list)
 	{
 		tmp = (t_variable *)list->content;
-		if (ft_strlen(tmp->key) == ft_strlen(var->key) && !ft_strncmp(tmp->key, var->key, ft_strlen(var->key)))
+		if (ft_strlen(tmp->key) == ft_strlen(var->key)
+			&& !ft_strncmp(tmp->key, var->key, ft_strlen(var->key)))
 		{
 			free(tmp->key);
 			free(tmp->value);
@@ -36,9 +37,8 @@ void	variable_unset(t_fresh *fresh, char *key)
 				fresh->env = list->next;
 			else
 				prev->next = list->next;
-		
 			free(list);
-			break;
+			break ;
 		}
 		prev = list;
 		list = list->next;
@@ -47,7 +47,7 @@ void	variable_unset(t_fresh *fresh, char *key)
 
 static	int	validate_variable(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!ft_isalpha(str[i]) && str[i] != '_')
@@ -70,7 +70,8 @@ int	ft_unset(t_command *command, t_fresh *fresh)
 		if (command->args[0][0] == '-')
 		{
 			if (!command->args[0][1])
-				printf("unset: `%s': not a valid identifier\n", command->args[0]);
+				printf("unset: `%s': not a valid identifier\n",
+					command->args[0]);
 			else
 				printf("unset: %s: invalid option\n", command->args[0]);
 			return (1);

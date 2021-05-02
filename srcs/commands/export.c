@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/02 13:07:54 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/02 13:32:15 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 #include "../../includes/command.h"
 
 void	print_list(t_list *list)
- {
- 	t_list	*i;
- 	t_variable *var;
+{
+	t_list		*i;
+	t_variable	*var;
 
- 	i = list;
- 	while (i)
- 	{
- 		var = (t_variable *)i->content;
- 		if (var->value)
+	i = list;
+	while (i)
+	{
+		var = (t_variable *)i->content;
+		if (var->value)
 			printf("declare -x %s=\"%s\"\n", var->key, var->value);
 		else
 			printf("declare -x %s\n", var->key);
 		i = i->next;
- 	}
- }
+	}
+}
 
 void	swap(t_list *a, t_list *b)
 {
@@ -44,7 +44,7 @@ void	sort_list(t_list *list)
 	t_list	*elem;
 	t_list	*next_elem;
 	int		swapped;
-	int		 i;
+	int		i;
 
 	if (list == NULL)
 		return ;
@@ -56,7 +56,8 @@ void	sort_list(t_list *list)
 		elem = list;
 		while (elem->next != next_elem)
 		{
-			if (((t_variable *)elem->content)->key[0] > ((t_variable *)elem->next->content)->key[0])
+			if (((t_variable *)elem->content)->key[0]
+				> ((t_variable *)elem->next->content)->key[0])
 			{
 				swap(elem, elem->next);
 				swapped = 1;
@@ -69,7 +70,7 @@ void	sort_list(t_list *list)
 
 int	validate_variable(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!ft_isalpha(str[i]) && str[i] != '_')
@@ -106,10 +107,10 @@ int	ft_export(t_command *command, t_fresh *fresh)
 	i = 0;
 	while (command->args[i])
 	{
-		//TODO: leak probablemente jasjasj me da pereza
 		if (ft_strchr(command->args[i], '='))
 		{
-			key = ft_substr(command->args[i], 0, ft_strchr(command->args[i], '=') - command->args[i]);
+			key = ft_substr(command->args[i], 0,
+					ft_strchr(command->args[i], '=') - command->args[i]);
 			value = ft_strdup(ft_strchr(command->args[i], '=') + 1);
 		}
 		else

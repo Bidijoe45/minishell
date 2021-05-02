@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 13:21:03 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/02 13:11:04 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/02 13:29:13 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,20 @@
 #include "../../includes/command.h"
 #include "../../includes/list.h"
 
-t_variable *variable_new(char *key, char *value)
+t_variable	*variable_new(char *key, char *value)
 {
-	t_variable *var;
+	t_variable	*var;
 
 	var = malloc(sizeof(t_variable));
 	var->key = key;
 	var->value = value;
-
 	return (var);
 }
 
 t_variable	*variable_get(t_list *variables, char *key)
 {
-	t_list *elem;
-	t_variable *var;
+	t_list		*elem;
+	t_variable	*var;
 
 	if (!variables)
 		return (NULL);
@@ -36,7 +35,8 @@ t_variable	*variable_get(t_list *variables, char *key)
 	while (elem)
 	{
 		var = elem->content;
-		if (!strncmp(var->key, key, ft_strlen(key)) && ft_strlen(var->key) == ft_strlen(key))
+		if (!strncmp(var->key, key, ft_strlen(key))
+			&& ft_strlen(var->key) == ft_strlen(key))
 			return (var);
 		elem = elem->next;
 	}
@@ -45,12 +45,13 @@ t_variable	*variable_get(t_list *variables, char *key)
 
 void	variable_set(t_list **variables, char *key, char *value)
 {
-	t_list *new_elem;
-	t_variable *var;
+	t_list		*new_elem;
+	t_variable	*var;
 
 	if (!*variables)
 		return ;
-	if ((var = variable_get(*variables, key)) != NULL)
+	var = variable_get(*variables, key);
+	if (var != NULL)
 	{
 		var->value = value;
 		return ;
@@ -66,8 +67,8 @@ void	variable_set(t_list **variables, char *key, char *value)
 
 void	variable_mod(t_list *variables, char *key, char *value)
 {
-	t_list *elem;
-	t_variable *var;
+	t_list		*elem;
+	t_variable	*var;
 
 	if (!variables)
 		return ;

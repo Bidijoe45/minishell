@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 12:13:11 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/02 13:05:33 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/02 13:29:52 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static	void	set_trail(char **args, int *trail)
 {
-	int i;
+	int	i;
 	int	j;
 	int	already;
 
@@ -43,7 +43,7 @@ int	ft_echo(t_command *command, t_fresh *fresh)
 {
 	int	trail;
 	int	print;
-	int already;
+	int	already;
 	int	i;
 	int	j;
 
@@ -61,7 +61,8 @@ int	ft_echo(t_command *command, t_fresh *fresh)
 	{
 		i = 0;
 		print = 0;
-		if (!already && command->args[j][0] == '-' && command->args[j][1] == 'n')
+		if (!already && command->args[j][0]
+			== '-' && command->args[j][1] == 'n')
 		{
 			i++;
 			while (command->args[j][i] == 'n')
