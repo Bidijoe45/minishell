@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 12:55:18 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/03 14:13:25 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/03 15:28:45 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -704,6 +704,8 @@ void	ft_parse_line(t_fresh *fresh)
 	if (check_lower_in_a_row(fresh))
 		return ;
 	if (check_lower_greater_at_end(fresh))
+		return ;
+	if (check_pipe_at_start(fresh))
 		return ;
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
 	i = 0;

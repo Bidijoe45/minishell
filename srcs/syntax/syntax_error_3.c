@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 12:41:38 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/03 14:12:00 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/03 15:29:37 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,21 @@ int check_lower_greater_at_end(t_fresh *fresh)
 			return (1);
 		}	
 		i++;
+	}
+	return (0);
+}
+
+int	check_pipe_at_start(t_fresh *fresh)
+{
+	int i;
+
+	i = 0;
+	while (fresh->line[i] == ' ')
+		i++;
+	if (fresh->line[i] == '|')
+	{
+		printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+		return (1);
 	}
 	return (0);
 }
