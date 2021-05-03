@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/03 12:12:51 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/03 12:30:01 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,13 @@ void	ft_ctrl_c(int signum)
 {
 	if (!g_fresh->pid)
 	{
+<<<<<<< HEAD
 		printf("\n");
 		ft_print_input(g_fresh);
+=======
+		printf("\b\b  \n");
+		ft_print_input(fresh);
+>>>>>>> 72a6c23f26c1ff1f06b4a896451a1c2c1708e6af
 	}
 	g_fresh->pid = 0;
 	return ;
