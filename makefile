@@ -4,6 +4,7 @@ SRCS =	./srcs/fresh.c \
 		./srcs/commands/command.c \
 		./srcs/parser/parser.c \
 		./srcs/list/list.c \
+		./srcs/syntax/syntax_error_1.c ./srcs/syntax/syntax_error_2.c ./srcs/syntax/syntax_error_3.c \
 		./srcs/commands/echo.c ./srcs/commands/exit.c ./srcs/commands/pwd.c ./srcs/commands/cd.c \
 		./srcs/commands/env.c ./srcs/commands/export.c ./srcs/commands/unset.c
 NAME = minishell
