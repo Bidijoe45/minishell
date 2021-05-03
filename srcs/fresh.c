@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/03 12:18:18 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/03 12:19:53 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,14 @@ void	ft_load_env_vars(t_fresh *fresh, char **envp)
 
 void	ft_free_commands(t_fresh *fresh)
 {
-	t_list	*list_elem;
-	int		i;
+	int			i;
+	t_command	*cmd;
+	t_list		*list_elem;
 
 	list_elem = fresh->commands;
 	while (list_elem)
 	{
-		t_command *cmd = (t_command *)list_elem->content;
+		*cmd = (t_command *)list_elem->content;
 		free(cmd->cmd);
 		if (cmd->files)
 		{
@@ -191,7 +192,7 @@ char	*create_path(char *path, char *cmd)
 
 char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 {
-	struct	stat	f_stat;
+	struct stat		f_stat;
 	int				i;
 	int				status;
 	char			*path;
@@ -218,14 +219,15 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 	path = ft_strtrim(command->cmd, "\n");
 	if (path[0] != '.' && path[0] != '/')
 		return (NULL);
-	if (!lstat(path, &f_stat) && !S_ISDIR(f_stat.st_mode) && f_stat.st_mode & S_IXUSR)
+	if (!lstat(path, &f_stat) && !S_ISDIR(f_stat.st_mode)
+		&& f_stat.st_mode & S_IXUSR)
 		return (path);
 	free(path);
 	free(paths);
 	return (NULL);
 }
 
-int		ft_exec_bin(t_fresh *fresh, t_command *command)
+int	ft_exec_bin(t_fresh *fresh, t_command *command)
 {
 	int		pid;
 	int		status;
@@ -258,13 +260,13 @@ int		ft_exec_bin(t_fresh *fresh, t_command *command)
 		wait(&status);
 		fresh->pid = 0;
 	}
-	fresh->cmd_return = status >> 8; 
+	fresh->cmd_return = status >> 8;
 	return (status);
 }
 
 int	ft_is_builtin(t_fresh *fresh, t_command *command)
 {
-	char *name;
+	char	*name;
 
 	name = command->cmd;
 	if (!ft_strncmp(name, "echo\0", 5))
@@ -286,7 +288,7 @@ int	ft_is_builtin(t_fresh *fresh, t_command *command)
 
 void	ft_execute_builtin(t_command *command, t_fresh *fresh)
 {
-	char *name;
+	char	*name;
 
 	name = command->cmd;
 	if (!ft_strncmp(name, "echo\0", 5))
@@ -332,7 +334,7 @@ void	ft_replace_exit_status(t_fresh *fresh, t_command *command)
 	while (command->files[i])
 	{
 		command->files[i]->file_name
-		= ft_replace(command->files[i]->file_name, "$?", tmp, 0);
+			= ft_replace(command->files[i]->file_name, "$?", tmp, 0);
 		i++;
 	}
 	free(tmp);
@@ -342,11 +344,12 @@ void	ft_execute_commands(t_fresh *fresh)
 {
 	int			i;
 	int			pid;
+	int			fd[2];	
 	t_list		*list_elem;
 	t_file		*last_in;
 	t_file		*last_out;
 	t_command	*p_command;
-	int			fd[2];	
+	t_command	*command;
 
 	last_in = NULL;
 	last_out = NULL;
@@ -354,7 +357,7 @@ void	ft_execute_commands(t_fresh *fresh)
 	list_elem = fresh->commands;
 	while (list_elem)
 	{
-		t_command *command = (t_command *)list_elem->content;
+		*command = (t_command *)list_elem->content;
 		i = 0;
 		ft_replace_exit_status(fresh, command);
 		if (command->write_to_pipe)
@@ -369,9 +372,11 @@ void	ft_execute_commands(t_fresh *fresh)
 					close(last_out->fd);
 				last_out = command->files[i];
 				if (last_out->type == OUT)
-					last_out->fd = open(last_out->file_name, O_RDWR | O_TRUNC | O_CREAT, 0700);
+					last_out->fd = open(last_out->file_name,
+							O_RDWR | O_TRUNC | O_CREAT, 0700);
 				else if (last_out->type == APPEND)
-					last_out->fd = open(last_out->file_name, O_RDWR | O_APPEND | O_CREAT, 0700);
+					last_out->fd = open(last_out->file_name,
+							O_RDWR | O_APPEND | O_CREAT, 0700);
 			}
 			i++;
 		}
@@ -483,13 +488,12 @@ void	ft_execute_commands(t_fresh *fresh)
 int	main(int argc, char **argv, char **envp, char **apple)
 {
 	int		reading;
-	
+
 	signal(SIGINT, ft_ctrl_c);
 	signal(SIGQUIT, ft_ctrl_backslash);
 	fresh = malloc(sizeof(t_fresh));
 	ft_initialize(fresh);
 	ft_load_env_vars(fresh, envp);
-	/*esto hay que liberarlo en algun lado*/
 	if (variable_get(fresh->env, "USER"))
 		fresh->user = ft_strdup(variable_get(fresh->env, "USER")->value);
 	else
