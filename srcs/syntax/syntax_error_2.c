@@ -6,10 +6,11 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 13:00:24 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/03 13:14:48 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/03 13:49:05 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../resources/libft/libft.h"
 #include "../../includes/fresh.h"
 #include "../../includes/parser.h"
 
@@ -20,8 +21,10 @@
 int	check_if_pipe_at_end(t_fresh *fresh)
 {
 	int	i;
+	int	line_len;
 
 	i = 0;
+	line_len = ft_strlen(fresh->line);
 	while (fresh->line[i])
 	{
 		if (fresh->line[i] == '\\')
@@ -113,7 +116,7 @@ int	check_lower_before_semicolon(t_fresh *fresh)
 		if (fresh->line[i] == ';' && p == 1)
 		{
 			printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
-			return ;
+			return (1);
 		}
 		i++;
 	}

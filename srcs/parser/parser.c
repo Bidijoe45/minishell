@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 12:55:18 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/03 13:22:37 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/03 14:13:25 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -677,7 +677,6 @@ void	ft_parse_line(t_fresh *fresh)
 	tmp = fresh->line;
 	fresh->line = ft_replace_vars(fresh, fresh->line);
 	free(tmp);
-	int line_len = ft_strlen(fresh->line);
 	if (check_pipe_followed_by_another(fresh))
 		return ;
 	if (check_semicolon_followed_by_another(fresh))
@@ -701,6 +700,10 @@ void	ft_parse_line(t_fresh *fresh)
 	if (check_greater_lower_before_pipe(fresh))
 		return ;
 	if (check_pipe_before_greater_lower(fresh))
+		return ;
+	if (check_lower_in_a_row(fresh))
+		return ;
+	if (check_lower_greater_at_end(fresh))
 		return ;
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
 	i = 0;

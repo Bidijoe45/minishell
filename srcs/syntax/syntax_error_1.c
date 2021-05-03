@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 12:41:38 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/03 13:00:13 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/03 13:44:20 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,10 @@ int	check_semicolon_at_start(t_fresh *fresh)
 int	check_semicolon_followed_by_another(t_fresh *fresh)
 {
 	int	i;
+	int	sc;
 
 	i = 0;
+	sc = 0;
 	while (fresh->line[i])
 	{
 		if (fresh->line[i] == ' ')

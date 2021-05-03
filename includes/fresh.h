@@ -1,12 +1,12 @@
 /* ************************************************************************** */
-/*                                                                            */
+  /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   fresh.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/02 15:25:11 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/03 14:12:14 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ typedef struct s_variable
 	char	*value;
 }				t_variable;
 
+int			is_between_quotes(char *str, int pos);
+
 t_list		*list_new_element(void *content);
 void		list_add_back(t_list *list, t_list *new_elem);
 void		exec_commands(t_fresh *fresh);
@@ -91,5 +93,20 @@ int			ft_cd(t_command *command, t_fresh *fresh);
 int			ft_env(t_command *command, t_fresh *fresh);
 int			ft_export(t_command *command, t_fresh *fresh);
 int			ft_unset(t_command *command, t_fresh *fresh);
+
+int			check_pipe_followed_by_another(t_fresh *fresh);
+int			check_semicolon_followed_by_another(t_fresh *fresh);
+int			check_semicolon_at_start(t_fresh *fresh);
+int			check_greater_at_start(t_fresh *fresh);
+int			check_more_than_three_greater_in_a_row(t_fresh *fresh);
+int			check_if_pipe_at_end(t_fresh *fresh);
+int			check_if_pipe_after_semicolon(t_fresh *fresh);
+int			check_if_pipe_before_semicolon(t_fresh *fresh);
+int			check_lower_before_semicolon(t_fresh *fresh);
+int			check_greater_before_semicolon(t_fresh *fresh);
+int			check_greater_lower_before_pipe(t_fresh *fresh);
+int			check_pipe_before_greater_lower(t_fresh *fresh);
+int			check_lower_in_a_row(t_fresh *fresh);
+int			check_lower_greater_at_end(t_fresh *fresh);
 
 #endif
