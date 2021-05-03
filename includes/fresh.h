@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/03 15:28:17 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/03 15:49:23 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,6 @@ int			check_pipe_before_greater_lower(t_fresh *fresh);
 int			check_lower_in_a_row(t_fresh *fresh);
 int			check_lower_greater_at_end(t_fresh *fresh);
 int			check_pipe_at_start(t_fresh *fresh);
+int			aux_1(t_fresh *fresh, int i, int rd);
 
 #endif
