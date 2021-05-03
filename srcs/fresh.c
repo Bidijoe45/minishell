@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/03 12:31:24 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/03 12:34:07 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,19 @@ void	ft_ctrl_c(int signum)
 	if (!g_fresh->pid)
 	{
 		printf("\b\b  \n");
-		ft_print_input(fresh);
+		ft_print_input(g_fresh);
 	}
 	else
-		printf("\b\b  \n");
+		printf("\n");
 	g_fresh->pid = 0;
 	return ;
 }
 
 void	ft_ctrl_backslash(int signum)
 {
+	if (g_fresh->pid)
+		printf("Quit: %d\n", signum);
+	g_fresh->pid = 0;
 	return ;
 }
 
