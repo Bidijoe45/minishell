@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 12:55:18 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/02 12:55:21 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/03 11:44:13 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 #include "../../includes/command.h"
 #include "../../includes/parser.h"
 
-int		ft_valid_quotes(char *line)
+int	ft_valid_quotes(char *line)
 {
-	int dq;
-	int sq;
-	int i;
+	int	dq;
+	int	sq;
+	int	i;
 
 	dq = 0;
 	sq = 0;
@@ -904,8 +904,6 @@ void	ft_parse_line(t_fresh *fresh)
 		}
 		i++;
 	}
-
-	//comprobar que no haya > o < antes de | 
 	i = 0;
 	p = 0;
 	while (fresh->line[i])

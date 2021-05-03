@@ -6,24 +6,21 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/02 13:27:20 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/03 12:00:04 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/fresh.h"
 #include "../../includes/command.h"
 
-void	variable_unset(t_fresh *fresh, char *key)
+void	variable_unset(t_fresh *fresh, char *key, t_list *list, t_variable *tmp)
 {
-	t_list		*list;
 	t_list		*prev;
-	t_variable	*tmp;
 	t_variable	*var;
 
 	var = variable_get(fresh->env, key);
 	if (!var)
 		return ;
-	list = fresh->env;
 	while (list)
 	{
 		tmp = (t_variable *)list->content;
@@ -83,7 +80,7 @@ int	ft_unset(t_command *command, t_fresh *fresh)
 		if (!(validate_variable(command->args[i])))
 			printf("unset: `%s': not a valid identifier\n", command->args[i]);
 		else
-			variable_unset(fresh, command->args[i]);
+			variable_unset(fresh, command->args[i], fresh->env, NULL);
 		i++;
 	}
 	return (0);
