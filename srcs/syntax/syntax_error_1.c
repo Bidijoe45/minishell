@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 12:41:38 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/03 15:50:04 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/03 17:28:25 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,15 +129,15 @@ int	check_greater_at_start(t_fresh *fresh)
 }
 
 /*
- * Check if there are more than 3 candies in a row
+ * Check if there are more than 3 > in a row
  */
-
+/*
 int	check_more_than_three_greater_in_a_row(t_fresh *fresh)
 {
 	int	i;
 	int	rd;
 
-	i = 0;
+	i = -1;
 	rd = 0;
 	while (fresh->line[++i])
 	{
@@ -154,6 +154,35 @@ int	check_more_than_three_greater_in_a_row(t_fresh *fresh)
 		}
 		if (aux_1(fresh, i, rd) == 2)
 			return (1);
+	}
+	return (0);
+}
+*/
+int	check_more_than_three_greater_in_a_row(t_fresh *fresh)
+{
+	int	i;
+	int	rd;
+
+	i = 0;
+	rd = 0;
+	while (fresh->line[i])
+	{
+		if (fresh->line[i] == ' ')
+		{
+			i++;
+			continue;
+		}
+		if (fresh->line[i] == '>' && !is_between_quotes(fresh->line, i) && rd <= 2)
+			rd++;
+		else if (fresh->line[i] != '>' && fresh->line[i] != ' ' && rd > 0) 
+		{
+			if (aux_1(fresh, i))
+				return (1);
+			rd = 0;
+		}
+		if (aux_2(fresh, i, rd))
+			return (1);
+		i++;
 	}
 	return (0);
 }
