@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/03 12:28:39 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/03 12:31:24 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "../includes/parser.h"
 #include "../includes/list.h"
 
-t_fresh	*fresh;
+t_fresh	*g_fresh;
 
 void	ft_initialize(t_fresh *fresh)
 {
@@ -30,16 +30,14 @@ void	ft_initialize(t_fresh *fresh)
 
 void	ft_ctrl_c(int signum)
 {
-	if (!fresh->pid)
+	if (!g_fresh->pid)
 	{
 		printf("\b\b  \n");
 		ft_print_input(fresh);
 	}
 	else
-	{
 		printf("\b\b  \n");
-	}
-	fresh->pid = 0;
+	g_fresh->pid = 0;
 	return ;
 }
 
@@ -79,7 +77,7 @@ void	ft_free_commands(t_fresh *fresh)
 	list_elem = fresh->commands;
 	while (list_elem)
 	{
-		*cmd = (t_command *)list_elem->content;
+		cmd = (t_command *)list_elem->content;
 		free(cmd->cmd);
 		if (cmd->files)
 		{
@@ -361,7 +359,7 @@ void	ft_execute_commands(t_fresh *fresh)
 	list_elem = fresh->commands;
 	while (list_elem)
 	{
-		*command = (t_command *)list_elem->content;
+		command = (t_command *)list_elem->content;
 		i = 0;
 		ft_replace_exit_status(fresh, command);
 		if (command->write_to_pipe)
@@ -495,28 +493,28 @@ int	main(int argc, char **argv, char **envp, char **apple)
 
 	signal(SIGINT, ft_ctrl_c);
 	signal(SIGQUIT, ft_ctrl_backslash);
-	fresh = malloc(sizeof(t_fresh));
-	ft_initialize(fresh);
-	ft_load_env_vars(fresh, envp);
-	if (variable_get(fresh->env, "USER"))
-		fresh->user = ft_strdup(variable_get(fresh->env, "USER")->value);
+	g_fresh = malloc(sizeof(t_fresh));
+	ft_initialize(g_fresh);
+	ft_load_env_vars(g_fresh, envp);
+	if (variable_get(g_fresh->env, "USER"))
+		g_fresh->user = ft_strdup(variable_get(g_fresh->env, "USER")->value);
 	else
-		fresh->user = ft_strdup("Unknown");
-	ft_print_header(fresh);
-	fresh->pid = 0;
+		g_fresh->user = ft_strdup("Unknown");
+	ft_print_header(g_fresh);
+	g_fresh->pid = 0;
 	reading = 1;
 	while (reading)
 	{
-		read_line(fresh);
-		if (!ft_valid_multiline(fresh))
-			ft_print_error(fresh, "Multiline commands not supported\n");
+		read_line(g_fresh);
+		if (!ft_valid_multiline(g_fresh))
+			ft_print_error(g_fresh, "Multiline commands not supported\n");
 		else
-			ft_parse_line(fresh);
-		free(fresh->line);
-		fresh->line = NULL;
-		ft_execute_commands(fresh);
-		ft_free_commands(fresh);
-		ft_print_input(fresh);
+			ft_parse_line(g_fresh);
+		free(g_fresh->line);
+		g_fresh->line = NULL;
+		ft_execute_commands(g_fresh);
+		ft_free_commands(g_fresh);
+		ft_print_input(g_fresh);
 	}
-	free(fresh);
+	free(g_fresh);
 }
