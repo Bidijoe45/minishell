@@ -81,7 +81,7 @@ void replace_variables(t_fresh *fresh)
 	}
 }
 
-int		ft_valid_multiline(t_fresh *fresh)
+int	ft_valid_multiline(t_fresh *fresh)
 {
 	t_list *commands;
 	int  valid_q;
@@ -152,10 +152,10 @@ int		is_between_quotes2(char *str, int pos)
 
 	if (!str || !*str)
 		return (0);
-	i = 0;
+	i = -1;
 	sq = 0;
 	dq = 0;
-	while (str[i] != '\0')
+	while (str[++i] != '\0')
 	{
 		if (str[i] == '\'' && dq == 0)
 			sq = !sq;
@@ -169,7 +169,6 @@ int		is_between_quotes2(char *str, int pos)
 				return (2);
 			return (0);
 		}
-		i++;
 	}
 	return (0);
 }
