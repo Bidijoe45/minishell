@@ -42,20 +42,35 @@ int	ft_valid_quotes(char *line)
 	return (dq == 1 || sq == 1) ? 0 : 1;
 }
 
+
+void	replace_variables_key(t_fresh *fresh, int i)
+{
+	int	end;
+	char	*tmp_str;
+	char	*tmp;
+	t_variable	*var;
+
+	end = i;
+	while (fresh->line[end] && fresh->line[end] != ' ' && fresh->line[end] != '\n')
+		end++;
+	tmp_str = ft_substr(fresh->line, i, end - i);
+	var = variable_get(fresh->env, tmp_str + 1);
+	tmp = fresh->line;
+	fresh->line = ft_replace(fresh->line, tmp_str, var == NULL ? "" : var->value, 0);
+	free(tmp);
+	free(tmp_str);
+}
+
+
 void replace_variables(t_fresh *fresh)
 {
-	int i = 0;
-	char *pos;
-	int dq;
-	int sq;
-	int end;
-	char *tmp_str;
-	char	*tmp;
-	t_variable *var;
+	int		i = 0;
+	char		*pos;
+	int		dq;
+	int		sq;
 
 	dq = 0;
 	sq = 0;
-	end = 0;
 
 	while (fresh->line[i] != '\0')
 	{
@@ -67,15 +82,7 @@ void replace_variables(t_fresh *fresh)
 			sq = !sq;
 		if (fresh->line[i] == '$')
 		{
-			end = i;
-			while (fresh->line[end] && fresh->line[end] != ' ' && fresh->line[end] != '\n')
-				end++;
-			tmp_str = ft_substr(fresh->line, i, end - i);
-			var = variable_get(fresh->env, tmp_str + 1);
-			tmp = fresh->line;
-			fresh->line = ft_replace(fresh->line, tmp_str, var == NULL ? "" : var->value, 0);
-			free(tmp);
-			free(tmp_str);
+			replace_variables_key(fresh, i);
 		}
 		i++;
 	}
