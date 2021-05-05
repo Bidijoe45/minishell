@@ -80,9 +80,7 @@ void replace_variables(t_fresh *fresh)
 		if (fresh->line[i] == '\'' && dq == 0)
 			sq = !sq;
 		if (fresh->line[i] == '$')
-		{
 			replace_variables_key(fresh, i);
-		}
 		i++;
 	}
 }
@@ -211,34 +209,44 @@ int		is_between_quotes(char *str, int pos)
 	return (0);
 }
 
-t_file	**extract_files(char *command, char **command_rpl)
+int	extract_files_count_files(char *command)
 {
-	t_file	**files;
-	int		i;
-	int		pos;
-	int		redirect;
-	int		j;
-	t_file		*file;
-	char	*tmp;
-	char	*tmp2;
-	char	*key;
+	int	i;
+	int	files;
 
-	j = 0;
 	i = 0;
-	pos = 0;
-	*command_rpl = ft_strdup(command);
 	while (command[i] != '\0')
 	{
 		if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
 		{
 			if (command[i + 1] == '>')
 				i++;
-			pos++;
+			files++;
 		}
 		i++;
 	}
-	files = malloc(sizeof(t_file *) * pos + 1);
-	files[pos] = NULL;
+	return (files);
+}
+
+t_file	**extract_files(char *command, char **command_rpl)
+{
+	t_file	**files;
+	int	i;
+	int	pos;
+	int	redirect;
+	int	j;
+	t_file	*file;
+	char	*tmp;
+	char	*tmp2;
+	char	*key;
+	int	n_files;	
+
+	i = 0;
+	pos = 0;
+	*command_rpl = ft_strdup(command);
+	n_files = extract_files_count_files(command);	
+	files = malloc(sizeof(t_file *) * n_files + 1);
+	files[n_files] = NULL;
 	i = 0;
 	while (command[i] != '\0')
 	{
