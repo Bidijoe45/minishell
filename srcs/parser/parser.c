@@ -645,8 +645,8 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 
 void	ft_parse_line(t_fresh *fresh)
 {
-	int		i;
-	int		cmd_pos;
+	int	i;
+	int	cmd_pos;
 	char	**cmds;
 	char	*tmp;
 
@@ -660,17 +660,11 @@ void	ft_parse_line(t_fresh *fresh)
 	if (syntax_checker(fresh))
 		return ;
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
-	i = 0;
-	while (cmds[i])
-	{
+	i = -1;
+	while (cmds[++i])
 		ft_parse_cmd(fresh, cmds[i]);
-		i++;
-	}
-	i = 0;
-	while (cmds[i])
-	{
+	i = -1;
+	while (cmds[++i])
 		free(cmds[i]);
-		i++;
-	}
 	free(cmds);
 }
