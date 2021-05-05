@@ -71,7 +71,6 @@ void replace_variables(t_fresh *fresh)
 
 	dq = 0;
 	sq = 0;
-
 	while (fresh->line[i] != '\0')
 	{
 		if (fresh->line[i] == '\\')
@@ -150,6 +149,14 @@ int		ft_is_special_char(int c)
 	return (0);
 }
 
+int	between_quotes_pos(int sq, int dq)
+{
+	if (sq)
+		return (1);
+	if (dq)
+		return (2);
+	return (0);
+}
 
 int		is_between_quotes2(char *str, int pos)
 {
@@ -164,19 +171,17 @@ int		is_between_quotes2(char *str, int pos)
 	dq = 0;
 	while (str[++i] != '\0')
 	{
+		if (str[i] == '\\')
+		{
+			i += 2;
+			continue ;
+		}
 		if (str[i] == '\'' && dq == 0)
 			sq = !sq;
 		if (str[i] == '"' && sq == 0)
 			dq = !dq;
 		if (i == pos)
-		{
-			if (sq)
-				return (1);
-			if (dq)
-				return (2);
-			return (0);
-		}
-	}
+			between_quotes_post(sq, dq);	
 	return (0);
 }
 
@@ -204,13 +209,7 @@ int		is_between_quotes(char *str, int pos)
 		if (str[i] == '"' && sq == 0)
 			dq = !dq;
 		if (i == pos)
-		{
-			if (sq)
-				return (1);
-			if (dq)
-				return (2);
-			return (0);
-		}
+			between_quotes_pos(sq, dq);	
 		i++;
 	}
 	return (0);
