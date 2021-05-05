@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 12:55:18 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/03 15:28:45 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/05 13:06:12 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,7 @@ int	ft_valid_quotes(char *line)
 	while (line[i] != '\0')
 	{
 		if (line[i] == '\\' && !sq)
-		{
 			i += 2;
-			continue ;
-		}
 		if (line[i] == '"' && dq == 0 && sq == 0)
 			dq = 1;
 		else if (line[i] == '"' && dq == 1)
@@ -450,7 +447,7 @@ char	*trim_q_ftw(char *line)
 	int		i;
 	int		nq;
 	int		j;
-	
+
 	nq = trim_count_ftw(line);
 	ret = malloc(sizeof(char) * (ft_strlen(line) - nq + 1));
 	i = 0;
@@ -517,12 +514,6 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	files = extract_files(command, &tmp);
 	free(command);
 	command = tmp;
-	/* TODO: joder bro estoy hasta los cojones,
-	 * hay demasiados leaks y no encuentro ni uno
-	 * hay leaks hasta cuando solo le das a enter
-	 * pues imaginate si haces export por ejemplo
-	 * 1 gb de leaks minimo...
-	*/
 	args = ft_split_ignore_quotes(command, ' ');
 	i = 0;
 	while (args[i])
@@ -530,10 +521,6 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 		args[i] = trim_q_ftw(args[i]);
 		i++;
 	}	
-	// TODO:
-	// esto da core dump adri (seg fault y esas cosas)
-	// ==3927==The signal is caused by a READ memory access 
-//	ft_replace_escape(&args);
 	cmd = malloc(sizeof(t_command));
 	if (!cmd)
 		return ;
@@ -541,13 +528,11 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	cmd->files = files;
 	cmd->args = args;
 	i = 0;
-	
 	while (cmd->files[i])
 	{
 		cmd->files[i]->file_name = trim_q_ftw(cmd->files[i]->file_name);
 		i++;
 	}
-	
 	cmd->read_from_pipe = rfp;
 	cmd->write_to_pipe = wtp;
 	command_set(&fresh->commands, cmd);
@@ -569,13 +554,6 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	i = 0;
 	
 	cmds = ft_split_ignore_quotes(command, '|');
-	/*	
-	if (!(check_invalid_redirections(cmds)))
-	{
-		printf("Error: wrong syntax\n");
-		return ;
-	}
-	*/
 	while (cmds[n_pipes])
 		n_pipes++;
 	if (n_pipes - 1 != 0)
@@ -677,35 +655,7 @@ void	ft_parse_line(t_fresh *fresh)
 	tmp = fresh->line;
 	fresh->line = ft_replace_vars(fresh, fresh->line);
 	free(tmp);
-	if (check_pipe_followed_by_another(fresh))
-		return ;
-	if (check_semicolon_followed_by_another(fresh))
-		return ;
-	if (check_semicolon_at_start(fresh))
-		return ;
-	if (check_greater_at_start(fresh))
-		return ;
-	if (check_more_than_three_greater_in_a_row(fresh))
-		return ;
-	if (check_if_pipe_at_end(fresh))
-		return ;
-	if (check_if_pipe_after_semicolon(fresh))
-		return ;
-	if (check_if_pipe_before_semicolon(fresh))
-		return ;
-	if (check_lower_before_semicolon(fresh))
-		return ;
-	if (check_greater_before_semicolon(fresh))
-		return ;
-	if (check_greater_lower_before_pipe(fresh))
-		return ;
-	if (check_pipe_before_greater_lower(fresh))
-		return ;
-	if (check_lower_in_a_row(fresh))
-		return ;
-	if (check_lower_greater_at_end(fresh))
-		return ;
-	if (check_pipe_at_start(fresh))
+	if (syntax_checker(fresh))
 		return ;
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
 	i = 0;
