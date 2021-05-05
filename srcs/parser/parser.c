@@ -166,25 +166,21 @@ int		is_between_quotes2(char *str, int pos)
 
 	if (!str || !*str)
 		return (0);
-	i = -1;
+	i = 0;
 	sq = 0;
 	dq = 0;
-	while (str[++i] != '\0')
+	while (str[i] != '\0')
 	{
-		if (str[i] == '\\')
-		{
-			i += 2;
-			continue ;
-		}
 		if (str[i] == '\'' && dq == 0)
 			sq = !sq;
 		if (str[i] == '"' && sq == 0)
 			dq = !dq;
 		if (i == pos)
-			between_quotes_post(sq, dq);	
+			return (between_quotes_pos(sq, dq));
+		i++;
+	}
 	return (0);
 }
-
 
 int		is_between_quotes(char *str, int pos)
 {
@@ -209,7 +205,7 @@ int		is_between_quotes(char *str, int pos)
 		if (str[i] == '"' && sq == 0)
 			dq = !dq;
 		if (i == pos)
-			between_quotes_pos(sq, dq);	
+			return between_quotes_pos(sq, dq);	
 		i++;
 	}
 	return (0);
@@ -222,7 +218,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 	int		pos;
 	int		redirect;
 	int		j;
-	t_file *file;
+	t_file		*file;
 	char	*tmp;
 	char	*tmp2;
 	char	*key;
@@ -305,35 +301,43 @@ t_file	**extract_files(char *command, char **command_rpl)
 	return (files);
 }
 
+int	extract_cmd_count_greater_lower(char *command, int i)
+{	
+	i++;
+	while (command[i] == ' ')
+		i++;
+	while (command[i] != ' ' && command[i] != '<' && command[i] != '>'
+		&& command[i] != '\0')
+		i++;
+	return (i);
+}
+
+int	extract_cmd_count_space_greater_lower(char *command, int i)
+{
+	while ((command[i] != ' ' && command[i] != '>' && command[i] != '<'
+		&& command[i] != '\0' && command[i] != '\n') || (is_between_quotes(command, i) && command[i] != '\0'))
+		i++;
+	return (i);
+}
+
 char	*extract_cmd(char *command, char **command_rpl)
 {
 	int	i;
 	int	pos;
-	int	next_is_file;
 	char *key;
 
 	i = 0;
 	pos = 0;
-	next_is_file = 0;
 	while (command[i] != '\0')
 	{
 		while (command[i] == ' ')
 			i++;
 		if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
-		{
-			i++;
-			while (command[i] == ' ')
-				i++;
-			while (command[i] != ' ' && command[i] != '<' && command[i] != '>'
-				&& command[i] != '\0')
-				i++;
-		}
+			i += extract_cmd_count_greater_lower(command, i);
 		else
 		{
 			pos = i;
-			while ((command[i] != ' ' && command[i] != '>' && command[i] != '<'
-				&& command[i] != '\0' && command[i] != '\n') || (is_between_quotes(command, i) && command[i] != '\0'))
-				i++;
+			i += extract_cmd_count_space_greater_lower(command, i);		
 			key = ft_substr(command, pos, i - pos);
 			*command_rpl = ft_replace(command, key, "", 0);
 			free(key);
@@ -477,9 +481,13 @@ char	*trim_q_ftw(char *line)
 				i++;
 			}
 			else if (line[i + 1] && line[i + 1] == '"')
+			{
 				ret[j++] = line[++i];
+			}
 			else
+			{
 				ret[j++] = line[i++];
+			}
 		}
 		else if (line[i] == '\\' && q == 0)
 		{
