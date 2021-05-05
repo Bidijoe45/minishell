@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 10:31:58 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/02 13:38:24 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/05 11:23:41 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_print_color(char *color, char *str)
 
 void	ft_print_input(t_fresh *fresh)
 {
-	ft_print_color(BOLD_GREEN, fresh->user);
+	ft_print_color(BOLD_GREEN, "fresh");
 	ft_print_color(GREEN, " > ");
 	ft_print_color(RESET, "");
 }
@@ -28,7 +28,7 @@ void	ft_print_input(t_fresh *fresh)
 void	ft_print_header(t_fresh *fresh)
 {
 	ft_print_color(BOLD_GREEN, ART);
-	ft_print_color(BOLD_GREEN, fresh->user);
+	ft_print_color(BOLD_GREEN, "fresh");
 	ft_print_color(GREEN, " > ");
 	ft_print_color(RESET, "");
 }

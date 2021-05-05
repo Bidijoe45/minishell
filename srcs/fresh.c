@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/03 12:34:07 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/05 13:42:39 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include "../includes/parser.h"
 #include "../includes/list.h"
 
-t_fresh	*g_fresh;
-
 void	ft_initialize(t_fresh *fresh)
 {
 	fresh->cmd_return = 0;
@@ -26,27 +24,6 @@ void	ft_initialize(t_fresh *fresh)
 	fresh->local_vars = NULL;
 	fresh->user = NULL;
 	fresh->commands = NULL;
-}
-
-void	ft_ctrl_c(int signum)
-{
-	if (!g_fresh->pid)
-	{
-		printf("\b\b  \n");
-		ft_print_input(g_fresh);
-	}
-	else
-		printf("\n");
-	g_fresh->pid = 0;
-	return ;
-}
-
-void	ft_ctrl_backslash(int signum)
-{
-	if (g_fresh->pid)
-		printf("Quit: %d\n", signum);
-	g_fresh->pid = 0;
-	return ;
 }
 
 void	ft_load_env_vars(t_fresh *fresh, char **envp)
@@ -240,6 +217,9 @@ int	ft_exec_bin(t_fresh *fresh, t_command *command)
 	char	*path;
 	char	**chararr;
 
+
+	signal(SIGINT, fork_sigint);
+	signal(SIGQUIT, fork_sigquit);
 	fresh->pid = fork();
 	if (fresh->pid == 0)
 	{
@@ -492,32 +472,26 @@ void	ft_execute_commands(t_fresh *fresh)
 
 int	main(int argc, char **argv, char **envp, char **apple)
 {
+	t_fresh	fresh;
 	int		reading;
 
-	signal(SIGINT, ft_ctrl_c);
-	signal(SIGQUIT, ft_ctrl_backslash);
-	g_fresh = malloc(sizeof(t_fresh));
-	ft_initialize(g_fresh);
-	ft_load_env_vars(g_fresh, envp);
-	if (variable_get(g_fresh->env, "USER"))
-		g_fresh->user = ft_strdup(variable_get(g_fresh->env, "USER")->value);
-	else
-		g_fresh->user = ft_strdup("Unknown");
-	ft_print_header(g_fresh);
-	g_fresh->pid = 0;
+	ft_initialize(&fresh);
+	ft_load_env_vars(&fresh, envp);
+	ft_print_header(&fresh);
 	reading = 1;
 	while (reading)
 	{
-		read_line(g_fresh);
-		if (!ft_valid_multiline(g_fresh))
-			ft_print_error(g_fresh, "Multiline commands not supported\n");
+		signal(SIGINT, global_sigint);
+		signal(SIGQUIT, global_sigquit);
+		read_line(&fresh);
+		if (!ft_valid_multiline(&fresh))
+			ft_print_error(&fresh, "Multiline commands not supported\n");
 		else
-			ft_parse_line(g_fresh);
-		free(g_fresh->line);
-		g_fresh->line = NULL;
-		ft_execute_commands(g_fresh);
-		ft_free_commands(g_fresh);
-		ft_print_input(g_fresh);
+			ft_parse_line(&fresh);
+		free(fresh.line);
+		fresh.line = NULL;
+		ft_execute_commands(&fresh);
+		ft_free_commands(&fresh);
+		ft_print_input(&fresh);
 	}
-	free(g_fresh);
 }

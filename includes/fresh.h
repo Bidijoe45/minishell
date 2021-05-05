@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/03 17:28:47 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/05 11:34:48 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 # include "../resources/libft/libft.h"
 # include "../resources/ft_printf/ft_printf.h"
+# include "./signal.h"
 # include <sys/errno.h>
 # include <stdio.h>
 # include <sys/stat.h>
