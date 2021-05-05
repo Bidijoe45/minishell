@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 12:55:18 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/05 13:06:12 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/05 13:50:12 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -506,7 +506,8 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	char *args_str;
 	char **args;
 	t_file **files;
-	char *tmp;
+	char 	*tmp;
+	char	*tmp2;
 	t_command *cmd;
 	
 	cmd_name = extract_cmd(command, &tmp);
@@ -518,9 +519,11 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	i = 0;
 	while (args[i])
 	{
+		tmp2 = args[i];
 		args[i] = trim_q_ftw(args[i]);
+		free(tmp2);
 		i++;
-	}	
+	}
 	cmd = malloc(sizeof(t_command));
 	if (!cmd)
 		return ;

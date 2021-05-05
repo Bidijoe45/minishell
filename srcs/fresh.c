@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/05 13:42:39 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/05 13:44:57 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,6 @@ int	ft_exec_bin(t_fresh *fresh, t_command *command)
 	char	**argv;
 	char	*path;
 	char	**chararr;
-
 
 	signal(SIGINT, fork_sigint);
 	signal(SIGQUIT, fork_sigquit);

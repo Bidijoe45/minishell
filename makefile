@@ -4,11 +4,8 @@ SRCS =	./srcs/fresh.c \
 		./srcs/commands/command.c \
 		./srcs/parser/parser.c \
 		./srcs/list/list.c \
-<<<<<<< HEAD
 		./srcs/signal/signal.c \
-=======
 		./srcs/syntax/syntax_checker.c \
->>>>>>> 04b864b3b8ccce9fe07b2d1512ac61a25f79090d
 		./srcs/syntax/syntax_error_1.c ./srcs/syntax/syntax_error_2.c ./srcs/syntax/syntax_error_3.c ./srcs/syntax/syntax_error_aux.c \
 		./srcs/commands/echo.c ./srcs/commands/exit.c ./srcs/commands/pwd.c ./srcs/commands/cd.c \
 		./srcs/commands/env.c ./srcs/commands/export.c ./srcs/commands/unset.c
