@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 12:55:18 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/03 15:28:45 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/05 11:36:52 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -677,35 +677,7 @@ void	ft_parse_line(t_fresh *fresh)
 	tmp = fresh->line;
 	fresh->line = ft_replace_vars(fresh, fresh->line);
 	free(tmp);
-	if (check_pipe_followed_by_another(fresh))
-		return ;
-	if (check_semicolon_followed_by_another(fresh))
-		return ;
-	if (check_semicolon_at_start(fresh))
-		return ;
-	if (check_greater_at_start(fresh))
-		return ;
-	if (check_more_than_three_greater_in_a_row(fresh))
-		return ;
-	if (check_if_pipe_at_end(fresh))
-		return ;
-	if (check_if_pipe_after_semicolon(fresh))
-		return ;
-	if (check_if_pipe_before_semicolon(fresh))
-		return ;
-	if (check_lower_before_semicolon(fresh))
-		return ;
-	if (check_greater_before_semicolon(fresh))
-		return ;
-	if (check_greater_lower_before_pipe(fresh))
-		return ;
-	if (check_pipe_before_greater_lower(fresh))
-		return ;
-	if (check_lower_in_a_row(fresh))
-		return ;
-	if (check_lower_greater_at_end(fresh))
-		return ;
-	if (check_pipe_at_start(fresh))
+	if (syntax_checker(fresh))
 		return ;
 	cmds = ft_split_ignore_quotes(fresh->line, ';');
 	i = 0;

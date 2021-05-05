@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/03 17:28:47 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/05 11:28:57 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int			ft_env(t_command *command, t_fresh *fresh);
 int			ft_export(t_command *command, t_fresh *fresh);
 int			ft_unset(t_command *command, t_fresh *fresh);
 
+int			syntax_checker(t_fresh *fresh);
 int			check_pipe_followed_by_another(t_fresh *fresh);
 int			check_semicolon_followed_by_another(t_fresh *fresh);
 int			check_semicolon_at_start(t_fresh *fresh);
