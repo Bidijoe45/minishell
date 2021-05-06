@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 10:23:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/06 13:19:25 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/06 13:40:36 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,12 @@ void	replace_variables_key(t_fresh *fresh, int i)
 
 void	replace_variables(t_fresh *fresh)
 {
-	int		i = 0;
+	int		i;
 	char	*pos;
 	int		dq;
 	int		sq;
 
+	i = 0;
 	dq = 0;
 	sq = 0;
 	while (fresh->line[i] != '\0')
@@ -91,8 +92,8 @@ void	replace_variables(t_fresh *fresh)
 
 int	ft_valid_multiline(t_fresh *fresh)
 {
-	t_list *commands;
-	int  valid_q;
+	t_list	*commands;
+	int		valid_q;
 
 	valid_q = ft_valid_quotes(fresh->line);
 	if (valid_q == 1)
@@ -130,7 +131,7 @@ void	read_line(t_fresh *fresh)
 			fresh->line = ft_strjoin(fresh->line, c);
 			free(tmp);
 		}
-		if(fresh->line[pos] == '\n')
+		if (fresh->line[pos] == '\n')
 		{
 			if (real)
 			{
@@ -144,7 +145,7 @@ void	read_line(t_fresh *fresh)
 	}
 }
 
-int		ft_is_special_char(int c)
+int	ft_is_special_char(int c)
 {
 	if (c == '|' || c == '>' || c == '<')
 		return (1);
@@ -160,11 +161,11 @@ int	between_quotes_pos(int sq, int dq)
 	return (0);
 }
 
-int		is_between_quotes2(char *str, int pos)
+int	is_between_quotes2(char *str, int pos)
 {
-	int i;
-	int sq;
-	int dq;
+	int	i;
+	int	sq;
+	int	dq;
 
 	if (!str || !*str)
 		return (0);
@@ -184,11 +185,11 @@ int		is_between_quotes2(char *str, int pos)
 	return (0);
 }
 
-int		is_between_quotes(char *str, int pos)
+int	is_between_quotes(char *str, int pos)
 {
-	int i;
-	int sq;
-	int dq;
+	int	i;
+	int	sq;
+	int	dq;
 
 	if (!str || !*str)
 		return (0);
@@ -207,7 +208,7 @@ int		is_between_quotes(char *str, int pos)
 		if (str[i] == '"' && sq == 0)
 			dq = !dq;
 		if (i == pos)
-			return between_quotes_pos(sq, dq);	
+			return (between_quotes_pos(sq, dq));
 		i++;
 	}
 	return (0);
@@ -222,7 +223,8 @@ int	extract_files_count_files(char *command)
 	files = 0;
 	while (command[i] != '\0')
 	{
-		if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
+		if ((command[i] == '>' || command[i] == '<')
+			&& !is_between_quotes(command, i))
 		{
 			if (command[i + 1] == '>')
 				i++;
@@ -236,22 +238,21 @@ int	extract_files_count_files(char *command)
 t_file	**extract_files(char *command, char **command_rpl)
 {
 	t_file	**files;
-	int	i;
-	int	pos;
-	int	redirect;
-	int	j;
+	int		i;
+	int		pos;
+	int		redirect;
+	int		j;
 	t_file	*file;
 	char	*tmp;
 	char	*tmp2;
 	char	*key;
-	int	n_files;	
+	int		n_files;	
 
 	i = 0;
 	pos = 0;
 	j = 0;
 	*command_rpl = ft_strdup(command);
-	n_files = 0;
-	n_files = extract_files_count_files(command);	
+	n_files = extract_files_count_files(command);
 	files = malloc(sizeof(t_file *) * n_files + 1);
 	files[n_files] = NULL;
 	i = 0;
@@ -259,16 +260,17 @@ t_file	**extract_files(char *command, char **command_rpl)
 	{
 		while (command[i] == ' ')
 			i++;
-		if (command[i] == '>' && command[i + 1] == '>' && !is_between_quotes(command, i))
+		if (command[i] == '>' && command[i + 1] == '>'
+			&& !is_between_quotes(command, i))
 		{
 			redirect = i;
 			i += 2;
-			while(command[i] == ' ')
+			while (command[i] == ' ')
 				i++;
 			pos = i;
 			while (command[i] != '\0')
 			{
-				if(command[i] == ' ' && !is_between_quotes(command, i))
+				if (command[i] == ' ' && !is_between_quotes(command, i))
 					break ;
 				i++;
 			}
@@ -278,22 +280,23 @@ t_file	**extract_files(char *command, char **command_rpl)
 			files[j] = file;
 			tmp = *command_rpl;
 			key = ft_substr(command, redirect, i - redirect);
-			*command_rpl = ft_replace(tmp, key, "", 1);	
+			*command_rpl = ft_replace(tmp, key, "", 1);
 			free(key);
 			free(tmp);
 			j++;
 		}
-		else if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
+		else if ((command[i] == '>' || command[i] == '<')
+			&& !is_between_quotes(command, i))
 		{
 			redirect = i;
-			i++; 
+			i++;
 			while (command[i] == ' ')
 				i++;
 			pos = i;
 			while (command[i] != '\0')
 			{
 				if (command[i] == ' ' && !is_between_quotes(command, i))
-						break ;
+					break ;
 				i++;
 			}
 			file = malloc(sizeof(t_file));
@@ -305,7 +308,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 			files[j] = file;
 			tmp = *command_rpl;
 			key = ft_substr(command, redirect, i - redirect);
-			*command_rpl = ft_replace(tmp, key, "", 1);	
+			*command_rpl = ft_replace(tmp, key, "", 1);
 			free(key);
 			free(tmp);
 			j++;
@@ -329,16 +332,17 @@ int	extract_cmd_count_greater_lower(char *command, int i)
 int	extract_cmd_count_space_greater_lower(char *command, int i)
 {
 	while ((command[i] != ' ' && command[i] != '>' && command[i] != '<'
-		&& command[i] != '\0' && command[i] != '\n') || (is_between_quotes(command, i) && command[i] != '\0'))
+			&& command[i] != '\0' && command[i] != '\n')
+		|| (is_between_quotes(command, i) && command[i] != '\0'))
 		i++;
 	return (i);
 }
 
 char	*extract_cmd(char *command, char **command_rpl)
 {
-	int	i;
-	int	pos;
-	char *key;
+	int		i;
+	int		pos;
+	char	*key;
 
 	i = 0;
 	pos = 0;
@@ -346,40 +350,41 @@ char	*extract_cmd(char *command, char **command_rpl)
 	{
 		while (command[i] == ' ')
 			i++;
-		if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
+		if ((command[i] == '>' || command[i] == '<')
+			&& !is_between_quotes(command, i))
 			i += extract_cmd_count_greater_lower(command, i);
 		else
 		{
 			pos = i;
-			i += extract_cmd_count_space_greater_lower(command, i);		
+			i += extract_cmd_count_space_greater_lower(command, i);
 			key = ft_substr(command, pos, i - pos);
 			*command_rpl = ft_replace(command, key, "", 0);
 			free(key);
-			return ft_substr(command, pos, i - pos);
+			return (ft_substr(command, pos, i - pos));
 		}
 	}
 	*command_rpl = ft_strdup(command);
 	return (ft_strdup(""));
 }
 
-int		check_chars(char c)
+int	check_chars(char c)
 {
 	return (c == '>' || c == '<');
 }
 
-int		check_invalid_redirections(char **cmds)
+int	check_invalid_redirections(char **cmds)
 {
 	int		l;
 	int		i;
 	char	*cmd;
-	
+
 	i = 0;
 	while (cmds[i])
 	{
 		cmd = ft_strtrim(cmds[i], " ");
 		l = ft_strlen(cmd);
-		if ((check_chars(cmd[0] && cmd[0] == '|') || check_chars(cmd[l - 1])) &&
-			(!is_between_quotes(cmd, 0) && !is_between_quotes(cmd, l - 1)))
+		if ((check_chars(cmd[0] && cmd[0] == '|') || check_chars(cmd[l - 1]))
+			&& (!is_between_quotes(cmd, 0) && !is_between_quotes(cmd, l - 1)))
 		{
 			free(cmd);
 			return (0);
@@ -439,11 +444,11 @@ void	trim_count_ftw_aux(char *line, int *i, char *q, int *nq)
 	}
 }
 
-int		trim_count_ftw(char *line)
+int	trim_count_ftw(char *line)
 {
-	int nq;
-	int i;
-	char q;
+	int		nq;
+	int		i;
+	char	q;
 
 	nq = 0;
 	i = 0;
@@ -463,7 +468,7 @@ int		trim_count_ftw(char *line)
 		}
 		else
 			i++;
-		trim_count_ftw_aux(line, &i, &q, &nq);	
+		trim_count_ftw_aux(line, &i, &q, &nq);
 	}
 	return (nq);
 }
@@ -527,21 +532,20 @@ char	*trim_q_ftw(char *line)
 		}
 	}
 	ret[j] = '\0';
-	return ret;
+	return (ret);
 }
-//rfp -> read from pipe
-//wtp -> write to pipe
+
 void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 {
-	int i;
-	char *cmd_name;
-	char *args_str;
-	char **args;
-	t_file **files;
-	char 	*tmp;
-	char	*tmp2;
-	t_command *cmd;
-	
+	int			i;
+	char		*cmd_name;
+	char		*args_str;
+	char		**args;
+	t_file		**files;
+	char		*tmp;
+	char		*tmp2;
+	t_command	*cmd;
+
 	cmd_name = extract_cmd(command, &tmp);
 	command = tmp;
 	files = extract_files(command, &tmp);
@@ -579,15 +583,12 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 {
 	int			i;
 	int			n_pipes;
-	char 		**cmds;
+	char		**cmds;
 	t_command	*cmd;
-	int command_len;
-	
-	n_pipes = 0;
+	int			command_len;
 
-	//Comprueba los pipes del principio y final
+	n_pipes = 0;
 	i = 0;
-	
 	cmds = ft_split_ignore_quotes(command, '|');
 	while (cmds[n_pipes])
 		n_pipes++;
@@ -616,19 +617,19 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	free(cmds);
 }
 
-int		check_invalid_pipes(char **cmds)
+int	check_invalid_pipes(char **cmds)
 {
 	int		l;
 	int		i;
 	char	*cmd;
-	
+
 	i = 0;
 	while (cmds[i])
 	{
 		cmd = ft_strtrim(cmds[i], " ");
 		l = ft_strlen(cmd);
-		if ((cmd[0] == '|' || cmd[l - 1] == '|') &&
-				(!is_between_quotes(cmd, 0) && !is_between_quotes(cmd, l - 1)))
+		if ((cmd[0] == '|' || cmd[l - 1] == '|') && (!is_between_quotes
+				(cmd, 0) && !is_between_quotes(cmd, l - 1)))
 		{
 			free(cmd);
 			return (0);
@@ -642,22 +643,27 @@ int		check_invalid_pipes(char **cmds)
 char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 {
 	t_variable	*var;
-	char	*ret;
-	char	*tmp;
-	char	*key;
-	int		i;
-	int		pos;
+	char		*ret;
+	char		*tmp;
+	char		*key;
+	int			i;
+	int			pos;
+
 	i = 0;
 	ret = ft_strdup(cmds);
 	while (ret[i])
 	{
 		if (ret[i] == '\\')
 			i += 2;
-		if (ret[i] == '$' && ret[i + 1] && ret[i + 1] != '?' && ret[i + 1] != '"' && ret[i + 1] != '\'' && is_between_quotes(ret, i) != 1)
+		if (ret[i] == '$' && ret[i + 1] && ret[i + 1] != '?'
+			&& ret[i + 1] != '"' && ret[i + 1]
+			!= '\'' && is_between_quotes(ret, i) != 1)
 		{
 			pos = i;
 			pos++;
-			while (ret[pos] != ' ' && ret[pos] != '$' && ret[pos] != '"' && ret[pos] != '\'' && ret[pos] !='\\' && ret[pos] != '\0')
+			while (ret[pos] != ' ' && ret[pos] != '$' && ret[pos]
+				!= '"' && ret[pos] != '\''
+				&& ret[pos] != '\\' && ret[pos] != '\0')
 				pos++;
 			key = ft_substr(ret, i, pos - i);
 			tmp = ret;
@@ -678,8 +684,8 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 
 void	ft_parse_line(t_fresh *fresh)
 {
-	int	i;
-	int	cmd_pos;
+	int		i;
+	int		cmd_pos;
 	char	**cmds;
 	char	*tmp;
 
