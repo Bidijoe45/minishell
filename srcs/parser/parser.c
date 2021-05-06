@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 10:23:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/06 10:26:10 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/06 12:06:58 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ int	extract_files_count_files(char *command)
 	int	files;
 
 	i = 0;
+	files = 0;
 	while (command[i] != '\0')
 	{
 		if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
@@ -248,6 +249,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 	i = 0;
 	pos = 0;
 	*command_rpl = ft_strdup(command);
+	n_files = 0;
 	n_files = extract_files_count_files(command);	
 	files = malloc(sizeof(t_file *) * n_files + 1);
 	files[n_files] = NULL;
@@ -427,6 +429,16 @@ void	ft_replace_escape(char ***argsp)
 	}
 }
 
+void	trim_count_ftw_aux(char *line, int *i, char *q, int *nq)
+{
+	if (line[*i] && line[*i] == *q && *q)
+	{
+		*q = 0;
+		*nq += 1;
+		*i += 1;
+	}
+}
+
 int		trim_count_ftw(char *line)
 {
 	int nq;
@@ -451,14 +463,9 @@ int		trim_count_ftw(char *line)
 		}
 		else
 			i++;
-		if (line[i] && line[i] == q && q)
-		{
-			q = 0;
-			nq++;
-			i++;
-		}
+		trim_count_ftw_aux(line, &i, &q, &nq);	
 	}
-	return nq;
+	return (nq);
 }
 
 char	*trim_q_ftw(char *line)
