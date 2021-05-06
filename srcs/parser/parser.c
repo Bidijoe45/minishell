@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 10:23:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/06 13:40:36 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/06 13:48:33 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,47 +102,48 @@ int	ft_valid_multiline(t_fresh *fresh)
 		return (0);
 }
 
+void	ft_while_line(t_fresh *fresh, t_while_line *while_line)
+{
+	while (1)
+	{
+		while_line->c[1] = '\0';
+		if (!fresh->line)
+			fresh->line = ft_strdup(while_line->c);
+		else
+		{
+			if (while_line->rd == 0 && !while_line->real)
+				while_line->real = ft_strdup(fresh->line);
+			while_line->tmp = fresh->line;
+			fresh->line = ft_strjoin(fresh->line, while_line->c);
+			free(while_line->tmp);
+		}
+		if (fresh->line[while_line->pos] == '\n')
+		{
+			if (while_line->real)
+			{
+				free(fresh->line);
+				fresh->line = while_line->real;
+			}
+			break ;
+		}
+		while_line->pos++;
+		while_line->rd = read(0, while_line->c, 1);
+	}
+}
+
 void	read_line(t_fresh *fresh)
 {
-	char	c[2];
-	int		pos;
-	int		rd;
-	char	*tmp;
-	char	*real;
+	t_while_line	while_line;
 
-	pos = 0;
-	rd = read(0, c, 1);
-	real = NULL;
-	if (rd == 0)
+	while_line.pos = 0;
+	while_line.rd = read(0, while_line.c, 1);
+	while_line.real = NULL;
+	if (while_line.rd == 0)
 	{
 		printf("exit\n");
 		exit(0);
 	}
-	while (1)
-	{
-		c[1] = '\0';
-		if (!fresh->line)
-			fresh->line = ft_strdup(c);
-		else
-		{
-			if (rd == 0 && !real)
-				real = ft_strdup(fresh->line);
-			tmp = fresh->line;
-			fresh->line = ft_strjoin(fresh->line, c);
-			free(tmp);
-		}
-		if (fresh->line[pos] == '\n')
-		{
-			if (real)
-			{
-				free(fresh->line);
-				fresh->line = real;
-			}
-			break ;
-		}
-		pos++;
-		rd = read(0, c, 1);
-	}
+	ft_while_line(fresh, &while_line);
 }
 
 int	ft_is_special_char(int c)
