@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 10:23:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/06 12:06:58 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/06 13:19:25 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,6 +248,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 
 	i = 0;
 	pos = 0;
+	j = 0;
 	*command_rpl = ft_strdup(command);
 	n_files = 0;
 	n_files = extract_files_count_files(command);	
@@ -281,7 +282,6 @@ t_file	**extract_files(char *command, char **command_rpl)
 			free(key);
 			free(tmp);
 			j++;
-
 		}
 		else if ((command[i] == '>' || command[i] == '<') && !is_between_quotes(command, i))
 		{
