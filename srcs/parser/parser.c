@@ -1,12 +1,12 @@
-
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/02 12:55:18 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/05 13:50:12 by alvrodri         ###   ########.fr       */
+/*   Created: 2021/05/06 10:23:23 by alvrodri          #+#    #+#             */
+/*   Updated: 2021/05/06 10:26:10 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,36 +36,40 @@ int	ft_valid_quotes(char *line)
 			sq = 1;
 		else if (line[i] == '\'' && sq == 1)
 			sq = 0;
-
 		i++;
 	}
-	return (dq == 1 || sq == 1) ? 0 : 1;
+	if (dq == 1 || sq == 1)
+		return (0);
+	else
+		return (1);
 }
-
 
 void	replace_variables_key(t_fresh *fresh, int i)
 {
-	int	end;
-	char	*tmp_str;
-	char	*tmp;
+	int			end;
+	char		*tmp_str;
+	char		*tmp;
 	t_variable	*var;
 
 	end = i;
-	while (fresh->line[end] && fresh->line[end] != ' ' && fresh->line[end] != '\n')
+	while (fresh->line[end]
+		&& fresh->line[end] != ' ' && fresh->line[end] != '\n')
 		end++;
 	tmp_str = ft_substr(fresh->line, i, end - i);
 	var = variable_get(fresh->env, tmp_str + 1);
 	tmp = fresh->line;
-	fresh->line = ft_replace(fresh->line, tmp_str, var == NULL ? "" : var->value, 0);
+	if (var == NULL)
+		fresh->line = ft_replace(fresh->line, tmp_str, "", 0);
+	else
+		fresh->line = ft_replace(fresh->line, tmp_str, var->value, 0);
 	free(tmp);
 	free(tmp_str);
 }
 
-
-void replace_variables(t_fresh *fresh)
+void	replace_variables(t_fresh *fresh)
 {
 	int		i = 0;
-	char		*pos;
+	char	*pos;
 	int		dq;
 	int		sq;
 
