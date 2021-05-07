@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 12:41:38 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/07 11:48:32 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/07 15:49:16 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int	check_greater_at_start(t_fresh *fresh)
 /*
  * Check if there are more than 3 > in a row
  */
-/*
+
 int	check_more_than_three_greater_in_a_row(t_fresh *fresh)
 {
 	int	i;
@@ -143,35 +143,6 @@ int	check_more_than_three_greater_in_a_row(t_fresh *fresh)
 	{
 		if (fresh->line[i] == ' ')
 			i++;
-		if (fresh->line[i] == '>'
-			&& !is_between_quotes(fresh->line, i) && rd <= 2)
-			rd++;
-		else if (fresh->line[i] != '>' && fresh->line[i] != ' ' && rd > 0)
-		{
-			if (aux_1(fresh, i, 0) == 1)
-				return (1);
-			rd = 0;
-		}
-		if (aux_1(fresh, i, rd) == 2)
-			return (1);
-	}
-	return (0);
-}
-*/
-int	check_more_than_three_greater_in_a_row(t_fresh *fresh)
-{
-	int	i;
-	int	rd;
-
-	i = 0;
-	rd = 0;
-	while (fresh->line[i])
-	{
-		if (fresh->line[i] == ' ')
-		{
-			i++;
-			continue ;
-		}
 		if (fresh->line[i] == '>' && !is_between_quotes(fresh->line, i)
 			&& rd <= 2)
 			rd++;
@@ -183,7 +154,6 @@ int	check_more_than_three_greater_in_a_row(t_fresh *fresh)
 		}
 		if (aux_2(fresh, i, rd))
 			return (1);
-		i++;
 	}
 	return (0);
 }
