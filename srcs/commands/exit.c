@@ -6,28 +6,35 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/02 13:05:47 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/07 13:55:01 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/fresh.h"
+
+int	check_errors(t_command *command, int *i)
+{
+	*i = 0;
+	while (command->args[*i])
+		*i = *i + 1;
+	if (*i == 0)
+		exit(0);
+	if (*i > 1)
+	{
+		printf("exit: too many arguments\n");
+		return (1);
+	}
+	*i = 0;
+	return (0);
+}
 
 int	ft_exit(t_command *command, t_fresh *fresh)
 {
 	int	i;
 	int	code;
 
-	i = 0;
-	while (command->args[i])
-		i++;
-	if (i == 0)
-		exit(0);
-	if (i > 1)
-	{
-		printf("exit: too many arguments\n");
+	if (check_errors(command, &i))
 		return (1);
-	}
-	i = 0;
 	while (command->args[0][i] == ' ')
 		i++;
 	if (command->args[0][i] == '-' || command->args[0][i] == '+')
@@ -38,7 +45,6 @@ int	ft_exit(t_command *command, t_fresh *fresh)
 		{
 			printf("exit: %s: numeric argument required\n", command->args[0]);
 			exit(255);
-			return (1);
 		}
 		i++;
 	}
