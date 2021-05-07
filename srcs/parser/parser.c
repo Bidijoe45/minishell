@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 10:23:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/07 11:11:54 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/07 11:29:13 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,11 +353,11 @@ char	*extract_cmd(char *command, char **command_rpl)
 			i++;
 		if ((command[i] == '>' || command[i] == '<')
 			&& !is_between_quotes(command, i))
-			i += extract_cmd_count_greater_lower(command, i);
+			i = extract_cmd_count_greater_lower(command, i);
 		else
 		{
 			pos = i;
-			i += extract_cmd_count_space_greater_lower(command, i);
+			i = extract_cmd_count_space_greater_lower(command, i);
 			key = ft_substr(command, pos, i - pos);
 			*command_rpl = ft_replace(command, key, "", 1);
 			free(key);
