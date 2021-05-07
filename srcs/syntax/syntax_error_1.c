@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 12:41:38 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/03 17:28:25 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/07 11:48:32 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,11 +170,12 @@ int	check_more_than_three_greater_in_a_row(t_fresh *fresh)
 		if (fresh->line[i] == ' ')
 		{
 			i++;
-			continue;
+			continue ;
 		}
-		if (fresh->line[i] == '>' && !is_between_quotes(fresh->line, i) && rd <= 2)
+		if (fresh->line[i] == '>' && !is_between_quotes(fresh->line, i)
+			&& rd <= 2)
 			rd++;
-		else if (fresh->line[i] != '>' && fresh->line[i] != ' ' && rd > 0) 
+		else if (fresh->line[i] != '>' && fresh->line[i] != ' ' && rd > 0)
 		{
 			if (aux_1(fresh, i))
 				return (1);

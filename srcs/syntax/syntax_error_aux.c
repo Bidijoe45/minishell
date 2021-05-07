@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 15:44:07 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/03 17:27:47 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/07 11:42:24 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	aux_2(t_fresh *fresh, int i, int rd)
 {
 	if (rd >= 3)
 	{
-		printf("minishell: syntax error near unexpected token `%c'\n", fresh->line[i]);
+		printf("minishell: syntax error near unexpected token `%c'\n",
+			fresh->line[i]);
 		return (1);
 	}
 	return (0);
