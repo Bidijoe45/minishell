@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/05 13:43:15 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/10 13:42:51 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,4 +117,32 @@ int			check_pipe_at_start(t_fresh *fresh);
 int			aux_1(t_fresh *fresh, int i);
 int			aux_2(t_fresh *fresh, int i, int rd);
 
+int			ft_exec_bin(t_fresh *fresh, t_command *command);
+
+void		simple_execute(t_fresh *fresh, t_command *command);
+void		write_pipe_execute(t_fresh *fresh, t_command *command, int *pid, int *fd[2]);
+void		write_read_pipe_execute(t_fresh *fresh, t_command *command, int *pid, int *fd[2]);
+void		read_pipe_execute(t_fresh *fresh, t_command *command, int *pid, int *fd[2]);
+
+void		ft_free_commands_files(t_command *cmd);
+void		ft_free_commands_args(t_command *cmd);
+void		ft_free_commands(t_fresh *fresh);
+
+void		ft_load_env_vars(t_fresh *fresh, char **envp);
+
+void		ft_execute_commands(t_fresh *fresh);
+int			ft_is_builtin(t_fresh *fresh, t_command *command);
+int			ft_exec_bin(t_fresh *fresh, t_command *command);
+void		ft_exec_bin_child(t_fresh *fresh, t_command *command);
+void		ft_execute_builtin(t_command *command, t_fresh *fresh);
+char		*ft_check_if_valid(t_fresh *fresh, t_command *command);
+int			check_paths(char **r_path, char **paths, t_command *command);
+char		**ft_create_argv(t_command *command, char *path);
+char		**ft_list_to_chararr(t_list *list);
+void		ft_replace_exit_status(t_fresh *fresh, t_command *command);
+int			check_lower_in_a_row_aux(t_fresh *fresh, int i, int *rd);
+
+void		setup_files(t_fresh *fresh, t_command *command, int *i);
+void		setup_last_in(t_fresh *fresh);
+void		close_files(t_fresh *fresh);
 #endif

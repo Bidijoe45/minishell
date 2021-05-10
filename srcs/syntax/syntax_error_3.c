@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_error_3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 12:41:38 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/10 10:35:13 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/10 15:05:48 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,18 +69,6 @@ int	check_pipe_before_greater_lower(t_fresh *fresh)
 		}
 		i++;
 	}
-	return (0);
-}
-
-int	check_lower_in_a_row_aux(t_fresh *fresh, int i, int *rd)
-{
-	if (fresh->line[i] == '<')
-	{
-		printf("minishell: syntax error near unexpected token `%c'\n",
-			fresh->line[i]);
-		return (1);
-	}
-	*rd = 0;
 	return (0);
 }
 
