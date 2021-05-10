@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/10 09:53:47 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/10 10:19:53 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,19 +182,14 @@ char	*create_path(char *path, char *cmd)
 	return (path);
 }
 
-char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
+int	check_paths(char **r_path, char **paths, t_command *command)
 {
-	struct stat		f_stat;
 	int				i;
-	int				status;
 	char			*path;
-	char			**paths;
+	struct stat		f_stat;
+	int				status;
 
 	i = 0;
-	path = NULL;
-	if (variable_get(fresh->env, "PATH") == NULL)
-		return (NULL);
-	paths = ft_split(variable_get(fresh->env, "PATH")->value, ':');
 	while (paths[i])
 	{
 		path = create_path(paths[i], command->cmd);
@@ -202,10 +197,28 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 		if (!status && S_ISREG(f_stat.st_mode))
 		{
 			free(paths);
-			return (path);
+			*r_path = path;
+			return (1);
 		}
 		i++;
 	}
+	*r_path = NULL;
+	return (0);
+}
+
+char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
+{
+	struct stat		f_stat;
+	int				status;
+	char			*path;
+	char			**paths;
+
+	path = NULL;
+	if (variable_get(fresh->env, "PATH") == NULL)
+		return (NULL);
+	paths = ft_split(variable_get(fresh->env, "PATH")->value, ':');
+	if (check_paths(&path, paths, command)) 
+		return (path);
 	if (path)
 		free(path);
 	path = ft_strtrim(command->cmd, "\n");
