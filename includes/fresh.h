@@ -62,6 +62,8 @@ typedef struct  s_fresh
 	char		*line;
 	int			music_pid;
 	int			last_fd;
+	t_file		*last_in;
+	t_file		*last_out;
 	int			fd_in;
 	int			fd_out;
 	int			cmd_return;
