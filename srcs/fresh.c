@@ -6,7 +6,7 @@
 /*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/10 10:19:53 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/10 10:29:39 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,6 +232,30 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 	return (NULL);
 }
 
+void	ft_exec_bin_child(t_fresh *fresh, t_command *command)
+{
+	char	*path;
+	char	**argv;
+	char	**chararr;
+
+	path = ft_check_if_valid(fresh, command);
+	argv = ft_create_argv(command, path);
+	chararr = ft_list_to_chararr(fresh->env);
+	if (path)
+		execve(path, argv, chararr);
+	else
+	{
+		argv = NULL;
+		free(path);
+		path = NULL;
+		dup2(fresh->fd_out, 1);
+		printf("%s: command not found\n", command->cmd);
+		exit(127);
+	}
+	argv = NULL;
+	exit(errno);
+}
+
 int	ft_exec_bin(t_fresh *fresh, t_command *command)
 {
 	int		pid;
@@ -244,24 +268,7 @@ int	ft_exec_bin(t_fresh *fresh, t_command *command)
 	signal(SIGQUIT, fork_sigquit);
 	fresh->pid = fork();
 	if (fresh->pid == 0)
-	{
-		path = ft_check_if_valid(fresh, command);
-		argv = ft_create_argv(command, path);
-		chararr = ft_list_to_chararr(fresh->env);
-		if (path)
-			execve(path, argv, chararr);
-		else
-		{
-			argv = NULL;
-			free(path);
-			path = NULL;
-			dup2(fresh->fd_out, 1);
-			printf("%s: command not found\n", command->cmd);
-			exit(127);
-		}
-		argv = NULL;
-		exit(errno);
-	}
+		ft_exec_bin_child(fresh, command);
 	else
 	{
 		wait(&status);
