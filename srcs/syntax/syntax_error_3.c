@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 12:41:38 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/07 11:47:59 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/10 10:35:13 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,43 +72,47 @@ int	check_pipe_before_greater_lower(t_fresh *fresh)
 	return (0);
 }
 
+int	check_lower_in_a_row_aux(t_fresh *fresh, int i, int *rd)
+{
+	if (fresh->line[i] == '<')
+	{
+		printf("minishell: syntax error near unexpected token `%c'\n",
+			fresh->line[i]);
+		return (1);
+	}
+	*rd = 0;
+	return (0);
+}
+
 /*
  * Check if for '<' in a row
  */
+
 int	check_lower_in_a_row(t_fresh *fresh)
 {
 	int	i;
 	int	rd;
 
-	i = 0;
+	i = -1;
 	rd = 0;
-	while (fresh->line[i])
+	while (fresh->line[++i])
 	{
 		if (fresh->line[i] == ' ')
-		{
 			i++;
-			continue ;
-		}
 		if (fresh->line[i] == '<' && !is_between_quotes(fresh->line, i)
 			&& rd <= 1)
 			rd++;
 		else if (fresh->line[i] != '<' && fresh->line[i] != ' ' && rd > 0)
 		{
-			if (fresh->line[i] == '<')
-			{
-				printf("minishell: syntax error near unexpected token `%c'\n",
-					fresh->line[i]);
+			if (check_lower_in_a_row_aux(fresh, i, &rd))
 				return (1);
-			}
-			rd = 0;
-		}	
+		}
 		if (rd >= 2)
 		{
 			printf("minishell: syntax error near unexpected token `%c'\n",
 				fresh->line[i]);
 			return (1);
 		}
-		i++;
 	}
 	return (0);
 }
