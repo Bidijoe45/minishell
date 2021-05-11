@@ -56,6 +56,15 @@ typedef struct	s_command
 	int			fd[2];
 }				t_command;
 
+typedef struct	s_echo
+{
+	int			trail;
+	int			i;
+	int			j;
+	int			print;
+	int			already;
+}				t_echo;
+
 typedef struct  s_fresh
 {
 	char        *user;
