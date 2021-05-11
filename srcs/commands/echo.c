@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 12:13:11 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/02 13:29:52 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/11 11:40:07 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,51 +39,53 @@ static	void	set_trail(char **args, int *trail)
 	}
 }
 
+void	echo_aux_1(t_command *command, t_echo *echo)
+{
+	echo->i = 0;
+	echo->print = 0;
+	if (!echo->already && command->args[echo->j][0]
+		== '-' && command->args[echo->j][1] == 'n')
+	{
+		echo->i++;
+		while (command->args[echo->j][echo->i] == 'n')
+			echo->i++;
+		if (command->args[echo->j][echo->i] != ' '
+		&& command->args[echo->j][echo->i] != '\0')
+			echo->print = 1;
+	}
+	else
+	{
+		echo->already = 1;
+		echo->print = 1;
+	}
+	if (echo->print)
+	{
+		write(1, command->args[echo->j], ft_strlen(command->args[echo->j]));
+		if (command->args[echo->j + 1])
+			write(1, " ", 1);
+	}
+	echo->j++;
+}
+
 int	ft_echo(t_command *command, t_fresh *fresh)
 {
-	int	trail;
-	int	print;
-	int	already;
-	int	i;
-	int	j;
+	t_echo	echo;
 
-	trail = 1;
+	echo.trail = 1;
 	if (*command->args)
-		set_trail(command->args, &trail);
-	if (trail)
-		i = 0;
+		set_trail(command->args, &echo.trail);
+	if (echo.trail)
+		echo.i = 0;
 	else
-		i = 1;
-	print = 1;
-	j = 0;
-	already = 0;
-	while (command->args[j])
+		echo.i = 1;
+	echo.print = 1;
+	echo.j = 0;
+	echo.already = 0;
+	while (command->args[echo.j])
 	{
-		i = 0;
-		print = 0;
-		if (!already && command->args[j][0]
-			== '-' && command->args[j][1] == 'n')
-		{
-			i++;
-			while (command->args[j][i] == 'n')
-				i++;
-			if (command->args[j][i] != ' ' && command->args[j][i] != '\0')
-				print = 1;
-		}
-		else
-		{
-			already = 1;
-			print = 1;
-		}
-		if (print)
-		{
-			write(1, command->args[j], ft_strlen(command->args[j]));
-			if (command->args[j + 1])
-				write(1, " ", 1);
-		}
-		j++;
+		echo_aux_1(command, &echo);
 	}
-	if (trail)
+	if (echo.trail)
 		write(1, "\n", 1);
 	return (0);
 }
