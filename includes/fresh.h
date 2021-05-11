@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/10 13:42:51 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/11 12:42:04 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,20 @@ typedef struct s_variable
 	char	*key;
 	char	*value;
 }				t_variable;
+
+typedef struct	s_extract_files
+{
+	t_file		**files;
+	int			i;
+	int			pos;
+	int			redirect;
+	int			j;
+	t_file		*file;
+	char		*tmp;
+	char		*tmp2;
+	char		*key;
+	int			n_files;
+}				t_extract_files;
 
 int			is_between_quotes(char *str, int pos);
 

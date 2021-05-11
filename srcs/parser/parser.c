@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 10:23:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/11 11:40:38 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/11 12:42:02 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,88 +236,87 @@ int	extract_files_count_files(char *command)
 	return (files);
 }
 
+void	extract_double_redirect(t_extract_files *extract, char *command, char **command_rpl)
+{
+	extract->redirect = extract->i;
+	extract->i += 2;
+	while (command[extract->i] == ' ')
+		extract->i++;
+	extract->pos = extract->i;
+	while (command[extract->i] != '\0')
+	{
+		if ((command[extract->i] == ' ' || command[extract->i] == '<' || command[extract->i] == '>')
+			&& !is_between_quotes(command, extract->i))
+			break ;
+		extract->i++;
+	}
+	extract->file = malloc(sizeof(t_file));
+	extract->file->file_name = ft_substr(command, extract->pos, extract->i - extract->pos);
+	extract->file->type = APPEND;
+	extract->files[extract->j] = extract->file;
+	extract->tmp = *command_rpl;
+	extract->key = ft_substr(command, extract->redirect, extract->i - extract->redirect);
+	*command_rpl = ft_replace(extract->tmp, extract->key, "", 1);
+	free(extract->key);
+	free(extract->tmp);
+	extract->j++;
+}
+
+void	extract_simple_redirect(t_extract_files *extract, char *command, char **command_rpl)
+{
+	extract->redirect = extract->i;
+	extract->i++;
+	while (command[extract->i] == ' ')
+		extract->i++;
+	extract->pos = extract->i;
+	while (command[extract->i] != '\0')
+	{
+		if ((command[extract->i] == ' ' || command[extract->i] == '<' || command[extract->i] == '>')
+				&& !is_between_quotes(command, extract->i))
+			break ;
+		extract->i++;
+	}
+	extract->file = malloc(sizeof(t_file));
+	extract->file->file_name = ft_substr(command, extract->pos, extract->i - extract->pos);
+	if (command[extract->redirect] == '>')
+		extract->file->type = OUT;
+	else if (command[extract->redirect] == '<')
+		extract->file->type = IN;
+	extract->files[extract->j] = extract->file;
+	extract->tmp = *command_rpl;
+	extract->key = ft_substr(command, extract->redirect, extract->i - extract->redirect);
+	*command_rpl = ft_replace(extract->tmp, extract->key, "", 1);
+	free(extract->key);
+	free(extract->tmp);
+	extract->j++;
+}
+
 t_file	**extract_files(char *command, char **command_rpl)
 {
-	t_file	**files;
-	int		i;
-	int		pos;
-	int		redirect;
-	int		j;
-	t_file	*file;
-	char	*tmp;
-	char	*tmp2;
-	char	*key;
-	int		n_files;	
+	t_extract_files	*extract;
 
-	i = 0;
-	pos = 0;
-	j = 0;
+	extract = malloc(sizeof(t_extract_files));
+	extract->pos = 0;
+	extract->j = 0;
 	*command_rpl = ft_strdup(command);
-	n_files = extract_files_count_files(command);
-	files = malloc(sizeof(t_file *) * n_files + 1);
-	files[n_files] = NULL;
-	i = 0;
-	while (command[i] != '\0')
+	extract->n_files = extract_files_count_files(command);
+	extract->files = malloc(sizeof(t_file *) * extract->n_files + 1);
+	extract->files[extract->n_files] = NULL;
+	extract->i = 0;
+	while (command[extract->i] != '\0')
 	{
-		while (command[i] == ' ')
-			i++;
-		if (command[i] == '>' && command[i + 1] == '>'
-			&& !is_between_quotes(command, i))
-		{
-			redirect = i;
-			i += 2;
-			while (command[i] == ' ')
-				i++;
-			pos = i;
-			while (command[i] != '\0')
-			{
-				if ((command[i] == ' ' || command[i] == '<' || command[i] == '>') && !is_between_quotes(command, i))
-					break ;
-				i++;
-			}
-			file = malloc(sizeof(t_file));
-			file->file_name = ft_substr(command, pos, i - pos);
-			file->type = APPEND;
-			files[j] = file;
-			tmp = *command_rpl;
-			key = ft_substr(command, redirect, i - redirect);
-			*command_rpl = ft_replace(tmp, key, "", 1);
-			free(key);
-			free(tmp);
-			j++;
-		}
-		else if ((command[i] == '>' || command[i] == '<')
-			&& !is_between_quotes(command, i))
-		{
-			redirect = i;
-			i++;
-			while (command[i] == ' ')
-				i++;
-			pos = i;
-			while (command[i] != '\0')
-			{
-				if ((command[i] == ' ' || command[i] == '<' || command[i] == '>') && !is_between_quotes(command, i))
-					break ;
-				i++;
-			}
-			file = malloc(sizeof(t_file));
-			file->file_name = ft_substr(command, pos, i - pos);
-			if (command[redirect] == '>')
-				file->type = OUT;
-			else if (command[redirect] == '<')
-				file->type = IN;
-			files[j] = file;
-			tmp = *command_rpl;
-			key = ft_substr(command, redirect, i - redirect);
-			*command_rpl = ft_replace(tmp, key, "", 1);
-			free(key);
-			free(tmp);
-			j++;
-		}
+		while (command[extract->i] == ' ')
+			extract->i++;
+		if (command[extract->i] == '>' && command[extract->i + 1] == '>'
+			&& !is_between_quotes(command, extract->i))
+			extract_double_redirect(extract, command, command_rpl);
+		else if ((command[extract->i] == '>' || command[extract->i] == '<')
+			&& !is_between_quotes(command, extract->i))
+			extract_simple_redirect(extract, command, command_rpl);
 		else
-			i++;
+			extract->i++;
 	}
-	return (files);
+	return (extract->files);
 }
 
 int	extract_cmd_count_greater_lower(char *command, int i)
