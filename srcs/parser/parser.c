@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 10:23:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/07 11:29:13 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/11 11:40:38 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 			pos = i;
 			while (command[i] != '\0')
 			{
-				if (command[i] == ' ' && !is_between_quotes(command, i))
+				if ((command[i] == ' ' || command[i] == '<' || command[i] == '>') && !is_between_quotes(command, i))
 					break ;
 				i++;
 			}
@@ -296,7 +296,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 			pos = i;
 			while (command[i] != '\0')
 			{
-				if (command[i] == ' ' && !is_between_quotes(command, i))
+				if ((command[i] == ' ' || command[i] == '<' || command[i] == '>') && !is_between_quotes(command, i))
 					break ;
 				i++;
 			}
@@ -314,7 +314,8 @@ t_file	**extract_files(char *command, char **command_rpl)
 			free(tmp);
 			j++;
 		}
-		i++;
+		else
+			i++;
 	}
 	return (files);
 }
@@ -567,6 +568,7 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	cmd->cmd = trim_q_ftw(cmd_name);
 	cmd->files = files;
 	cmd->args = args;
+
 	i = 0;
 	while (cmd->files[i])
 	{
