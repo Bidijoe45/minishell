@@ -544,47 +544,43 @@ char	*trim_q_ftw(char *line)
 
 void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 {
-	int			i;
-	char		*cmd_name;
-	char		*args_str;
-	char		**args;
-	t_file		**files;
-	char		*tmp;
-	char		*tmp2;
-	t_command	*cmd;
+	t_parse_instruction *p_ins;
 
-	cmd_name = extract_cmd(command, &tmp);
-	command = tmp;
-	files = extract_files(command, &tmp);
+	p_ins = malloc(sizeof(t_parse_instruction));
+
+	p_ins->cmd_name = extract_cmd(command, &p_ins->tmp);
+	command = p_ins->tmp;
+	p_ins->files = extract_files(command, &p_ins->tmp);
 	free(command);
-	command = tmp;
-	args = ft_split_ignore_quotes(command, ' ');
-	i = 0;
-	while (args[i])
+	command = p_ins->tmp;
+	p_ins->args = ft_split_ignore_quotes(command, ' ');
+	p_ins->i = 0;
+	while (p_ins->args[p_ins->i])
 	{
-		tmp2 = args[i];
-		args[i] = trim_q_ftw(args[i]);
-		free(tmp2);
-		i++;
+		p_ins->tmp2 = p_ins->args[p_ins->i];
+		p_ins->args[p_ins->i] = trim_q_ftw(p_ins->args[p_ins->i]);
+		free(p_ins->tmp2);
+		p_ins->i++;
 	}
-	cmd = malloc(sizeof(t_command));
-	if (!cmd)
+	p_ins->cmd = malloc(sizeof(t_command));
+	if (!p_ins->cmd)
 		return ;
-	cmd->cmd = trim_q_ftw(cmd_name);
-	cmd->files = files;
-	cmd->args = args;
+	p_ins->cmd->cmd = trim_q_ftw(p_ins->cmd_name);
+	p_ins->cmd->files = p_ins->files;
+	p_ins->cmd->args = p_ins->args;
 
-	i = 0;
-	while (cmd->files[i])
+	p_ins->i = 0;
+	while (p_ins->cmd->files[p_ins->i])
 	{
-		cmd->files[i]->file_name = trim_q_ftw(cmd->files[i]->file_name);
-		i++;
+		p_ins->cmd->files[p_ins->i]->file_name = trim_q_ftw(p_ins->cmd->files[p_ins->i]->file_name);
+		p_ins->i++;
 	}
-	cmd->read_from_pipe = rfp;
-	cmd->write_to_pipe = wtp;
-	command_set(&fresh->commands, cmd);
-	free(cmd_name);
-	free(tmp);
+	p_ins->cmd->read_from_pipe = rfp;
+	p_ins->cmd->write_to_pipe = wtp;
+	command_set(&fresh->commands, p_ins->cmd);
+	free(p_ins->cmd_name);
+	free(p_ins->tmp);
+	free(p_ins);
 }
 
 void	ft_parse_cmd_aux(t_fresh *fresh, char **cmds, int n_pipes)

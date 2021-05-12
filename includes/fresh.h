@@ -102,6 +102,18 @@ typedef struct	s_extract_files
 	int			n_files;
 }				t_extract_files;
 
+typedef struct	s_parse_instruction
+{
+	int			i;
+	char		*cmd_name;
+	char		*args_str;
+	char		**args;
+	t_file		**files;
+	char		*tmp;
+	char		*tmp2;
+	t_command	*cmd;
+}		t_parse_instruction;
+
 typedef	struct	s_trim_quotes
 {
 	char		q;
