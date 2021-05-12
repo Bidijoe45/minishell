@@ -102,6 +102,15 @@ typedef struct	s_extract_files
 	int			n_files;
 }				t_extract_files;
 
+typedef	struct	s_trim_quotes
+{
+	char		q;
+	int			i;
+	int			j;
+	int			nq;
+	char		*ret;
+}				t_trim_quotes;
+
 int			is_between_quotes(char *str, int pos);
 
 t_list		*list_new_element(void *content);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 10:23:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/11 12:42:02 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/12 10:28:44 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,8 @@ int	extract_files_count_files(char *command)
 	return (files);
 }
 
-void	extract_double_redirect(t_extract_files *extract, char *command, char **command_rpl)
+void	extract_double_redirect(t_extract_files *extract, char *command,
+	char **command_rpl)
 {
 	extract->redirect = extract->i;
 	extract->i += 2;
@@ -245,24 +246,28 @@ void	extract_double_redirect(t_extract_files *extract, char *command, char **com
 	extract->pos = extract->i;
 	while (command[extract->i] != '\0')
 	{
-		if ((command[extract->i] == ' ' || command[extract->i] == '<' || command[extract->i] == '>')
+		if ((command[extract->i] == ' ' || command[extract->i] == '<'
+				|| command[extract->i] == '>')
 			&& !is_between_quotes(command, extract->i))
 			break ;
 		extract->i++;
 	}
 	extract->file = malloc(sizeof(t_file));
-	extract->file->file_name = ft_substr(command, extract->pos, extract->i - extract->pos);
+	extract->file->file_name = ft_substr(command, extract->pos,
+			extract->i - extract->pos);
 	extract->file->type = APPEND;
 	extract->files[extract->j] = extract->file;
 	extract->tmp = *command_rpl;
-	extract->key = ft_substr(command, extract->redirect, extract->i - extract->redirect);
+	extract->key = ft_substr(command, extract->redirect, extract->i
+			- extract->redirect);
 	*command_rpl = ft_replace(extract->tmp, extract->key, "", 1);
 	free(extract->key);
 	free(extract->tmp);
 	extract->j++;
 }
 
-void	extract_simple_redirect(t_extract_files *extract, char *command, char **command_rpl)
+void	extract_simple_redirect(t_extract_files *extract, char *command,
+	char **command_rpl)
 {
 	extract->redirect = extract->i;
 	extract->i++;
@@ -271,20 +276,23 @@ void	extract_simple_redirect(t_extract_files *extract, char *command, char **com
 	extract->pos = extract->i;
 	while (command[extract->i] != '\0')
 	{
-		if ((command[extract->i] == ' ' || command[extract->i] == '<' || command[extract->i] == '>')
-				&& !is_between_quotes(command, extract->i))
+		if ((command[extract->i] == ' ' || command[extract->i] == '<'
+				|| command[extract->i] == '>')
+			&& !is_between_quotes(command, extract->i))
 			break ;
 		extract->i++;
 	}
 	extract->file = malloc(sizeof(t_file));
-	extract->file->file_name = ft_substr(command, extract->pos, extract->i - extract->pos);
+	extract->file->file_name = ft_substr(command, extract->pos,
+			extract->i - extract->pos);
 	if (command[extract->redirect] == '>')
 		extract->file->type = OUT;
 	else if (command[extract->redirect] == '<')
 		extract->file->type = IN;
 	extract->files[extract->j] = extract->file;
 	extract->tmp = *command_rpl;
-	extract->key = ft_substr(command, extract->redirect, extract->i - extract->redirect);
+	extract->key = ft_substr(command, extract->redirect, extract->i
+			- extract->redirect);
 	*command_rpl = ft_replace(extract->tmp, extract->key, "", 1);
 	free(extract->key);
 	free(extract->tmp);
@@ -474,66 +482,64 @@ int	trim_count_ftw(char *line)
 	return (nq);
 }
 
+void	trim_q_ftw_aux2(char **line, t_trim_quotes *quotes)
+{
+	if ((*line)[quotes->i + 1] && (*line)[quotes->i + 1] == '$')
+	{
+		quotes->ret[quotes->j++] = (*line)[++(quotes->i)];
+		quotes->i++;
+	}
+	else if ((*line)[quotes->i + 1] && (*line)[quotes->i + 1] == '\\')
+	{
+		quotes->ret[quotes->j++] = (*line)[++(quotes->i)];
+		quotes->i++;
+	}
+	else if ((*line)[quotes->i + 1] && (*line)[quotes->i + 1] == '"')
+		quotes->ret[quotes->j++] = (*line)[++(quotes->i)];
+	else
+		quotes->ret[quotes->j++] = (*line)[quotes->i++];
+}
+
+void	trim_q_ftw_aux3(char *line, t_trim_quotes *quotes)
+{
+	if (line[quotes->i] == '\\' && is_between_quotes2(line, quotes->i) == 1)
+		quotes->ret[quotes->j++] = line[quotes->i++];
+	else if (line[quotes->i] == '\\' &&
+		is_between_quotes2(line, quotes->i) == 2)
+		trim_q_ftw_aux2(&line, quotes);
+	else if (line[quotes->i] == '\\' && quotes->q == 0)
+	{
+		quotes->ret[quotes->j++] = line[++(quotes->i)];
+		quotes->i++;
+	}
+	else if ((line[quotes->i] == '\'' || line[quotes->i] == '"')
+		&& quotes->q == 0)
+	{
+		quotes->q = line[quotes->i];
+		quotes->i++;
+	}
+	else
+		quotes->ret[quotes->j++] = line[quotes->i++];
+	if (line[quotes->i] && line[quotes->i] == quotes->q && quotes->q)
+	{
+		quotes->q = 0;
+		quotes->i++;
+	}
+}
+
 char	*trim_q_ftw(char *line)
 {
-	char	q;
-	char	*ret;
-	int		i;
-	int		nq;
-	int		j;
+	t_trim_quotes quotes;
 
-	nq = trim_count_ftw(line);
-	ret = malloc(sizeof(char) * (ft_strlen(line) - nq + 1));
-	i = 0;
-	j = 0;
-	q = 0;
-	while (line[i])
-	{
-		if (line[i] == '\\' && is_between_quotes2(line, i) == 1)
-		{
-			ret[j++] = line[i++];
-		}
-		else if (line[i] == '\\' && is_between_quotes2(line, i) == 2)
-		{
-			if (line[i + 1] && line[i + 1] == '$')
-			{
-				ret[j++] = line[++i];
-				i++;
-			}
-			else if (line[i + 1] && line[i + 1] == '\\')
-			{
-				ret[j++] = line[++i];
-				i++;
-			}
-			else if (line[i + 1] && line[i + 1] == '"')
-			{
-				ret[j++] = line[++i];
-			}
-			else
-			{
-				ret[j++] = line[i++];
-			}
-		}
-		else if (line[i] == '\\' && q == 0)
-		{
-			ret[j++] = line[++i];
-			i++;
-		}
-		else if ((line[i] == '\'' || line[i] == '"') && q == 0)
-		{
-			q = line[i];
-			i++;
-		}
-		else
-			ret[j++] = line[i++];
-		if (line[i] && line[i] == q && q)
-		{
-			q = 0;
-			i++;
-		}
-	}
-	ret[j] = '\0';
-	return (ret);
+	quotes.nq = trim_count_ftw(line);
+	quotes.ret = malloc(sizeof(char) * (ft_strlen(line) - quotes.nq + 1));
+	quotes.i = 0;
+	quotes.j = 0;
+	quotes.q = 0;
+	while (line[quotes.i])
+		trim_q_ftw_aux3(line, &quotes);
+	quotes.ret[quotes.j] = '\0';
+	return (quotes.ret);
 }
 
 void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
