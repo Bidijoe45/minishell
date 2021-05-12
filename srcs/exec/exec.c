@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 14:45:05 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/10 15:03:50 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/12 14:47:44 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,15 @@ void	command_execute(t_fresh *fresh, t_command *command, int *pid, int *fd)
 		read_pipe_execute(fresh, command, pid, &fd);
 }
 
+void	waits(t_fresh *fresh, int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < n)
+		wait(NULL);
+}
+
 void	execute_all(t_fresh *fresh, t_command *command, int *fd, int *pid)
 {
 	int	i;
@@ -51,6 +60,7 @@ void	execute_all(t_fresh *fresh, t_command *command, int *fd, int *pid)
 	if (fresh->last_out != NULL)
 		dup2(fresh->last_out->fd, 1);
 	command_execute(fresh, command, pid, fd);
+	waits(fresh, fresh->waits);
 	close_files(fresh);
 }
 
@@ -64,6 +74,7 @@ void	ft_execute_commands(t_fresh *fresh)
 
 	fresh->last_in = NULL;
 	fresh->last_out = NULL;
+	fresh->waits = 0;
 	p_command = NULL;
 	list_elem = fresh->commands;
 	fd = malloc(sizeof(int) * 2);
@@ -73,5 +84,6 @@ void	ft_execute_commands(t_fresh *fresh)
 		execute_all(fresh, command, fd, &pid);
 		list_elem = list_elem->next;
 	}
+	fresh->waits = 0;
 	free(fd);
 }

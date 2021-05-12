@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 14:59:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/10 15:03:35 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/12 14:48:42 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,7 @@ int	ft_exec_bin(t_fresh *fresh, t_command *command)
 	if (fresh->pid == 0)
 		ft_exec_bin_child(fresh, command);
 	else
-	{
-		wait(&status);
-		fresh->pid = 0;
-	}
+		fresh->waits++;
 	fresh->cmd_return = status >> 8;
 	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/11 12:42:04 by apavel           ###   ########.fr       */
+/*   Updated: 2021/05/12 14:48:17 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct  s_fresh
 	t_list		*env;
 	t_list		*local_vars;
 	t_list		*commands;
+	int			waits;
 }               t_fresh;
 
 typedef struct s_variable
