@@ -653,46 +653,46 @@ int	check_invalid_pipes(char **cmds)
 	return (1);
 }
 
+void	ft_replace_vars_aux(t_fresh *fresh, char *cmds, t_replace_vars *r_vars)
+{
+	r_vars->pos = r_vars->i;
+	r_vars->pos++;
+	while (r_vars->ret[r_vars->pos] != ' ' && r_vars->ret[r_vars->pos] != '$' && r_vars->ret[r_vars->pos]
+		!= '"' && r_vars->ret[r_vars->pos] != '\''
+		&& r_vars->ret[r_vars->pos] != '\\' && r_vars->ret[r_vars->pos] != '\0')
+		r_vars->pos++;
+	r_vars->key = ft_substr(r_vars->ret, r_vars->i, r_vars->pos - r_vars->i);
+	r_vars->tmp = r_vars->ret;
+	r_vars->var = variable_get(fresh->env, r_vars->key + 1);
+	if (r_vars->var)
+		r_vars->ret = ft_replace(r_vars->ret, r_vars->key, r_vars->var->value, 0);
+	else
+		r_vars->ret = ft_replace(r_vars->ret, r_vars->key, "", 0);
+	free(r_vars->tmp);
+	free(r_vars->key);
+	r_vars->i = 0;
+}
+
 char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 {
-	t_variable	*var;
-	char		*ret;
-	char		*tmp;
-	char		*key;
-	int			i;
-	int			pos;
+	t_replace_vars	*r_vars;
 
-	i = 0;
-	ret = ft_strdup(cmds);
-	while (ret[i])
+	r_vars = malloc(sizeof(t_replace_vars));
+
+	r_vars->i = 0;
+	r_vars->ret = ft_strdup(cmds);
+	while (r_vars->ret[r_vars->i])
 	{
-		if (ret[i] == '\\')
-			i += 2;
-		if (ret[i] == '$' && ret[i + 1] && ret[i + 1] != '?'
-			&& ret[i + 1] != '"' && ret[i + 1]
-			!= '\'' && is_between_quotes(ret, i) != 1)
-		{
-			pos = i;
-			pos++;
-			while (ret[pos] != ' ' && ret[pos] != '$' && ret[pos]
-				!= '"' && ret[pos] != '\''
-				&& ret[pos] != '\\' && ret[pos] != '\0')
-				pos++;
-			key = ft_substr(ret, i, pos - i);
-			tmp = ret;
-			var = variable_get(fresh->env, key + 1);
-			if (var)
-				ret = ft_replace(ret, key, var->value, 0);
-			else
-				ret = ft_replace(ret, key, "", 0);
-			free(tmp);
-			free(key);
-			i = 0;
-		}
+		if (r_vars->ret[r_vars->i] == '\\')
+			r_vars->i += 2;
+		if (r_vars->ret[r_vars->i] == '$' && r_vars->ret[r_vars->i + 1] && r_vars->ret[r_vars->i + 1] != '?'
+			&& r_vars->ret[r_vars->i + 1] != '"' && r_vars->ret[r_vars->i + 1]
+			!= '\'' && is_between_quotes(r_vars->ret, r_vars->i) != 1)
+			ft_replace_vars_aux(fresh, cmds, r_vars);
 		else
-			i++;
+			r_vars->i++;
 	}
-	return (ret);
+	return (r_vars->ret);
 }
 
 void	ft_parse_line(t_fresh *fresh)

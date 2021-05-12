@@ -114,6 +114,16 @@ typedef struct	s_parse_instruction
 	t_command	*cmd;
 }		t_parse_instruction;
 
+typedef struct	s_replace_vars
+{
+	t_variable	*var;
+	char		*ret;
+	char		*tmp;
+	char		*key;
+	int			i;
+	int			pos;
+}				t_replace_vars;
+
 typedef	struct	s_trim_quotes
 {
 	char		q;
