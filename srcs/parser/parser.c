@@ -266,14 +266,9 @@ void	extract_double_redirect(t_extract_files *extract, char *command,
 	extract->j++;
 }
 
-void	extract_simple_redirect(t_extract_files *extract, char *command,
-	char **command_rpl)
+void	extract_simple_redirect_aux(t_extract_files *extract, char *command,
+char **command_rpl)
 {
-	extract->redirect = extract->i;
-	extract->i++;
-	while (command[extract->i] == ' ')
-		extract->i++;
-	extract->pos = extract->i;
 	while (command[extract->i] != '\0')
 	{
 		if ((command[extract->i] == ' ' || command[extract->i] == '<'
@@ -282,6 +277,17 @@ void	extract_simple_redirect(t_extract_files *extract, char *command,
 			break ;
 		extract->i++;
 	}
+}
+
+void	extract_simple_redirect(t_extract_files *extract, char *command,
+	char **command_rpl)
+{
+	extract->redirect = extract->i;
+	extract->i++;
+	while (command[extract->i] == ' ')
+		extract->i++;
+	extract->pos = extract->i;
+	extract_simple_redirect_aux(extract, command, command_rpl);
 	extract->file = malloc(sizeof(t_file));
 	extract->file->file_name = ft_substr(command, extract->pos,
 			extract->i - extract->pos);
