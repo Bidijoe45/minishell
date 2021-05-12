@@ -587,6 +587,23 @@ void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 	free(tmp);
 }
 
+void	ft_parse_cmd_aux(t_fresh *fresh, char **cmds, int n_pipes)
+{
+	int	i;
+
+	i = 0;
+	while (cmds[i])
+	{
+		if (i == 0)
+			ft_parse_instruction(fresh, cmds[i], 0, 1);
+		else if (i == n_pipes - 1)
+			ft_parse_instruction(fresh, cmds[i], 1, 0);
+		else
+			ft_parse_instruction(fresh, cmds[i], 1, 1);
+		i++;
+	}
+}
+
 void	ft_parse_cmd(t_fresh *fresh, char *command)
 {
 	int			i;
@@ -601,19 +618,7 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	while (cmds[n_pipes])
 		n_pipes++;
 	if (n_pipes - 1 != 0)
-	{
-		i = 0;
-		while (cmds[i])
-		{
-			if (i == 0)
-				ft_parse_instruction(fresh, cmds[i], 0, 1);
-			else if (i == n_pipes - 1)
-				ft_parse_instruction(fresh, cmds[i], 1, 0);
-			else
-				ft_parse_instruction(fresh, cmds[i], 1, 1);
-			i++;
-		}
-	}
+		ft_parse_cmd_aux(fresh, cmds, n_pipes);
 	else
 		ft_parse_instruction(fresh, command, 0, 0);
 	i = 0;
