@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/03 12:00:04 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/13 13:22:20 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,6 @@ void	variable_unset(t_fresh *fresh, char *key, t_list *list, t_variable *tmp)
 		prev = list;
 		list = list->next;
 	}
-}
-
-static	int	validate_variable(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!ft_isalpha(str[i]) && str[i] != '_')
-		return (0);
-	while (str[i])
-	{
-		if (!ft_isalpha(str[i]) && str[i] != '_' && !ft_isdigit(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
 }
 
 int	ft_unset(t_command *command, t_fresh *fresh)

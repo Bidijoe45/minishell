@@ -26,7 +26,7 @@ void	simple_execute(t_fresh *fresh, t_command *command)
 
 void	waits(t_fresh *fresh, int n)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < n)

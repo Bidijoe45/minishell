@@ -33,7 +33,6 @@ void	write_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 		fresh->last_fd = dup((*fd)[0]);
 		close((*fd)[0]);
 		fresh->waits++;
-		//		wait(NULL);
 	}
 }
 
@@ -55,7 +54,6 @@ void	write_read_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 		fresh->last_fd = dup((*fd)[0]);
 		close((*fd)[0]);
 		fresh->waits++;
-//		wait(NULL);
 	}
 }
 
@@ -76,6 +74,5 @@ void	read_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 		close((*fd)[0]);
 		close(fresh->last_fd);
 		fresh->waits++;
-//		wait(NULL);
 	}
 }

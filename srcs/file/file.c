@@ -38,7 +38,7 @@ void	setup_files(t_fresh *fresh, t_command *command, int *i)
 	}
 }
 
-int		setup_last_in(t_fresh *fresh)
+int	setup_last_in(t_fresh *fresh)
 {
 	fresh->last_in->fd = open(fresh->last_in->file_name, O_RDONLY);
 	if (fresh->last_in->fd == -1)

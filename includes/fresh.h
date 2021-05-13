@@ -46,6 +46,14 @@ typedef enum	e_ctype
 	simple,
 }				t_ctype;
 
+typedef	struct	s_export
+{
+	int			i;
+	char		*tmp;
+	char		*key;
+	char		*value;
+}				t_export;
+
 typedef struct	s_command
 {
 	char		*cmd;
@@ -198,4 +206,8 @@ int			check_lower_in_a_row_aux(t_fresh *fresh, int i, int *rd);
 void		setup_files(t_fresh *fresh, t_command *command, int *i);
 int			setup_last_in(t_fresh *fresh);
 void		close_files(t_fresh *fresh);
+void		export_aux(t_export *export, t_command *command, t_fresh *fresh);
+void		export_aux2(t_export *export, t_fresh *fresh);
+int			export_while(t_command *command, t_fresh *fresh, t_export *export);
+int			validate_variable(char *str);
 #endif
