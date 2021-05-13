@@ -1,12 +1,12 @@
 /* ************************************************************************** */
-  /*                                                                            */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   fresh.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/12 14:48:17 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/13 17:57:38 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,13 @@
 # define FRESH_H
 
 # define NAME "fresh"
-# define ART "███████╗██████╗ ███████╗███████╗██╗  ██╗\n██╔════╝██╔══██╗██╔════╝██╔════╝██║  ██║\n█████╗  ██████╔╝█████╗  ███████╗███████║\n██╔══╝  ██╔══██╗██╔══╝  ╚════██║██╔══██║\n██║     ██║  ██║███████╗███████║██║  ██║\n╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝\n                                        \n"
+# define ART "\
+███████╗██████╗ ███████╗███████╗██╗  ██╗\n\
+██╔════╝██╔══██╗██╔════╝██╔════╝██║  ██║\n\
+█████╗  ██████╔╝█████╗  ███████╗███████║\n\
+██╔══╝  ██╔══██╗██╔══╝  ╚════██║██╔══██║\n\
+██║     ██║  ██║███████╗███████║██║  ██║\n\
+╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝\n\n"
 
 # include "../resources/libft/libft.h"
 # include "../resources/ft_printf/ft_printf.h"
@@ -29,24 +35,29 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 
-enum	e_rtype
+enum			e_rtype
 {
-	IN, OUT, APPEND
+	IN,
+	OUT,
+	APPEND
 };
 
-typedef	struct	s_file
+typedef struct s_while_line {
+	char		c[2];
+	int			pos;
+	int			rd;
+	char		*tmp;
+	char		*real;
+}				t_while_line;
+
+typedef struct s_file
 {
 	char			*file_name;
-	enum	e_rtype	type;
+	enum e_rtype	type;
 	int				fd;
 }				t_file;
 
-typedef enum	e_ctype
-{
-	simple,
-}				t_ctype;
-
-typedef	struct	s_export
+typedef struct s_export
 {
 	int			i;
 	char		*tmp;
@@ -54,7 +65,7 @@ typedef	struct	s_export
 	char		*value;
 }				t_export;
 
-typedef struct	s_command
+typedef struct s_command
 {
 	char		*cmd;
 	char		**args;
@@ -64,7 +75,7 @@ typedef struct	s_command
 	int			fd[2];
 }				t_command;
 
-typedef struct	s_echo
+typedef struct s_echo
 {
 	int			trail;
 	int			i;
@@ -73,9 +84,9 @@ typedef struct	s_echo
 	int			already;
 }				t_echo;
 
-typedef struct  s_fresh
+typedef struct s_fresh
 {
-	char        *user;
+	char		*user;
 	char		*line;
 	int			music_pid;
 	int			last_fd;
@@ -89,7 +100,7 @@ typedef struct  s_fresh
 	t_list		*local_vars;
 	t_list		*commands;
 	int			waits;
-}               t_fresh;
+}				t_fresh;
 
 typedef struct s_variable
 {
@@ -97,7 +108,7 @@ typedef struct s_variable
 	char	*value;
 }				t_variable;
 
-typedef struct	s_extract_files
+typedef struct s_extract_files
 {
 	t_file		**files;
 	int			i;
@@ -111,7 +122,7 @@ typedef struct	s_extract_files
 	int			n_files;
 }				t_extract_files;
 
-typedef struct	s_parse_instruction
+typedef struct s_parse_instruction
 {
 	int			i;
 	char		*cmd_name;
@@ -123,7 +134,7 @@ typedef struct	s_parse_instruction
 	t_command	*cmd;
 }		t_parse_instruction;
 
-typedef struct	s_replace_vars
+typedef struct s_replace_vars
 {
 	t_variable	*var;
 	char		*ret;
@@ -133,7 +144,7 @@ typedef struct	s_replace_vars
 	int			pos;
 }				t_replace_vars;
 
-typedef	struct	s_trim_quotes
+typedef struct s_trim_quotes
 {
 	char		q;
 	int			i;
@@ -147,7 +158,6 @@ int			is_between_quotes(char *str, int pos);
 t_list		*list_new_element(void *content);
 void		list_add_back(t_list *list, t_list *new_elem);
 void		exec_commands(t_fresh *fresh);
-t_command	*command_new(char *cmd, char *arg, t_ctype type, char *redirect);
 void		*command_set(t_list **list, t_command *command);
 void		command_print_list(t_list *list);
 
@@ -181,9 +191,12 @@ int			aux_1(t_fresh *fresh, int i);
 int			aux_2(t_fresh *fresh, int i, int rd);
 
 void		simple_execute(t_fresh *fresh, t_command *command);
-void		write_pipe_execute(t_fresh *fresh, t_command *command, int *pid, int *fd[2]);
-void		write_read_pipe_execute(t_fresh *fresh, t_command *command, int *pid, int *fd[2]);
-void		read_pipe_execute(t_fresh *fresh, t_command *command, int *pid, int *fd[2]);
+void		write_pipe_execute(t_fresh *fresh, t_command *command,
+				int *pid, int *fd[2]);
+void		write_read_pipe_execute(t_fresh *fresh, t_command *command,
+				int *pid, int *fd[2]);
+void		read_pipe_execute(t_fresh *fresh, t_command *command,
+				int *pid, int *fd[2]);
 
 void		ft_free_commands_files(t_command *cmd);
 void		ft_free_commands_args(t_command *cmd);
@@ -210,4 +223,40 @@ void		export_aux(t_export *export, t_command *command, t_fresh *fresh);
 void		export_aux2(t_export *export, t_fresh *fresh);
 int			export_while(t_command *command, t_fresh *fresh, t_export *export);
 int			validate_variable(char *str);
+
+int			ft_valid_quotes(char *line);
+void		replace_variables_key(t_fresh *fresh, int i);
+void		replace_variables(t_fresh *fresh);
+int			ft_valid_multiline(t_fresh *fresh);
+void		ft_while_line(t_fresh *fresh, t_while_line *while_line);
+int			is_between_quotes(char *str, int pos);
+int			is_between_quotes2(char *str, int pos);
+int			between_quotes_pos(int sq, int dq);
+int			ft_is_special_char(int c);
+void		read_line(t_fresh *fresh);
+t_file		**extract_files(char *command, char **command_rpl);
+void		extract_simple_redirect(t_extract_files *extract, char *command,
+				char **command_rpl);
+void		extract_simple_redirect_aux(t_extract_files *extract, char *command,
+				char **command_rpl);
+void		extract_double_redirect(t_extract_files *extract, char *command,
+				char **command_rpl);
+int			extract_files_count_files(char *command);
+int			check_invalid_redirections(char **cmds);
+int			check_chars(char c);
+char		*extract_cmd(char *command, char **command_rpl);
+int			extract_cmd_count_space_greater_lower(char *command, int i);
+int			extract_cmd_count_greater_lower(char *command, int i);
+void		trim_q_ftw_aux2(char **line, t_trim_quotes *quotes);
+int			trim_count_ftw(char *line);
+void		trim_count_ftw_aux(char *line, int *i, char *q, int *nq);
+void		ft_replace_escape(char ***argsp);
+void		ft_trim_args(char ***argsp);
+void		ft_parse_cmd_aux(t_fresh *fresh, char **cmds, int n_pipes);
+void		ft_parse_instruction(t_fresh *fresh, char *command,
+				int rfp, int wtp);
+void		ft_parse_instruction_aux(t_fresh *fresh, t_parse_instruction *p_ins,
+				char *command);
+char		*trim_q_ftw(char *line);
+void		trim_q_ftw_aux3(char *line, t_trim_quotes *quotes);
 #endif
