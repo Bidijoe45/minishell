@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 14:59:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/12 14:48:42 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/13 11:18:33 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	ft_exec_bin_child(t_fresh *fresh, t_command *command)
 	exit(errno);
 }
 
-int	ft_exec_bin(t_fresh *fresh, t_command *command)
+int	ft_exec_bin(t_fresh *fresh, t_command *command, int infork)
 {
 	int		pid;
 	int		status;
@@ -93,13 +93,16 @@ int	ft_exec_bin(t_fresh *fresh, t_command *command)
 	char	*path;
 	char	**chararr;
 
-	signal(SIGINT, fork_sigint);
-	signal(SIGQUIT, fork_sigquit);
+	if (!infork)
+	{
+		signal(SIGINT, fork_sigint);
+		signal(SIGQUIT, fork_sigquit);
+	}
 	fresh->pid = fork();
 	if (fresh->pid == 0)
 		ft_exec_bin_child(fresh, command);
 	else
-		fresh->waits++;
+		wait(NULL);
 	fresh->cmd_return = status >> 8;
 	return (status);
 }

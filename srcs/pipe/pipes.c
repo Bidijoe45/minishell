@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 13:36:47 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/10 14:43:46 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/13 11:25:13 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	write_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 	{
 		close((*fd)[0]);
 		dup2((*fd)[1], 1);
-		ft_exec_bin(fresh, command);
+		ft_exec_bin(fresh, command, 1);
 		exit(0);
 	}
 	else
@@ -32,7 +32,8 @@ void	write_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 		close((*fd)[1]);
 		fresh->last_fd = dup((*fd)[0]);
 		close((*fd)[0]);
-		wait(NULL);
+		fresh->waits++;
+		//		wait(NULL);
 	}
 }
 
@@ -45,7 +46,7 @@ void	write_read_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 		dup2(fresh->last_fd, 0);
 		dup2((*fd)[1], 1);
 		close((*fd)[1]);
-		ft_exec_bin(fresh, command);
+		ft_exec_bin(fresh, command, 1);
 		exit(0);
 	}
 	else
@@ -53,7 +54,8 @@ void	write_read_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 		close((*fd)[1]);
 		fresh->last_fd = dup((*fd)[0]);
 		close((*fd)[0]);
-		wait(NULL);
+		fresh->waits++;
+//		wait(NULL);
 	}
 }
 
@@ -65,7 +67,7 @@ void	read_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 	{
 		close((*fd)[0]);
 		dup2(fresh->last_fd, 0);
-		ft_exec_bin(fresh, command);
+		ft_exec_bin(fresh, command, 1);
 		exit(0);
 	}
 	else
@@ -73,6 +75,7 @@ void	read_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 		close((*fd)[1]);
 		close((*fd)[0]);
 		close(fresh->last_fd);
-		wait(NULL);
+		fresh->waits++;
+//		wait(NULL);
 	}
 }

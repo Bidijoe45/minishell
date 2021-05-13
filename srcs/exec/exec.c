@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 14:45:05 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/12 21:10:11 by alvaro           ###   ########.fr       */
+/*   Updated: 2021/05/13 11:30:40 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,38 @@ void	simple_execute(t_fresh *fresh, t_command *command)
 	if (ft_is_builtin(fresh, command))
 		ft_execute_builtin(command, fresh);
 	else
-		ft_exec_bin(fresh, command);
+		ft_exec_bin(fresh, command, 0);
+}
+
+void	waits(t_fresh *fresh, int n)
+{
+	int i;
+
+	i = -1;
+	while (++i < n)
+		wait(NULL);
 }
 
 void	command_execute(t_fresh *fresh, t_command *command, int *pid, int *fd)
 {
 	if (!command->write_to_pipe && !command->read_from_pipe)
+	{
 		simple_execute(fresh, command);
+		waits(fresh, fresh->waits);
+		fresh->waits = 0;
+	}
 	if (command->write_to_pipe && !command->read_from_pipe)
 		write_pipe_execute(fresh, command, pid, &fd);
 	if (command->read_from_pipe && command->write_to_pipe)
 		write_read_pipe_execute(fresh, command, pid, &fd);
 	if (command->read_from_pipe && !command->write_to_pipe)
+	{
+		signal(SIGINT, fork_sigint);
+		signal(SIGQUIT, fork_sigquit);
 		read_pipe_execute(fresh, command, pid, &fd);
-}
-
-void	waits(t_fresh *fresh, int n)
-{
-	//int	i;
-
-	//i = 0;
-//	while (i < n)
-		wait(NULL);
+		waits(fresh, fresh->waits);
+		fresh->waits = 0;
+	}
 }
 
 void	execute_all(t_fresh *fresh, t_command *command, int *fd, int *pid)
@@ -55,12 +65,14 @@ void	execute_all(t_fresh *fresh, t_command *command, int *fd, int *pid)
 		pipe(fd);
 	setup_files(fresh, command, &i);
 	if (fresh->last_in != NULL)
-		setup_last_in(fresh);
+	{
+		if (!setup_last_in(fresh))
+			return ;
+	}
 	fresh->fd_out = dup(1);
 	if (fresh->last_out != NULL)
 		dup2(fresh->last_out->fd, 1);
 	command_execute(fresh, command, pid, fd);
-	waits(fresh, fresh->waits);
 	close_files(fresh);
 }
 
@@ -84,6 +96,5 @@ void	ft_execute_commands(t_fresh *fresh)
 		execute_all(fresh, command, fd, &pid);
 		list_elem = list_elem->next;
 	}
-	fresh->waits = 0;
 	free(fd);
 }

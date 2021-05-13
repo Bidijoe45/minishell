@@ -38,17 +38,18 @@ void	setup_files(t_fresh *fresh, t_command *command, int *i)
 	}
 }
 
-void	setup_last_in(t_fresh *fresh)
+int		setup_last_in(t_fresh *fresh)
 {
 	fresh->last_in->fd = open(fresh->last_in->file_name, O_RDONLY);
 	if (fresh->last_in->fd == -1)
 	{
 		fresh->cmd_return = 1;
 		printf("%s: No such file or directory\n", fresh->last_in->file_name);
-		return ;
+		return (0);
 	}
 	fresh->fd_in = dup(0);
 	dup2(fresh->last_in->fd, 0);
+	return (1);
 }
 
 void	close_files(t_fresh *fresh)
