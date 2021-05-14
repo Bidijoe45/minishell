@@ -47,7 +47,7 @@ static size_t	ft_next_sep(const char *s, size_t start, char c)
 	return (i);
 }
 
-static void		ft_alloc_wrds(char **table, const char *s, char c, size_t words)
+static void	ft_alloc_wrds(char **table, const char *s, char c, size_t words)
 {
 	size_t	i;
 	size_t	j;
@@ -66,7 +66,7 @@ static void		ft_alloc_wrds(char **table, const char *s, char c, size_t words)
 	table[i] = NULL;
 }
 
-char			**ft_split(const char *s, char c)
+char	**ft_split(const char *s, char c)
 {
 	char	**table;
 	size_t	words;
@@ -74,7 +74,8 @@ char			**ft_split(const char *s, char c)
 	if (!s)
 		return (NULL);
 	words = ft_count_words(s, c);
-	if (!(table = malloc(sizeof(char *) * (words + 1))))
+	table = malloc(sizeof(char *) * (words + 1));
+	if (!table)
 		return (NULL);
 	if (s[0] == '\0')
 	{

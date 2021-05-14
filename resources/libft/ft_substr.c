@@ -24,7 +24,8 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 		return (NULL);
 	if (*s == '\0')
 		return (ft_strdup(""));
-	if (!(str = malloc(sizeof(char) * (len + 1))))
+	str = malloc(sizeof(char) * (len + 1));
+	if (!str)
 		return (NULL);
 	if (ft_strlen(s) < start)
 		return (ft_strdup(""));
@@ -36,5 +37,5 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 		i++;
 	}
 	str[i] = '\0';
-	return (char *)str;
+	return ((char *)str);
 }
