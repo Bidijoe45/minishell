@@ -1,41 +1,40 @@
 #include "libft.h"
 
-void	replace_aux(t_replace *replace, char **str, char *key, char *word)
+char    *ft_replace(char *str, char *key, char *word, int n)
 {
-	replace->tmp = ft_substr(*str, 0, (&(*str))[replace->i] - *str);
-	replace->tmp2 = ft_substr(&(*str)[replace->i + ft_strlen(key)], 0,
-			ft_strlen(&(*str)[replace->i + ft_strlen(key)]));
-	replace->tmp3 = ft_strjoin(word, replace->tmp2);
-	*str = ft_strjoin(replace->tmp, replace->tmp3);
-	free(replace->tmp);
-	free(replace->tmp2);
-	free(replace->tmp3);
-	replace->j++;
-	replace->i = -1;
-}
+	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
+	int		i;
+	int		j;
 
-char	*ft_replace(char *str, char *key, char *word, int n)
-{
-	t_replace	replace;
-
-	replace.i = 0;
-	replace.j = 0;
+	i = 0;
+	j = 0;
 	if (!str || !key || !word)
 		return (NULL);
 	if (!ft_strnstr(str, key, ft_strlen(str)))
 		return (str);
-	while (str[replace.i])
+	while (str[i])
 	{
-		if (str[replace.i] == key[0])
+		if (str[i] == key[0])
 		{
-			if (!ft_strncmp(&str[replace.i], key, ft_strlen(key)))
+			if (!ft_strncmp(&str[i], key, ft_strlen(key)))
 			{
-				if (n != 0 && replace.j == n)
+				if (n != 0 && j == n)
 					break ;
-				replace_aux(&replace, &str, key, word);
+				tmp = ft_substr(str, 0, &str[i] - str);
+				tmp2 = ft_substr(&str[i + ft_strlen(key)], 0,
+						ft_strlen(&str[i + ft_strlen(key)]));
+				tmp3 = ft_strjoin(word, tmp2);
+				str = ft_strjoin(tmp, tmp3);
+				free(tmp);
+				free(tmp2);
+				free(tmp3);
+				j++;
+				i = -1;
 			}
 		}
-		replace.i++;
+		i++;
 	}
 	return (str);
 }
