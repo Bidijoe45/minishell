@@ -84,23 +84,21 @@ void	ft_parse_instruction_aux(t_fresh *fresh, t_parse_instruction *p_ins,
 
 void	ft_parse_instruction(t_fresh *fresh, char *command, int rfp, int wtp)
 {
-	t_parse_instruction	*p_ins;
+	t_parse_instruction	p_ins;
 
-	p_ins = malloc(sizeof(t_parse_instruction));
-	p_ins->cmd_name = extract_cmd(command, &p_ins->tmp);
-	command = p_ins->tmp;
-	p_ins->files = extract_files(command, &p_ins->tmp);
+	p_ins.cmd_name = extract_cmd(command, &p_ins.tmp);
+	command = p_ins.tmp;
+	p_ins.files = extract_files(command, &p_ins.tmp);
 	free(command);
-	command = p_ins->tmp;
-	p_ins->args = ft_split_ignore_quotes(command, ' ');
-	p_ins->i = 0;
-	ft_parse_instruction_aux(fresh, p_ins, command);
-	p_ins->cmd->read_from_pipe = rfp;
-	p_ins->cmd->write_to_pipe = wtp;
-	command_set(&fresh->commands, p_ins->cmd);
-	free(p_ins->cmd_name);
-	free(p_ins->tmp);
-	free(p_ins);
+	command = p_ins.tmp;
+	p_ins.args = ft_split_ignore_quotes(command, ' ');
+	p_ins.i = 0;
+	ft_parse_instruction_aux(fresh, &p_ins, command);
+	p_ins.cmd->read_from_pipe = rfp;
+	p_ins.cmd->write_to_pipe = wtp;
+	command_set(&fresh->commands, p_ins.cmd);
+	free(p_ins.cmd_name);
+	free(p_ins.tmp);
 }
 
 void	ft_parse_cmd_aux(t_fresh *fresh, char **cmds, int n_pipes)

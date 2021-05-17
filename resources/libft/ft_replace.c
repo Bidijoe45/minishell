@@ -1,40 +1,42 @@
 #include "libft.h"
 
-char    *ft_replace(char *str, char *key, char *word, int n)
+char	*ft_replace_aux(t_replace *rpl, char *str, char *key, char *word)
 {
-	char	*tmp;
-	char	*tmp2;
-	char	*tmp3;
-	int		i;
-	int		j;
+	rpl->tmp = ft_substr(str, 0, &str[rpl->i] - str);
+	rpl->tmp2 = ft_substr(&str[rpl->i + ft_strlen(key)], 0,
+			ft_strlen(&str[rpl->i + ft_strlen(key)]));
+	rpl->tmp3 = ft_strjoin(word, rpl->tmp2);
+	str = ft_strjoin(rpl->tmp, rpl->tmp3);
+	free(rpl->tmp);
+	free(rpl->tmp2);
+	free(rpl->tmp3);
+	rpl->j++;
+	rpl->i = -1;
+	return (str);
+}
 
-	i = 0;
-	j = 0;
+char	*ft_replace(char *str, char *key, char *word, int n)
+{
+	t_replace	rpl;
+
+	rpl.i = 0;
+	rpl.j = 0;
 	if (!str || !key || !word)
 		return (NULL);
 	if (!ft_strnstr(str, key, ft_strlen(str)))
 		return (str);
-	while (str[i])
+	while (str[rpl.i])
 	{
-		if (str[i] == key[0])
+		if (str[rpl.i] == key[0])
 		{
-			if (!ft_strncmp(&str[i], key, ft_strlen(key)))
+			if (!ft_strncmp(&str[rpl.i], key, ft_strlen(key)))
 			{
-				if (n != 0 && j == n)
+				if (n != 0 && rpl.j == n)
 					break ;
-				tmp = ft_substr(str, 0, &str[i] - str);
-				tmp2 = ft_substr(&str[i + ft_strlen(key)], 0,
-						ft_strlen(&str[i + ft_strlen(key)]));
-				tmp3 = ft_strjoin(word, tmp2);
-				str = ft_strjoin(tmp, tmp3);
-				free(tmp);
-				free(tmp2);
-				free(tmp3);
-				j++;
-				i = -1;
+				str = ft_replace_aux(&rpl, str, key, word);
 			}
 		}
-		i++;
+		rpl.i++;
 	}
 	return (str);
 }

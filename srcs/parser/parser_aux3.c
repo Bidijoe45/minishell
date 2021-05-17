@@ -130,5 +130,6 @@ t_file	**extract_files(char *command, char **command_rpl)
 		else
 			extract->i++;
 	}
+	free(extract);
 	return (extract->files);
 }
