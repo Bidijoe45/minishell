@@ -16,7 +16,7 @@ SRCS =	./srcs/fresh.c \
 		./srcs/parser/parser_aux4.c ./srcs/parser/parser_aux5.c ./srcs/parser/parser_aux6.c
 NAME = minishell
 OBJS = ${SRCS:.c=.o}
-CC = gcc
+CC = clang
 CFLAGS = #-Wall -Wextra -Werror
 SANITIZE = -g3 -fsanitize=address
 
