@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 10:31:58 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/05 11:23:41 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/17 10:04:05 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 void	ft_print_color(char *color, char *str)
 {
-	ft_printf("\033%s%s", color, str);
+	ft_putstr_fd("\033", 1);
+	ft_putstr_fd(color, 1);
+	ft_putstr_fd(str, 1);
 }
 
 void	ft_print_input(t_fresh *fresh)

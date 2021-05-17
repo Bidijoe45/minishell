@@ -21,16 +21,14 @@ CFLAGS = #-Wall -Wextra -Werror
 SANITIZE = -g3 -fsanitize=address
 
 ${NAME}:	${OBJS}
-			make -C ./resources/ft_printf/
-			gcc ${OBJS} -L ./resources/ft_printf -l ftprintf -o ${NAME}
+			make -C ./resources/libft/
+			gcc ${OBJS} -L ./resources/libft/ -l ft -o ${NAME}
 all:		${NAME}
 clean:
 			rm -f ${OBJS}
 			make clean -C ./resources/libft
-			make clean -C ./resources/ft_printf
 fclean:		clean
 			rm -f ${NAME}
 			make fclean -C ./resources/libft
-			make fclean -C ./resources/ft_printf
 re:			fclean all
 .PHONY:		all clean fclean re
