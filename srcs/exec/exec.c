@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 14:45:05 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/13 11:30:40 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/17 10:54:00 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ void	simple_execute(t_fresh *fresh, t_command *command)
 
 void	waits(t_fresh *fresh, int n)
 {
+	int	status;
 	int	i;
 
 	i = -1;
 	while (++i < n)
-		wait(NULL);
+		wait(&status);
+	fresh->pid = status >> 8;
 }
 
 void	command_execute(t_fresh *fresh, t_command *command, int *pid, int *fd)
