@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 17:41:40 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/13 17:45:57 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/19 10:49:52 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,6 @@ t_file	**extract_files(char *command, char **command_rpl)
 		else
 			extract->i++;
 	}
-	free(extract);
+	//free(extract);
 	return (extract->files);
 }

@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 10:23:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/13 17:44:53 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/19 11:07:50 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	ft_replace_vars_aux(t_fresh *fresh, char *cmds, t_replace_vars *r_vars)
 		r_vars->ret = ft_replace(r_vars->ret, r_vars->key, "", 0);
 	free(r_vars->tmp);
 	free(r_vars->key);
-	free(r_vars->var);
 	r_vars->i = 0;
 }
 
