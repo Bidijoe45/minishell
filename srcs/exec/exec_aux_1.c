@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 14:59:15 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/17 10:54:02 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/20 13:39:50 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	ft_execute_builtin(t_command *command, t_fresh *fresh)
 	else if (!ft_strncmp(name, "pwd\0", 4))
 		fresh->cmd_return = ft_pwd(command, fresh);
 	else if (!ft_strncmp(name, "exit\0", 5))
-		fresh->cmd_return = ft_exit(command);
+		fresh->cmd_return = ft_exit(command, fresh);
 	else
 		return ;
 }

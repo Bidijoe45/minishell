@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/07 13:55:01 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/20 13:39:58 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/fresh.h"
 
-int	check_errors(t_command *command, int *i)
+int	check_errors(t_fresh *fresh, t_command *command, int *i)
 {
 	*i = 0;
 	while (command->args[*i])
 		*i = *i + 1;
 	if (*i == 0)
-		exit(0);
+		exit(fresh->cmd_return);
 	if (*i > 1)
 	{
 		printf("exit: too many arguments\n");
@@ -28,12 +28,12 @@ int	check_errors(t_command *command, int *i)
 	return (0);
 }
 
-int	ft_exit(t_command *command)
+int	ft_exit(t_command *command, t_fresh *fresh)
 {
 	int	i;
 	int	code;
 
-	if (check_errors(command, &i))
+	if (check_errors(fresh, command, &i))
 		return (1);
 	while (command->args[0][i] == ' ')
 		i++;
