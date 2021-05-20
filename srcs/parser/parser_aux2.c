@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 17:40:54 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/13 17:45:59 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/20 13:49:13 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	read_line(t_fresh *fresh)
 	if (while_line.rd == 0)
 	{
 		printf("exit\n");
-		exit(0);
+		exit(fresh->cmd_return);
 	}
 	ft_while_line(fresh, &while_line);
 }

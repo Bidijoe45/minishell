@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 15:02:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/20 13:43:47 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/20 13:46:42 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,10 @@ char	*create_path(char *path, char *cmd)
 void	ft_replace_exit_status(t_fresh *fresh, t_command *command)
 {
 	char	*tmp;
-	char	*tmp2;
 	int		i;
 
 	i = 0;
 	tmp = ft_itoa(fresh->cmd_return);
-	tmp2 = command->cmd;
 	command->cmd = ft_replace(command->cmd, "$?", tmp, 0);
 	while (command->args[i])
 	{
@@ -104,7 +102,6 @@ void	ft_replace_exit_status(t_fresh *fresh, t_command *command)
 			= ft_replace(command->files[i]->file_name, "$?", tmp, 0);
 		i++;
 	}
-	free(tmp2);
 	free(tmp);
 }
 
