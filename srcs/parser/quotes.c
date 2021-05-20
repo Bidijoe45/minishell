@@ -1,34 +1,5 @@
 #include "includes/fresh.h"
 
-int	ft_valid_quotes(char *line)
-{
-	int	dq;
-	int	sq;
-	int	i;
-
-	dq = 0;
-	sq = 0;
-	i = 0;
-	while (line[i] != '\0')
-	{
-		if (line[i] == '\\' && !sq)
-			i += 2;
-		if (line[i] == '"' && dq == 0 && sq == 0)
-			dq = 1;
-		else if (line[i] == '"' && dq == 1)
-			dq = 0;
-		if (line[i] == '\'' && sq == 0 && dq == 0)
-			sq = 1;
-		else if (line[i] == '\'' && sq == 1)
-			sq = 0;
-		i++;
-	}
-	if (dq == 1 || sq == 1)
-		return (0);
-	else
-		return (1);
-}
-
 int	ft_is_special_char(int c)
 {
 	if (c == '|' || c == '>' || c == '<')

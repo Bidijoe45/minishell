@@ -223,7 +223,7 @@ void		export_aux2(t_export *export, t_fresh *fresh);
 int			export_while(t_command *command, t_fresh *fresh, t_export *export);
 int			validate_variable(char *str);
 
-int			ft_valid_quotes(char *line);
+int			ft_valid_quotes(char *line, int a, int b, int c);
 void		replace_variables_key(t_fresh *fresh, int i);
 void		replace_variables(t_fresh *fresh);
 int			ft_valid_multiline(t_fresh *fresh);
@@ -249,7 +249,6 @@ int			extract_cmd_count_greater_lower(char *command, int i);
 void		trim_q_ftw_aux2(char **line, t_trim_quotes *quotes);
 int			trim_count_ftw(char *line);
 void		trim_count_ftw_aux(char *line, int *i, char *q, int *nq);
-void		ft_replace_escape(char ***argsp);
 void		ft_trim_args(char ***argsp);
 void		ft_parse_cmd_aux(t_fresh *fresh, char **cmds, int n_pipes);
 void		ft_parse_instruction(t_fresh *fresh, char *command,

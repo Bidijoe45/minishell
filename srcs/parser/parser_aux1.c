@@ -15,19 +15,18 @@
 #include "../../includes/command.h"
 #include "../../includes/parser.h"
 
-int	ft_valid_quotes(char *line)
+int	ft_valid_quotes(char *line, int dq, int sq, int i)
 {
-	int	dq;
-	int	sq;
-	int	i;
-
 	dq = 0;
 	sq = 0;
 	i = 0;
 	while (line[i] != '\0')
 	{
 		if (line[i] == '\\' && !sq)
+		{
 			i += 2;
+			break ;
+		}
 		if (line[i] == '"' && dq == 0 && sq == 0)
 			dq = 1;
 		else if (line[i] == '"' && dq == 1)
@@ -95,11 +94,14 @@ int	ft_valid_multiline(t_fresh *fresh)
 	t_list	*commands;
 	int		valid_q;
 
-	valid_q = ft_valid_quotes(fresh->line);
+	valid_q = ft_valid_quotes(fresh->line, 0, 0, 0);
 	if (valid_q == 1)
 		return (1);
 	else
+	{
+		fresh->cmd_return = 1;
 		return (0);
+	}
 }
 
 void	ft_while_line(t_fresh *fresh, t_while_line *while_line)

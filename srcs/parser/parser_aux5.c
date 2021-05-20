@@ -36,24 +36,6 @@ void	ft_trim_args(char ***argsp)
 	}
 }
 
-void	ft_replace_escape(char ***argsp)
-{
-	int		i;
-	char	**args;
-	char	*tmp;
-	char	*tmp2;
-
-	i = 0;
-	args = *argsp;
-	while (args[i])
-	{
-		tmp = ft_replace(args[i], "\\", "", 0);
-		free(args[i]);
-		args[i] = tmp;
-		i++;
-	}
-}
-
 void	trim_count_ftw_aux(char *line, int *i, char *q, int *nq)
 {
 	if (line[*i] && line[*i] == *q && *q)
@@ -106,7 +88,15 @@ void	trim_q_ftw_aux2(char **line, t_trim_quotes *quotes)
 		quotes->i++;
 	}
 	else if ((*line)[quotes->i + 1] && (*line)[quotes->i + 1] == '"')
+	{
 		quotes->ret[quotes->j++] = (*line)[++(quotes->i)];
+		quotes->i++;
+	}
+	else if ((*line)[quotes->i + 1] && (*line)[quotes->i + 1] == '\'')
+	{
+		quotes->ret[quotes->j++] = (*line)[++(quotes->i)];
+		quotes->i++;
+	}
 	else
 		quotes->ret[quotes->j++] = (*line)[quotes->i++];
 }

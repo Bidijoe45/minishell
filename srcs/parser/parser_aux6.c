@@ -17,9 +17,7 @@
 
 void	trim_q_ftw_aux3(char *line, t_trim_quotes *quotes)
 {
-	if (line[quotes->i] == '\\' && is_between_quotes2(line, quotes->i) == 1)
-		quotes->ret[quotes->j++] = line[quotes->i++];
-	else if (line[quotes->i] == '\\'
+	if (line[quotes->i] == '\\'
 		&& is_between_quotes2(line, quotes->i) == 2)
 		trim_q_ftw_aux2(&line, quotes);
 	else if (line[quotes->i] == '\\' && quotes->q == 0)
