@@ -107,29 +107,27 @@ void	extract_simple_redirect(t_extract_files *extract, char *command,
 
 t_file	**extract_files(char *command, char **command_rpl)
 {
-	t_extract_files	*extract;
+	t_extract_files	extract;
 
-	extract = malloc(sizeof(t_extract_files));
-	extract->pos = 0;
-	extract->j = 0;
+	extract.pos = 0;
+	extract.j = 0;
 	*command_rpl = ft_strdup(command);
-	extract->n_files = extract_files_count_files(command);
-	extract->files = malloc(sizeof(t_file *) * extract->n_files + 1);
-	extract->files[extract->n_files] = NULL;
-	extract->i = 0;
-	while (command[extract->i] != '\0')
+	extract.n_files = extract_files_count_files(command);
+	extract.files = malloc(sizeof(t_file *) * extract.n_files + 1);
+	extract.files[extract.n_files] = NULL;
+	extract.i = 0;
+	while (command[extract.i] != '\0')
 	{
-		while (command[extract->i] == ' ')
-			extract->i++;
-		if (command[extract->i] == '>' && command[extract->i + 1] == '>'
-			&& !is_between_quotes(command, extract->i))
-			extract_double_redirect(extract, command, command_rpl);
-		else if ((command[extract->i] == '>' || command[extract->i] == '<')
-			&& !is_between_quotes(command, extract->i))
-			extract_simple_redirect(extract, command, command_rpl);
+		while (command[extract.i] == ' ')
+			extract.i++;
+		if (command[extract.i] == '>' && command[extract.i + 1] == '>'
+			&& !is_between_quotes(command, extract.i))
+			extract_double_redirect(&extract, command, command_rpl);
+		else if ((command[extract.i] == '>' || command[extract.i] == '<')
+			&& !is_between_quotes(command, extract.i))
+			extract_simple_redirect(&extract, command, command_rpl);
 		else
-			extract->i++;
+			extract.i++;
 	}
-	//free(extract);
-	return (extract->files);
+	return (extract.files);
 }
