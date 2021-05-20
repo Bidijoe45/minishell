@@ -20,7 +20,6 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	int			i;
 	int			n_pipes;
 	char		**cmds;
-	int			command_len;
 
 	n_pipes = 0;
 	i = 0;
@@ -63,7 +62,7 @@ int	check_invalid_pipes(char **cmds)
 	return (1);
 }
 
-void	ft_replace_vars_aux(t_fresh *fresh, char *cmds, t_replace_vars *r_vars)
+void	ft_replace_vars_aux(t_fresh *fresh, t_replace_vars *r_vars)
 {
 	r_vars->pos = r_vars->i;
 	r_vars->pos++;
@@ -100,7 +99,7 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 			&& r_vars.ret[r_vars.i + 1] != '/'
 			&& r_vars.ret[r_vars.i + 1] != '"' && r_vars.ret[r_vars.i + 1]
 			!= '\'' && is_between_quotes(r_vars.ret, r_vars.i) != 1)
-			ft_replace_vars_aux(fresh, cmds, &r_vars);
+			ft_replace_vars_aux(fresh, &r_vars);
 		else
 			r_vars.i++;
 	}
@@ -110,7 +109,6 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 void	ft_parse_line(t_fresh *fresh)
 {
 	int		i;
-	int		cmd_pos;
 	char	**cmds;
 	char	*tmp;
 

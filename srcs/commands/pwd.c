@@ -16,6 +16,7 @@ int	ft_pwd(t_command *command, t_fresh *fresh)
 {
 	char	*cwd;
 
+	(void)fresh;
 	if (command->args[0])
 	{
 		if (command->args[0][0] == '-')

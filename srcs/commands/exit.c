@@ -28,7 +28,7 @@ int	check_errors(t_command *command, int *i)
 	return (0);
 }
 
-int	ft_exit(t_command *command, t_fresh *fresh)
+int	ft_exit(t_command *command)
 {
 	int	i;
 	int	code;

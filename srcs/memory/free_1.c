@@ -43,7 +43,6 @@ void	ft_free_commands_args(t_command *cmd)
 
 void	ft_free_commands(t_fresh *fresh)
 {
-	int			i;
 	t_command	*cmd;
 	t_list		*list_elem;
 

@@ -71,6 +71,7 @@ int	ft_echo(t_command *command, t_fresh *fresh)
 {
 	t_echo	echo;
 
+	(void)fresh;
 	echo.trail = 1;
 	if (*command->args)
 		set_trail(command->args, &echo.trail);

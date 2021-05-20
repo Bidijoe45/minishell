@@ -44,7 +44,6 @@ void	sort_list(t_list *list)
 	t_list	*elem;
 	t_list	*next_elem;
 	int		swapped;
-	int		i;
 
 	if (list == NULL)
 		return ;

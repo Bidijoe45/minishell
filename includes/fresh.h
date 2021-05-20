@@ -161,7 +161,7 @@ void		*command_set(t_list **list, t_command *command);
 void		command_print_list(t_list *list);
 
 // commands
-int			ft_exit(t_command *command, t_fresh *fresh);
+int			ft_exit(t_command *command);
 int			ft_echo(t_command *command, t_fresh *fresh);
 int			ft_pwd(t_command *command, t_fresh *fresh);
 int			ft_cd(t_command *command, t_fresh *fresh);

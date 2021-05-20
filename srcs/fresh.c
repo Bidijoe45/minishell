@@ -26,16 +26,16 @@ void	ft_initialize(t_fresh *fresh)
 	fresh->commands = NULL;
 }
 
-int	main(int argc, char **argv, char **envp, char **apple)
+int	main(int argc, char **argv, char **envp)
 {
 	t_fresh	fresh;
-	int		reading;
 
+	(void)argv;
+	(void)argc;
 	ft_initialize(&fresh);
 	ft_load_env_vars(&fresh, envp);
 	ft_print_header(&fresh);
-	reading = 1;
-	while (reading)
+	while (1)
 	{
 		signal(SIGINT, global_sigint);
 		signal(SIGQUIT, global_sigquit);

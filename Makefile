@@ -17,7 +17,7 @@ SRCS =	./srcs/fresh.c \
 NAME = minishell
 OBJS = ${SRCS:.c=.o}
 CC = clang
-CFLAGS = #-Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 SANITIZE = -g3 -fsanitize=address
 
 ${NAME}:	${OBJS}

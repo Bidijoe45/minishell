@@ -19,6 +19,7 @@
 
 void	global_sigint(int code)
 {
+	(void)code;
 	printf("\b\b  \n");
 	ft_print_input(NULL);
 }
@@ -29,6 +30,7 @@ void	global_sigint(int code)
 
 void	fork_sigint(int code)
 {
+	(void)code;
 	printf("\n");
 }
 
@@ -38,6 +40,7 @@ void	fork_sigint(int code)
 
 void	global_sigquit(int code)
 {
+	(void)code;
 	return ;
 }
 
@@ -47,5 +50,6 @@ void	global_sigquit(int code)
 
 void	fork_sigquit(int code)
 {
+	(void)code;
 	printf("Quit: %d\n", code);
 }

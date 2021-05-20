@@ -20,6 +20,7 @@ int	ft_is_builtin(t_fresh *fresh, t_command *command)
 {
 	char	*name;
 
+	(void)fresh;
 	name = command->cmd;
 	if (!ft_strncmp(name, "echo\0", 5))
 		return (1);
@@ -42,6 +43,7 @@ void	ft_execute_builtin(t_command *command, t_fresh *fresh)
 {
 	char	*name;
 
+	(void)fresh;
 	name = command->cmd;
 	if (!ft_strncmp(name, "echo\0", 5))
 		fresh->cmd_return = ft_echo(command, fresh);
@@ -56,7 +58,7 @@ void	ft_execute_builtin(t_command *command, t_fresh *fresh)
 	else if (!ft_strncmp(name, "pwd\0", 4))
 		fresh->cmd_return = ft_pwd(command, fresh);
 	else if (!ft_strncmp(name, "exit\0", 5))
-		fresh->cmd_return = ft_exit(command, fresh);
+		fresh->cmd_return = ft_exit(command);
 	else
 		return ;
 }
@@ -89,12 +91,10 @@ void	ft_exec_bin_child(t_fresh *fresh, t_command *command)
 
 int	ft_exec_bin(t_fresh *fresh, t_command *command, int infork)
 {
-	int		pid;
 	int		status;
-	char	**argv;
-	char	*path;
-	char	**chararr;
 
+	(void)infork;
+	status = 0;
 	fresh->pid = fork();
 	if (fresh->pid == 0)
 		ft_exec_bin_child(fresh, command);
@@ -107,7 +107,6 @@ int	ft_exec_bin(t_fresh *fresh, t_command *command, int infork)
 char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 {
 	struct stat		f_stat;
-	int				status;
 	char			*path;
 	char			**paths;
 

@@ -68,7 +68,6 @@ void	replace_variables_key(t_fresh *fresh, int i)
 void	replace_variables(t_fresh *fresh)
 {
 	int		i;
-	char	*pos;
 	int		dq;
 	int		sq;
 
@@ -91,7 +90,6 @@ void	replace_variables(t_fresh *fresh)
 
 int	ft_valid_multiline(t_fresh *fresh)
 {
-	t_list	*commands;
 	int		valid_q;
 
 	valid_q = ft_valid_quotes(fresh->line, 0, 0, 0);

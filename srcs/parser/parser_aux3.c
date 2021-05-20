@@ -69,6 +69,7 @@ void	extract_double_redirect(t_extract_files *extract, char *command,
 void	extract_simple_redirect_aux(t_extract_files *extract, char *command,
 char **command_rpl)
 {
+	(void)command_rpl;
 	while (command[extract->i] != '\0')
 	{
 		if ((command[extract->i] == ' ' || command[extract->i] == '<'

@@ -58,6 +58,8 @@ char	*trim_q_ftw(char *line)
 void	ft_parse_instruction_aux(t_fresh *fresh, t_parse_instruction *p_ins,
 	char *command)
 {
+	(void)fresh;
+	(void)command;
 	while (p_ins->args[p_ins->i])
 	{
 		p_ins->tmp2 = p_ins->args[p_ins->i];

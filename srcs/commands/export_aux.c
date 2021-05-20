@@ -15,6 +15,7 @@
 
 void	export_aux(t_export *export, t_command *command, t_fresh *fresh)
 {
+	(void)fresh;
 	if (ft_strchr(command->args[export->i], '='))
 	{
 		export->key = ft_substr(command->args[export->i], 0,
