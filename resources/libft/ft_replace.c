@@ -24,7 +24,7 @@ char	*ft_replace(char *str, char *key, char *word, int n)
 	if (!str || !key || !word)
 		return (NULL);
 	if (!ft_strnstr(str, key, ft_strlen(str)))
-		return (str);
+		return (ft_strdup(str));
 	while (str[rpl.i])
 	{
 		if (str[rpl.i] == key[0])
