@@ -69,6 +69,8 @@ void	read_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 	*pid = fork();
 	if (!(*pid))
 	{
+		signal(SIGINT, global_sigquit);
+		signal(SIGQUIT, global_sigquit);
 		close((*fd)[0]);
 		dup2(fresh->last_fd, 0);
 		if (ft_is_builtin(fresh, command))

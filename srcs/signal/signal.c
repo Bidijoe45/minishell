@@ -29,7 +29,6 @@ void	global_sigint(int code)
 
 void	fork_sigint(int code)
 {
-	signal(SIGINT, fork_sigint);
 	printf("\n");
 }
 
@@ -48,6 +47,5 @@ void	global_sigquit(int code)
 
 void	fork_sigquit(int code)
 {
-	signal(SIGQUIT, fork_sigquit);
 	printf("Quit: %d\n", code);
 }

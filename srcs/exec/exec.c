@@ -49,8 +49,6 @@ void	command_execute(t_fresh *fresh, t_command *command, int *pid, int *fd)
 		write_read_pipe_execute(fresh, command, pid, &fd);
 	if (command->read_from_pipe && !command->write_to_pipe)
 	{
-		signal(SIGINT, fork_sigint);
-		signal(SIGQUIT, fork_sigquit);
 		read_pipe_execute(fresh, command, pid, &fd);
 		waits(fresh, fresh->waits);
 		fresh->waits = 0;

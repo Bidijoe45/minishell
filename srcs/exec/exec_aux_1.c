@@ -93,11 +93,6 @@ int	ft_exec_bin(t_fresh *fresh, t_command *command, int infork)
 	char	*path;
 	char	**chararr;
 
-	if (!infork)
-	{
-		signal(SIGINT, fork_sigint);
-		signal(SIGQUIT, fork_sigquit);
-	}
 	fresh->pid = fork();
 	if (fresh->pid == 0)
 		ft_exec_bin_child(fresh, command);

@@ -40,6 +40,8 @@ int	main(int argc, char **argv, char **envp, char **apple)
 		signal(SIGINT, global_sigint);
 		signal(SIGQUIT, global_sigquit);
 		read_line(&fresh);
+		signal(SIGINT, fork_sigint);
+		signal(SIGQUIT, fork_sigquit);
 		if (!ft_valid_multiline(&fresh))
 			ft_putstr_fd("Multiline line commands are not supported.\n", 1);
 		else
