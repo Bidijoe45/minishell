@@ -10,7 +10,7 @@ SRCS =	./srcs/fresh.c \
 		./srcs/commands/echo.c ./srcs/commands/exit.c ./srcs/commands/pwd.c ./srcs/commands/cd.c \
 		./srcs/commands/env.c ./srcs/commands/export.c ./srcs/commands/unset.c \
 		./srcs/pipe/pipes.c ./srcs/exec/exec.c ./srcs/memory/free_1.c ./srcs/file/file.c \
-		./srcs/exec/exec_aux_1.c ./srcs/exec/exec_aux_2.c \
+		./srcs/exec/exec_aux_1.c ./srcs/exec/exec_aux_2.c ./srcs/exec/exec_aux_3.c \
 		./srcs/commands/export_aux.c \
 		./srcs/parser/parser_aux1.c ./srcs/parser/parser_aux2.c ./srcs/parser/parser_aux3.c \
 		./srcs/parser/parser_aux4.c ./srcs/parser/parser_aux5.c ./srcs/parser/parser_aux6.c

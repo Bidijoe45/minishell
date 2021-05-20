@@ -63,6 +63,7 @@ void	execute_all(t_fresh *fresh, t_command *command, int *fd, int *pid)
 
 	i = 0;
 	ft_replace_exit_status(fresh, command);
+	replace_vars_quotes(fresh, command);
 	if (command->write_to_pipe)
 		pipe(fd);
 	setup_files(fresh, command, &i);

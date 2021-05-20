@@ -63,21 +63,21 @@ void	ft_parse_instruction_aux(t_fresh *fresh, t_parse_instruction *p_ins,
 	while (p_ins->args[p_ins->i])
 	{
 		p_ins->tmp2 = p_ins->args[p_ins->i];
-		p_ins->args[p_ins->i] = trim_q_ftw(p_ins->args[p_ins->i]);
+		p_ins->args[p_ins->i] = ft_strdup(p_ins->args[p_ins->i]);
 		free(p_ins->tmp2);
 		p_ins->i++;
 	}
 	p_ins->cmd = malloc(sizeof(t_command));
 	if (!p_ins->cmd)
 		return ;
-	p_ins->cmd->cmd = trim_q_ftw(p_ins->cmd_name);
+	p_ins->cmd->cmd = ft_strdup(p_ins->cmd_name);
 	p_ins->cmd->files = p_ins->files;
 	p_ins->cmd->args = p_ins->args;
 	p_ins->i = 0;
 	while (p_ins->cmd->files[p_ins->i])
 	{
 		p_ins->cmd->files[p_ins->i]->file_name
-			= trim_q_ftw(p_ins->cmd->files[p_ins->i]->file_name);
+			= ft_strdup(p_ins->cmd->files[p_ins->i]->file_name);
 		p_ins->i++;
 	}
 }

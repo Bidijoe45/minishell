@@ -257,5 +257,7 @@ void		ft_parse_instruction(t_fresh *fresh, char *command,
 void		ft_parse_instruction_aux(t_fresh *fresh, t_parse_instruction *p_ins,
 				char *command);
 char		*trim_q_ftw(char *line);
+char		*ft_replace_vars(t_fresh *fresh, char *cmds);
+void		replace_vars_quotes(t_fresh *fresh, t_command *command);
 void		trim_q_ftw_aux3(char *line, t_trim_quotes *quotes);
 #endif
