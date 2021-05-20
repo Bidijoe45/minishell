@@ -97,6 +97,7 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 			r_vars.i += 2;
 		if (r_vars.ret[r_vars.i] == '$' && r_vars.ret[r_vars.i + 1]
 			&& r_vars.ret[r_vars.i + 1] != '?'
+			&& r_vars.ret[r_vars.i + 1] != '/'
 			&& r_vars.ret[r_vars.i + 1] != '"' && r_vars.ret[r_vars.i + 1]
 			!= '\'' && is_between_quotes(r_vars.ret, r_vars.i) != 1)
 			ft_replace_vars_aux(fresh, cmds, &r_vars);

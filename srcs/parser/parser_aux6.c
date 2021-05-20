@@ -71,13 +71,14 @@ void	ft_parse_instruction_aux(t_fresh *fresh, t_parse_instruction *p_ins,
 	if (!p_ins->cmd)
 		return ;
 	p_ins->cmd->cmd = ft_strdup(p_ins->cmd_name);
+	
 	p_ins->cmd->files = p_ins->files;
 	p_ins->cmd->args = p_ins->args;
 	p_ins->i = 0;
 	while (p_ins->cmd->files[p_ins->i])
 	{
 		p_ins->cmd->files[p_ins->i]->file_name
-			= ft_strdup(p_ins->cmd->files[p_ins->i]->file_name);
+			= p_ins->cmd->files[p_ins->i]->file_name;
 		p_ins->i++;
 	}
 }

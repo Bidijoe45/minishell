@@ -30,12 +30,8 @@ char	**ft_list_to_chararr(t_list *list)
 	tmp = list;
 	while (tmp)
 	{
-		if (((t_variable *)tmp->content)->value != NULL)
-		{
-			tmp2 = ft_strjoin(((t_variable *)tmp->content)->key, "=");
-			arr[i] = ft_strjoin(tmp2, ((t_variable *)tmp->content)->value);
-			free(tmp2);
-		}
+		tmp2 = ft_strjoin(((t_variable *)tmp->content)->key, "=");
+		arr[i] = ft_strjoin(tmp2, ((t_variable *)tmp->content)->value);
 		tmp = tmp->next;
 		i++;
 	}
