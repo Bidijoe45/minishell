@@ -20,8 +20,6 @@ int	syntax_check_1(t_fresh *fresh)
 		return (1);
 	if (check_semicolon_at_start(fresh))
 		return (1);
-	if (check_greater_at_start(fresh))
-		return (1);
 	if (check_more_than_three_greater_in_a_row(fresh))
 		return (1);
 	if (check_if_pipe_at_end(fresh))

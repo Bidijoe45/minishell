@@ -108,7 +108,7 @@ int	check_greater_at_start(t_fresh *fresh)
 	int	i;
 	int	rd;
 
-	i = 0i;
+	i = 0;
 	rd = 0;
 	while (fresh->line[i])
 	{

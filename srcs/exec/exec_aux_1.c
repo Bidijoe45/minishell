@@ -78,6 +78,8 @@ void	ft_exec_bin_child(t_fresh *fresh, t_command *command)
 		free(path);
 		path = NULL;
 		dup2(fresh->fd_out, 1);
+		if (ft_strlen(command->cmd) == 0)
+			exit(0);
 		printf("%s: command not found\n", command->cmd);
 		exit(127);
 	}
