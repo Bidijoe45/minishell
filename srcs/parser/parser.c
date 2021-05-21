@@ -39,27 +39,14 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 	free(cmds);
 }
 
-int	check_invalid_pipes(char **cmds)
+void	ft_replace_escape_var(t_replace_vars *r_vars)
 {
-	int		l;
-	int		i;
-	char	*cmd;
-
-	i = 0;
-	while (cmds[i])
+	if (r_vars->ret[r_vars->i + 1] == '$')
 	{
-		cmd = ft_strtrim(cmds[i], " ");
-		l = ft_strlen(cmd);
-		if ((cmd[0] == '|' || cmd[l - 1] == '|') && (!is_between_quotes
-				(cmd, 0) && !is_between_quotes(cmd, l - 1)))
-		{
-			free(cmd);
-			return (0);
-		}
-		free(cmd);
-		i++;
+		r_vars->tmp = r_vars->ret;
+		r_vars->ret = ft_replace(r_vars->ret, "\\$", "$", 1);
+		free(r_vars->tmp);
 	}
-	return (1);
 }
 
 void	ft_replace_vars_aux(t_fresh *fresh, t_replace_vars *r_vars)
@@ -93,7 +80,11 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 	while (r_vars.ret[r_vars.i])
 	{
 		if (r_vars.ret[r_vars.i] == '\\')
+		{
+			ft_replace_escape_var(&r_vars);
 			r_vars.i += 2;
+			continue ;
+		}
 		if (r_vars.ret[r_vars.i] == '$' && r_vars.ret[r_vars.i + 1]
 			&& r_vars.ret[r_vars.i + 1] != '?'
 			&& r_vars.ret[r_vars.i + 1] != '/'

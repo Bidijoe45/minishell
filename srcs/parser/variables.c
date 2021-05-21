@@ -21,27 +21,3 @@ void	replace_variables_key(t_fresh *fresh, int i)
 	free(tmp);
 	free(tmp_str);
 }
-
-void	replace_variables(t_fresh *fresh)
-{
-	int		i;
-	char	*pos;
-	int		dq;
-	int		sq;
-
-	i = 0;
-	dq = 0;
-	sq = 0;
-	while (fresh->line[i] != '\0')
-	{
-		if (fresh->line[i] == '\\')
-			i += 2;
-		if (fresh->line[i] == '"' && sq == 0)
-			dq = !dq;
-		if (fresh->line[i] == '\'' && dq == 0)
-			sq = !sq;
-		if (fresh->line[i] == '$')
-			replace_variables_key(fresh, i);
-		i++;
-	}
-}

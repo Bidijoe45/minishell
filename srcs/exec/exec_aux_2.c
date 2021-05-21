@@ -100,14 +100,13 @@ void	ft_replace_exit_status(t_fresh *fresh, t_command *command)
 		free(tmp2);
 		i++;
 	}
-	i = 0;
-	while (command->files[i])
+	i = -1;
+	while (command->files[++i])
 	{
 		tmp2 = command->files[i]->file_name;
 		command->files[i]->file_name
 			= ft_replace(command->files[i]->file_name, "$?", tmp, 0);
 		free(tmp2);
-		i++;
 	}
 	free(tmp);
 }

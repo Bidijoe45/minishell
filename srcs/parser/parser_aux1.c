@@ -25,7 +25,7 @@ int	ft_valid_quotes(char *line, int dq, int sq, int i)
 		if (line[i] == '\\' && !sq)
 		{
 			i += 2;
-			break ;
+			continue ;
 		}
 		if (line[i] == '"' && dq == 0 && sq == 0)
 			dq = 1;
@@ -74,6 +74,7 @@ void	replace_variables(t_fresh *fresh)
 	i = 0;
 	dq = 0;
 	sq = 0;
+	printf("llega!\n");
 	while (fresh->line[i] != '\0')
 	{
 		if (fresh->line[i] == '\\')
