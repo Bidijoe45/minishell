@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 12:55:25 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/10 14:57:53 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/21 12:45:53 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_list	*list_new_element(void *content)
 {
 	t_list	*list;
 
-	list = malloc(sizeof(t_list));
+	list = ft_malloc(sizeof(t_list));
 	list->content = content;
 	list->next = NULL;
 	return (list);

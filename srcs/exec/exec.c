@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 14:45:05 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/17 10:54:00 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/21 12:45:53 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	ft_execute_commands(t_fresh *fresh)
 	fresh->waits = 0;
 	p_command = NULL;
 	list_elem = fresh->commands;
-	fd = malloc(sizeof(int) * 2);
+	fd = ft_malloc(sizeof(int) * 2);
 	while (list_elem)
 	{
 		command = (t_command *)list_elem->content;

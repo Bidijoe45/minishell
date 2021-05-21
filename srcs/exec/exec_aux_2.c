@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 15:02:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/20 14:03:36 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/21 12:45:53 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**ft_list_to_chararr(t_list *list)
 
 	size = ft_lstsize(list);
 	i = 0;
-	arr = malloc(sizeof(char *) * (size + 1));
+	arr = ft_malloc(sizeof(char *) * (size + 1));
 	tmp = list;
 	while (tmp)
 	{
@@ -55,7 +55,7 @@ char	**ft_create_argv(t_command *command, char *path)
 		return (ft_split(path, ' '));
 	if (path == NULL)
 		return (NULL);
-	argv = malloc(sizeof(char *) * (argc + 2));
+	argv = ft_malloc(sizeof(char *) * (argc + 2));
 	argv[0] = path;
 	while (j < argc)
 	{

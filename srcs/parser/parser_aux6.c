@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 17:44:38 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/18 14:17:56 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/21 12:45:53 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*trim_q_ftw(char *line)
 	t_trim_quotes	quotes;
 
 	quotes.nq = trim_count_ftw(line);
-	quotes.ret = malloc(sizeof(char) * (ft_strlen(line) - quotes.nq + 1));
+	quotes.ret = ft_malloc(sizeof(char) * (ft_strlen(line) - quotes.nq + 1));
 	quotes.i = 0;
 	quotes.j = 0;
 	quotes.q = 0;
@@ -67,7 +67,7 @@ void	ft_parse_instruction_aux(t_fresh *fresh, t_parse_instruction *p_ins,
 		free(p_ins->tmp2);
 		p_ins->i++;
 	}
-	p_ins->cmd = malloc(sizeof(t_command));
+	p_ins->cmd = ft_malloc(sizeof(t_command));
 	if (!p_ins->cmd)
 		return ;
 	p_ins->cmd->cmd = ft_strdup(p_ins->cmd_name);

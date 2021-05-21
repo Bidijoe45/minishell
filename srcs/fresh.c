@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 14:01:32 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/10 14:58:09 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/21 12:46:03 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,19 @@ void	ft_initialize(t_fresh *fresh)
 	fresh->local_vars = NULL;
 	fresh->user = NULL;
 	fresh->commands = NULL;
+}
+
+void	*ft_malloc(size_t size)
+{
+	void	*tmp;
+
+	tmp = malloc(size);
+	if (!tmp)
+	{
+		printf("malloc error\n");
+		exit(1);
+	}
+	return (tmp);
 }
 
 int	main(int argc, char **argv, char **envp)

@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 17:41:40 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/19 10:49:52 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/21 12:45:53 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	extract_double_redirect(t_extract_files *extract, char *command,
 			break ;
 		extract->i++;
 	}
-	extract->file = malloc(sizeof(t_file));
+	extract->file = ft_malloc(sizeof(t_file));
 	extract->file->file_name = ft_substr(command, extract->pos,
 			extract->i - extract->pos);
 	extract->file->type = APPEND;
@@ -89,7 +89,7 @@ void	extract_simple_redirect(t_extract_files *extract, char *command,
 		extract->i++;
 	extract->pos = extract->i;
 	extract_simple_redirect_aux(extract, command, command_rpl);
-	extract->file = malloc(sizeof(t_file));
+	extract->file = ft_malloc(sizeof(t_file));
 	extract->file->file_name = ft_substr(command, extract->pos,
 			extract->i - extract->pos);
 	if (command[extract->redirect] == '>')
@@ -114,7 +114,7 @@ t_file	**extract_files(char *command, char **command_rpl)
 	extract.j = 0;
 	*command_rpl = ft_strdup(command);
 	extract.n_files = extract_files_count_files(command);
-	extract.files = malloc(sizeof(t_file *) * extract.n_files + 1);
+	extract.files = ft_malloc(sizeof(t_file *) * extract.n_files + 1);
 	extract.files[extract.n_files] = NULL;
 	extract.i = 0;
 	while (command[extract.i] != '\0')
