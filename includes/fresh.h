@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/20 13:39:44 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/21 11:50:37 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,4 +259,6 @@ char		*trim_q_ftw(char *line);
 char		*ft_replace_vars(t_fresh *fresh, char *cmds);
 void		replace_vars_quotes(t_fresh *fresh, t_command *command);
 void		trim_q_ftw_aux3(char *line, t_trim_quotes *quotes);
+void		duplicate_list(t_list *src, t_list **dst);
+void		free_list(t_list *lst);
 #endif

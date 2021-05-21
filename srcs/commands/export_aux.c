@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 13:20:24 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/13 13:22:50 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/21 11:52:14 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ void	export_aux(t_export *export, t_command *command, t_fresh *fresh)
 	}
 	else
 		export->key = ft_strdup(command->args[export->i]);
+	export->tmp = export->key;
 	export->key = ft_replace(export->key, "\"", "", 0);
+	free(export->tmp);
 	if (export->value)
 	{
 		export->tmp = export->value;
@@ -76,4 +78,29 @@ int	export_while(t_command *command, t_fresh *fresh, t_export *export)
 		export->i++;
 	}
 	return (0);
+}
+
+void	duplicate_list(t_list *src, t_list **dst)
+{
+	t_list	*aux;
+
+	aux = src;
+	*dst = list_new_element(aux->content);
+	while (aux)
+	{
+		list_add_back(*dst, list_new_element(aux->content));
+		aux = aux->next;
+	}
+}
+
+void	free_list(t_list *lst)
+{
+	t_list	*aux;
+
+	aux = lst;
+	while (aux)
+	{
+		free(aux);
+		aux = aux->next;
+	}
 }

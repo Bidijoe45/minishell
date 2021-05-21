@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/13 13:20:41 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/21 11:50:08 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,16 @@ int	validate_variable(char *str)
 int	ft_export(t_command *command, t_fresh *fresh)
 {
 	t_export	export;
+	t_list		*lst;
 
 	export.key = NULL;
 	export.value = NULL;
 	if (!*command->args)
 	{
-		sort_list(fresh->env);
-		print_list(fresh->env);
+		duplicate_list(fresh->env, &lst);
+		sort_list(lst);
+		print_list(lst);
+		free_list(lst);
 		return (0);
 	}
 	if (command->args[0][0] == '-')
