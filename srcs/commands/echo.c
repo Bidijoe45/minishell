@@ -6,12 +6,22 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 12:13:11 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/11 11:40:07 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/21 12:00:35 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/fresh.h"
 #include "../../includes/command.h"
+
+int	aux(char **args, int i, int *j)
+{
+	if (args[*j][i] == '-')
+	{
+		*j = *j + 1;
+		return (1);
+	}
+	return (0);
+}
 
 static	void	set_trail(char **args, int *trail)
 {
@@ -29,6 +39,8 @@ static	void	set_trail(char **args, int *trail)
 			i++;
 			while (args[j][i] == 'n')
 				i++;
+			if (aux(args, i, &j))
+				continue ;
 			*trail = 0;
 			if (args[j][i] != ' ' && args[j][i] != '\0')
 				*trail = 1;
@@ -83,9 +95,7 @@ int	ft_echo(t_command *command, t_fresh *fresh)
 	echo.j = 0;
 	echo.already = 0;
 	while (command->args[echo.j])
-	{
 		echo_aux_1(command, &echo);
-	}
 	if (echo.trail)
 		write(1, "\n", 1);
 	return (0);
