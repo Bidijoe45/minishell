@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_replace.c                                       :+:      :+:    :+:   */
+/*   replace2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/22 18:09:33 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/22 18:09:34 by alvrodri         ###   ########.fr       */
+/*   Created: 2021/05/22 18:09:14 by alvrodri          #+#    #+#             */
+/*   Updated: 2021/05/22 18:11:49 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../resources/libft/libft.h"
+#include "../../includes/fresh.h"
 
-char	*ft_replace_aux(t_replace *rpl, char *str, char *key, char *word)
+static  char	*ft_replace_aux(t_replace *rpl, char *str, char *key, char *word)
 {
 	rpl->tmp = ft_substr(str, 0, &str[rpl->i] - str);
 	rpl->tmp2 = ft_substr(&str[rpl->i + ft_strlen(key)], 0,
@@ -27,7 +28,7 @@ char	*ft_replace_aux(t_replace *rpl, char *str, char *key, char *word)
 	return (str);
 }
 
-char	*ft_replace(char *str, char *key, char *word, int n)
+char	*ft_replace2(char *str, char *key, char *word, int n)
 {
 	t_replace	rpl;
 
@@ -41,7 +42,8 @@ char	*ft_replace(char *str, char *key, char *word, int n)
 	{
 		if (str[rpl.i] == key[0])
 		{
-			if (!ft_strncmp(&str[rpl.i], key, ft_strlen(key)))
+			if (!ft_strncmp(&str[rpl.i], key, ft_strlen(key))
+                && is_between_quotes2(str, rpl.i) != 1)
 			{
 				if (n != 0 && rpl.j == n)
 					break ;

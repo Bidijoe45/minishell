@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 11:55:30 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/02 13:23:32 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/22 12:53:46 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,19 @@ static	void	ft_set_oldpwd(t_fresh *fresh, char *old)
 		variable_mod(fresh->env, "OLDPWD", old);
 }
 
+int	if_aux(int i, t_fresh *fresh, t_command *command, char **path)
+{
+	if (i == 0)
+	{
+		if (variable_get(fresh->env, "HOME") == NULL)
+			return (0);
+		*path = variable_get(fresh->env, "HOME")->value;
+	}
+	else
+		*path = command->args[0];
+	return (1);
+}
+
 int	ft_cd(t_command *command, t_fresh *fresh)
 {
 	char	*path;
@@ -48,19 +61,16 @@ int	ft_cd(t_command *command, t_fresh *fresh)
 	while (command->args[i])
 		i++;
 	if (ft_error(1, i) == -1)
-		return (-1);
-	if (i == 0)
-	{
-		if (variable_get(fresh->env, "HOME") == NULL)
-			return (0);
-		path = variable_get(fresh->env, "HOME")->value;
-	}
-	else
-		path = command->args[0];
+		return (1);
+	if (!if_aux(i, fresh, command, &path))
+		return (0);
 	old = getcwd(NULL, 0);
 	code = chdir(path);
 	if (ft_error(2, code) == -1)
-		return (-1);
+	{
+		free(old);
+		return (1);
+	}
 	ft_set_oldpwd(fresh, old);
 	variable_mod(fresh->env, "PWD", getcwd(NULL, 0));
 	return (0);

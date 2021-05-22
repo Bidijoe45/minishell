@@ -6,7 +6,7 @@
 /*   By: alvrodri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 11:26:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/13 11:29:10 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/22 12:40:09 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	fork_sigint(int code)
 void	global_sigquit(int code)
 {
 	(void)code;
+	write(1, "\b\b  \b\b", 6);
 	return ;
 }
 

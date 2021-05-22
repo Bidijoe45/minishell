@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "command.h": "c",
+        "print.h": "c",
+        "fresh.h": "c",
+        "ft_printf.h": "c",
+        "errno.h": "c",
+        "fcntl.h": "c"
+    }
+}
