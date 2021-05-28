@@ -62,8 +62,10 @@ void	ft_replace_vars_aux(t_fresh *fresh, t_replace_vars *r_vars)
 	r_vars->tmp = r_vars->ret;
 	r_vars->var = variable_get(fresh->env, r_vars->key + 1);
 	if (r_vars->var)
+	{
 		r_vars->ret = ft_replace2(r_vars->ret, r_vars->key,
 				r_vars->var->value, 0);
+	}
 	else
 		r_vars->ret = ft_replace(r_vars->ret, r_vars->key, "", 0);
 	free(r_vars->tmp);

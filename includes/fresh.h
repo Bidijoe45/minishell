@@ -138,6 +138,7 @@ typedef struct s_replace_vars
 	t_variable	*var;
 	char		*ret;
 	char		*tmp;
+	char		*tmp2;
 	char		*key;
 	int			i;
 	int			pos;

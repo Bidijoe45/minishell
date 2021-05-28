@@ -27,6 +27,7 @@ typedef struct s_replace
 	char	*tmp;
 	char	*tmp2;
 	char	*tmp3;
+	char	*alvaro;
 	int		i;
 	int		j;
 }				t_replace;
