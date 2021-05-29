@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 15:02:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/21 12:45:53 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/29 15:13:40 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,12 @@ void	ft_replace_exit_status(t_fresh *fresh, t_command *command)
 	i = 0;
 	tmp = ft_itoa(fresh->cmd_return);
 	tmp2 = command->cmd;
-	command->cmd = ft_replace(command->cmd, "$?", tmp, 0);
+	command->cmd = ft_replace2(command->cmd, "$?", tmp, 0);
 	free(tmp2);
 	while (command->args[i])
 	{
 		tmp2 = command->args[i];
-		command->args[i] = ft_replace(command->args[i], "$?", tmp, 0);
+		command->args[i] = ft_replace2(command->args[i], "$?", tmp, 0);
 		free(tmp2);
 		i++;
 	}
@@ -105,7 +105,7 @@ void	ft_replace_exit_status(t_fresh *fresh, t_command *command)
 	{
 		tmp2 = command->files[i]->file_name;
 		command->files[i]->file_name
-			= ft_replace(command->files[i]->file_name, "$?", tmp, 0);
+			= ft_replace2(command->files[i]->file_name, "$?", tmp, 0);
 		free(tmp2);
 	}
 	free(tmp);

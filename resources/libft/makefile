@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: apavel <apavel@student.42.fr>              +#+  +:+       +#+         #
+#    By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/21 19:15:16 by apavel            #+#    #+#              #
-#    Updated: 2021/03/22 16:46:00 by alvrodri         ###   ########.fr        #
+#    Updated: 2021/05/29 15:03:25 by alvrodri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ clean:
 fclean: clean
 	${RM} ${NAME}
 bonus: ${OBJS} ${BONUS_OBJS}
-	ar rc ${NAME} ${OBJS} ${NEW_OBJS}  ${BONUS_OBJS}
+	ar rc ${NAME} ${OBJS} ${NEW_OBJS} ${BONUS_OBJS}
 	ranlib ${NAME}
 re: fclean bonus
 
