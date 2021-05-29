@@ -43,21 +43,21 @@ char	*ft_replace2(char *str, char *key, char *word, int n)
 		return (NULL);
 	if (!ft_strnstr(str, key, ft_strlen(str)))
 		return (ft_strdup(str));
-	rpl.alvaro = ft_strdup(str);
-	while (rpl.alvaro[++rpl.i])
+	rpl.tmp4 = ft_strdup(str);
+	while (rpl.tmp4[++rpl.i])
 	{
-		if (rpl.alvaro[rpl.i] == '\\')
+		if (rpl.tmp4[rpl.i] == '\\')
 			rpl.i++;
-		else if (rpl.alvaro[rpl.i] == key[0])
+		else if (rpl.tmp4[rpl.i] == key[0])
 		{
-			if (!ft_strncmp(&rpl.alvaro[rpl.i], key, ft_strlen(key))
-				&& is_between_quotes2(rpl.alvaro, rpl.i) != 1)
+			if (!ft_strncmp(&rpl.tmp4[rpl.i], key, ft_strlen(key))
+				&& is_between_quotes2(rpl.tmp4, rpl.i) != 1)
 			{
 				if (n != 0 && rpl.j == n)
 					break ;
-				rpl.alvaro = ft_replace_aux(&rpl, rpl.alvaro, key, word);
+				rpl.tmp4 = ft_replace_aux(&rpl, rpl.tmp4, key, word);
 			}
 		}
 	}
-	return (rpl.alvaro);
+	return (rpl.tmp4);
 }

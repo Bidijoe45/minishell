@@ -41,7 +41,8 @@ void	ft_parse_cmd(t_fresh *fresh, char *command)
 
 void	ft_replace_escape_var(t_replace_vars *r_vars)
 {
-	if (r_vars->ret[r_vars->i + 1] == '$')
+	if (r_vars->ret[r_vars->i + 1] == '$'
+		&& is_between_quotes2(r_vars->ret, r_vars->i) != 1)
 	{
 		r_vars->tmp = r_vars->ret;
 		r_vars->ret = ft_replace(r_vars->ret, "\\$", "$", 1);

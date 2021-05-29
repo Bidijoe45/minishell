@@ -14,11 +14,15 @@
 
 char	*ft_replace_aux(t_replace *rpl, char *str, char *key, char *word)
 {
+	char	*tmp;
+
 	rpl->tmp = ft_substr(str, 0, &str[rpl->i] - str);
 	rpl->tmp2 = ft_substr(&str[rpl->i + ft_strlen(key)], 0,
 			ft_strlen(&str[rpl->i + ft_strlen(key)]));
 	rpl->tmp3 = ft_strjoin(word, rpl->tmp2);
+	tmp = str;
 	str = ft_strjoin(rpl->tmp, rpl->tmp3);
+	free(tmp);
 	free(rpl->tmp);
 	free(rpl->tmp2);
 	free(rpl->tmp3);
@@ -37,18 +41,19 @@ char	*ft_replace(char *str, char *key, char *word, int n)
 		return (NULL);
 	if (!ft_strnstr(str, key, ft_strlen(str)))
 		return (ft_strdup(str));
-	while (str[rpl.i])
+	rpl.tmp4 = ft_strdup(str);
+	while (rpl.tmp4[rpl.i])
 	{
-		if (str[rpl.i] == key[0])
+		if (rpl.tmp4[rpl.i] == key[0])
 		{
-			if (!ft_strncmp(&str[rpl.i], key, ft_strlen(key)))
+			if (!ft_strncmp(&rpl.tmp4[rpl.i], key, ft_strlen(key)))
 			{
 				if (n != 0 && rpl.j == n)
 					break ;
-				str = ft_replace_aux(&rpl, str, key, word);
+				rpl.tmp4 = ft_replace_aux(&rpl, rpl.tmp4, key, word);
 			}
 		}
 		rpl.i++;
 	}
-	return (str);
+	return (rpl.tmp4);
 }
