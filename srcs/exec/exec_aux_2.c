@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 15:02:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/29 15:13:40 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/29 19:03:04 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ char	**ft_list_to_chararr(t_list *list)
 	tmp = list;
 	while (tmp)
 	{
+		if (((t_variable *)tmp->content)->key == NULL
+			|| ((t_variable *)tmp->content)->value == NULL)
+		{
+			tmp = tmp->next;
+			continue ;
+		}
 		tmp2 = ft_strjoin(((t_variable *)tmp->content)->key, "=");
 		arr[i] = ft_strjoin(tmp2, ((t_variable *)tmp->content)->value);
 		tmp = tmp->next;
