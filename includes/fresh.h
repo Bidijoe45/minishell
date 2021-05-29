@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/22 18:11:40 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/29 19:09:15 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,7 @@ char		**ft_list_to_chararr(t_list *list);
 void		ft_replace_exit_status(t_fresh *fresh, t_command *command);
 int			check_lower_in_a_row_aux(t_fresh *fresh, int i, int *rd);
 
-void		setup_files(t_fresh *fresh, t_command *command, int *i);
+int			setup_files(t_fresh *fresh, t_command *command, int *i);
 int			setup_last_in(t_fresh *fresh);
 void		close_files(t_fresh *fresh);
 void		export_aux(t_export *export, t_command *command, t_fresh *fresh);

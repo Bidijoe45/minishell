@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 14:45:05 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/29 15:14:24 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/29 19:11:21 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,26 +55,33 @@ void	command_execute(t_fresh *fresh, t_command *command, int *pid, int *fd)
 	}
 }
 
-void	execute_all(t_fresh *fresh, t_command *command, int *fd, int *pid)
+int	execute_all(t_fresh *fresh, t_command *command, int *fd, int *pid)
 {
 	int	i;
+	int	code;
 
 	i = 0;
 	ft_replace_exit_status(fresh, command);
 	replace_vars_quotes(fresh, command);
 	if (command->write_to_pipe)
 		pipe(fd);
-	setup_files(fresh, command, &i);
+	code = setup_files(fresh, command, &i);
+	if (code)
+	{
+		fresh->cmd_return = 1;
+		return (1);
+	}
 	if (fresh->last_in != NULL)
 	{
 		if (!setup_last_in(fresh))
-			return ;
+			return (1);
 	}
 	fresh->fd_out = dup(1);
 	if (fresh->last_out != NULL)
 		dup2(fresh->last_out->fd, 1);
 	command_execute(fresh, command, pid, fd);
 	close_files(fresh);
+	return (0);
 }
 
 void	ft_execute_commands(t_fresh *fresh)
@@ -94,7 +101,11 @@ void	ft_execute_commands(t_fresh *fresh)
 	while (list_elem)
 	{
 		command = (t_command *)list_elem->content;
-		execute_all(fresh, command, fd, &pid);
+		if (execute_all(fresh, command, fd, &pid))
+		{
+			free(fd);
+			return ;
+		}
 		list_elem = list_elem->next;
 	}
 	free(fd);

@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 14:51:34 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/10 14:58:57 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/29 19:09:17 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "../../includes/parser.h"
 #include "../../includes/list.h"
 
-void	setup_files(t_fresh *fresh, t_command *command, int *i)
+int	setup_files(t_fresh *fresh, t_command *command, int *i)
 {
 	while (command->files[*i])
 	{
@@ -33,9 +33,15 @@ void	setup_files(t_fresh *fresh, t_command *command, int *i)
 			else if (fresh->last_out->type == APPEND)
 				fresh->last_out->fd = open(fresh->last_out->file_name,
 						O_RDWR | O_APPEND | O_CREAT, 0700);
+			if (fresh->last_out->fd < 0)
+			{
+				printf("minishell: %s: Permission denied\n", fresh->last_out->file_name);
+				return (1);
+			}
 		}
 		(*i)++;
 	}
+	return (0);
 }
 
 int	setup_last_in(t_fresh *fresh)
