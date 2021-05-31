@@ -54,10 +54,9 @@ void	ft_replace_vars_aux(t_fresh *fresh, t_replace_vars *r_vars)
 {
 	r_vars->pos = r_vars->i;
 	r_vars->pos++;
-	while (r_vars->ret[r_vars->pos] != ' ' && r_vars->ret[r_vars->pos]
-		!= '$' && r_vars->ret[r_vars->pos]
-		!= '"' && r_vars->ret[r_vars->pos] != '\''
-		&& r_vars->ret[r_vars->pos] != '\\' && r_vars->ret[r_vars->pos] != '\0')
+	while ((r_vars->ret[r_vars->pos] >= 'a' && r_vars->ret[r_vars->pos] <= 'z')
+		|| (r_vars->ret[r_vars->pos] >= 'A' && r_vars->ret[r_vars->pos] <= 'Z')
+		|| r_vars->ret[r_vars->pos] >= '_')
 		r_vars->pos++;
 	r_vars->key = ft_substr(r_vars->ret, r_vars->i, r_vars->pos - r_vars->i);
 	r_vars->tmp = r_vars->ret;
