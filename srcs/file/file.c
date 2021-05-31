@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 14:51:34 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/29 19:09:17 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/31 09:52:06 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int	setup_files(t_fresh *fresh, t_command *command, int *i)
 						O_RDWR | O_APPEND | O_CREAT, 0700);
 			if (fresh->last_out->fd < 0)
 			{
-				printf("minishell: %s: Permission denied\n", fresh->last_out->file_name);
+				printf("minishell: %s: %s\n", fresh->last_out->file_name,
+					strerror(errno));
 				return (1);
 			}
 		}
