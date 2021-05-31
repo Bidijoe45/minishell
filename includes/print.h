@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 11:38:14 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/13 17:50:58 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/05/31 10:42:40 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define BOLD_CYAN "[1;36m"
 # define RESET "[0m"
 
-void	ft_print_color(char *colour, char *str);
+void	ft_print_color(char *colour, char *str, int fd);
 void	ft_print_header(t_fresh *fresh);
 void	ft_print_error(t_fresh *fresh, char *error_str);
 void	ft_print_input(t_fresh *fresh);
