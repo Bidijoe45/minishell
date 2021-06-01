@@ -18,6 +18,8 @@
 
 void	simple_execute(t_fresh *fresh, t_command *command)
 {
+	if (fresh->last_out != NULL)
+		dup2(fresh->last_out->fd, 1);
 	if (ft_is_builtin(fresh, command))
 		ft_execute_builtin(command, fresh);
 	else
@@ -44,7 +46,9 @@ void	command_execute(t_fresh *fresh, t_command *command, int *pid, int *fd)
 		fresh->waits = 0;
 	}
 	if (command->write_to_pipe && !command->read_from_pipe)
+	{
 		write_pipe_execute(fresh, command, pid, &fd);
+	}
 	if (command->read_from_pipe && command->write_to_pipe)
 		write_read_pipe_execute(fresh, command, pid, &fd);
 	if (command->read_from_pipe && !command->write_to_pipe)
@@ -77,8 +81,6 @@ int	execute_all(t_fresh *fresh, t_command *command, int *fd, int *pid)
 			return (1);
 	}
 	fresh->fd_out = dup(1);
-	if (fresh->last_out != NULL)
-		dup2(fresh->last_out->fd, 1);
 	command_execute(fresh, command, pid, fd);
 	close_files(fresh);
 	return (0);
