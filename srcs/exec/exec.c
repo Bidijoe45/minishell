@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 14:45:05 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/29 19:11:21 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/06/01 13:30:34 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ void	ft_execute_commands(t_fresh *fresh)
 			free(fd);
 			return ;
 		}
+		if (command->write_to_pipe && fresh->last_out != NULL)
+			((t_command *)list_elem->next->content)->redir = 1;
 		list_elem = list_elem->next;
 	}
 	free(fd);

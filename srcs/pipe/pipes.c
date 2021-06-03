@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 13:36:47 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/17 11:01:37 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/06/03 12:01:00 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ void	write_read_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 	else
 	{
 		close((*fd)[1]);
-		fresh->last_fd = dup((*fd)[0]);
+		if (command->redir != 1)
+			fresh->last_fd = dup((*fd)[0]);
 		close((*fd)[0]);
 		fresh->waits++;
 	}

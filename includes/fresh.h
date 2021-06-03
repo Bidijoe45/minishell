@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:59:53 by apavel            #+#    #+#             */
-/*   Updated: 2021/05/29 19:09:15 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/06/01 13:29:40 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_command
 	int			write_to_pipe;
 	int			read_from_pipe;
 	int			fd[2];
+	int			redir;
 }				t_command;
 
 typedef struct s_echo

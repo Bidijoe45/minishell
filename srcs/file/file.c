@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 14:51:34 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/31 09:52:06 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/06/01 13:29:57 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ void	close_files(t_fresh *fresh)
 	{
 		close(fresh->last_out->fd);
 		dup2(fresh->fd_out, 1);
+		fresh->last_out = NULL;
 	}
 }
