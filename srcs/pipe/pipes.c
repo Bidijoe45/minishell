@@ -55,10 +55,20 @@ void	write_read_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 	if (!(*pid))
 	{
 		close((*fd)[0]);
-		dup2(fresh->last_fd, 0);
-		close(fresh->last_fd);
-		dup2((*fd)[1], 1);
-		close((*fd)[1]);
+		if (fresh->last_out != NULL)
+		{
+			dup2(fresh->last_fd, 0);
+			dup2(fresh->last_out->fd, 1);
+			close(fresh->last_out->fd);
+			close(fresh->last_fd);
+		}
+		else
+		{
+			dup2(fresh->last_fd, 0);
+			close(fresh->last_fd);
+			dup2((*fd)[1], 1);
+			close((*fd)[1]);
+		}
 		if (ft_is_builtin(fresh, command))
 			ft_execute_builtin(command, fresh);
 		else
@@ -84,8 +94,18 @@ void	read_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 	{
 		signal(SIGINT, global_sigquit);
 		signal(SIGQUIT, global_sigquit);
-		dup2(fresh->last_fd, 0);
-		close(fresh->last_fd);
+		if (fresh->last_out != NULL)
+		{
+			dup2(fresh->last_fd, 0);
+			dup2(fresh->last_out->fd, 1);
+			close(fresh->last_out->fd);
+			close(fresh->last_fd);
+		}
+		else
+		{
+			dup2(fresh->last_fd, 0);
+			close(fresh->last_fd);
+		}
 		if (ft_is_builtin(fresh, command))
 			ft_execute_builtin(command, fresh);
 		else
