@@ -119,8 +119,6 @@ char	*ft_check_if_valid(t_fresh *fresh, t_command *command)
 	if (path)
 		free(path);
 	path = ft_strtrim(command->cmd, "\n");
-	//if (path[0] != '.' && path[0] != '/')
-	//	return (NULL);
 	if (!lstat(path, &f_stat) && !S_ISDIR(f_stat.st_mode)
 		&& f_stat.st_mode & S_IXUSR)
 		return (path);

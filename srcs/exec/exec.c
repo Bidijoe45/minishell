@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 14:45:05 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/06/01 13:30:34 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/06/03 12:52:13 by apavel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,14 @@ void	waits(t_fresh *fresh, int n)
 	int	status;
 	int	i;
 
-	i = -1;
-	while (++i < n)
-		wait(&status);
-	fresh->pid = status >> 8;
+	if (fresh->waits > 0)
+	{
+		waitpid(fresh->pid, &status, 0);
+		i = 0;
+		while (++i < n)
+			wait(NULL);
+		fresh->cmd_return = status >> 8;
+	}
 }
 
 void	command_execute(t_fresh *fresh, t_command *command, int *pid, int *fd)
