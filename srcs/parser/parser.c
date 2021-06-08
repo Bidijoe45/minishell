@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 10:23:23 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/29 15:17:06 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/06/08 11:49:01 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,6 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 	r_vars.ret = ft_strdup(cmds);
 	while (r_vars.ret[r_vars.i])
 	{
-		if (r_vars.ret[r_vars.i] == '\\')
-		{
-			ft_replace_escape_var(&r_vars);
-			r_vars.i += 2;
-			continue ;
-		}
 		if (r_vars.ret[r_vars.i] == '$' && r_vars.ret[r_vars.i + 1]
 			&& r_vars.ret[r_vars.i + 1] != '?'
 			&& r_vars.ret[r_vars.i + 1] != '/'
@@ -95,6 +89,12 @@ char	*ft_replace_vars(t_fresh *fresh, char *cmds)
 			ft_replace_vars_aux(fresh, &r_vars);
 		else
 			r_vars.i++;
+		if (r_vars.ret[r_vars.i] == '\\')
+		{
+			ft_replace_escape_var(&r_vars);
+			r_vars.i += 2;
+			continue ;
+		}
 	}
 	return (r_vars.ret);
 }
