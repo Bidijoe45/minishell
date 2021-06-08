@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 14:45:05 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/06/03 12:52:13 by apavel           ###   ########.fr       */
+/*   Updated: 2021/06/08 11:24:02 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int	execute_all(t_fresh *fresh, t_command *command, int *fd, int *pid)
 	fresh->fd_out = dup(1);
 	command_execute(fresh, command, pid, fd);
 	close_files(fresh);
+	close(fresh->fd_out);
 	return (0);
 }
 

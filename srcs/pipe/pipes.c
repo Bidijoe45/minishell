@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 13:36:47 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/06/03 13:04:37 by apavel           ###   ########.fr       */
+/*   Updated: 2021/06/08 11:25:52 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ void	write_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 {
 	*pid = fork();
 	if (!(*pid))
-	{
 		fork_write_pipe_execute(fresh, command, fd);
-	}
 	else
 	{
 		close((*fd)[1]);
@@ -44,6 +42,7 @@ void	write_read_pipe_execute(t_fresh *fresh, t_command *command, int *pid,
 	else
 	{
 		close((*fd)[1]);
+		close(fresh->last_fd);
 		if (command->redir != 1)
 			fresh->last_fd = dup((*fd)[0]);
 		close((*fd)[0]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavel <apavel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 12:42:41 by apavel            #+#    #+#             */
-/*   Updated: 2021/06/03 13:12:41 by apavel           ###   ########.fr       */
+/*   Updated: 2021/06/08 11:25:38 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	fork_write_pipe_execute(t_fresh *fresh, t_command *command, int *fd[2])
 	{
 		dup2(fresh->last_out->fd, 1);
 		close(fresh->last_out->fd);
+		close((*fd)[1]);
 	}
 	else
 	{
@@ -52,8 +53,8 @@ void	fork_write_read_pipe_execute(t_fresh *fresh, t_command *command,
 		dup2(fresh->last_fd, 0);
 		close(fresh->last_fd);
 		dup2((*fd)[1], 1);
-		close((*fd)[1]);
 	}
+	close((*fd)[1]);
 	if (ft_is_builtin(fresh, command))
 		ft_execute_builtin(command, fresh);
 	else
