@@ -6,7 +6,7 @@
 /*   By: alvrodri <alvrodri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 12:55:25 by alvrodri          #+#    #+#             */
-/*   Updated: 2021/05/21 12:45:53 by alvrodri         ###   ########.fr       */
+/*   Updated: 2021/06/08 11:40:09 by alvrodri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,11 @@ void	ft_load_env_vars(t_fresh *fresh, char **envp)
 	while (envp[i])
 	{
 		split_var = ft_split(envp[i], '=');
-		var = variable_new(ft_strdup(split_var[0]), ft_strdup(split_var[1]));
+		if (!split_var[1])
+			var = variable_new(ft_strdup(split_var[0]), ft_strdup(""));
+		else
+			var = variable_new(ft_strdup(split_var[0]),
+					ft_strdup(split_var[1]));
 		if (fresh->env)
 			list_add_back(fresh->env, list_new_element(var));
 		else
